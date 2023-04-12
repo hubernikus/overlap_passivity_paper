@@ -1,0 +1,261 @@
+\section{Introduction}
+int .. new nums
+two already here : \\
+1 Huber, L., Slotine, J. J., \& Billard, A. (2022). Avoiding Dense and Dynamic Obstacles in Enclosed Spaces: Application to Moving in Crowds. IEEE Transactions on Robotics.\\
+\\obstacle avoidance, DS modulation
+
+2 Kronander, K., \& Billard, A. (2015). Passive interaction control with dynamical systems. IEEE Robotics and Automation Letters, 1(1), 106-113.
+paper from kronander : \\
+\\first statement of the passive impedence control law, and passivity
+
+from kronander :\\
+
+3 [2] : Gribovskaya, E., Khansari-Zadeh, S. M., \& Billard, A. (2011). Learning non-linear multivariate dynamics of motion in robotic manipulators. The International Journal of Robotics Research, 30(1), 80-117.: \\
+Motion learning from demonstration (few, human), with GMM -> DS\\
+
+4 [4] : P. Pastor, H. Hoffmann, T. Asfour, and S. Schaal, “Learning and generalization of motor skills by learning from demonstration:\\
+human demonstration encoded with dynamical equations\\
+
+[10],[11]: not access : on impedance control and passivity\\
+
+5 [12] :  P. Li and R. Horowitz, “Passive velocity field control of mechanical
+manipulators,” IEEE Trans. Robot. Autom., vol. 15, no. 4, pp. 751–763,
+Aug. 1999:\\
+passive velocity field, controller -> DS, mimics dynamic of flywheel to not generate energy\\
+
+6 [13] :V. Duindam, S. Stramigioli, and J. Scherpen, “Passive compensation of
+nonlinear robot dynamics,” IEEE Trans. Robot. Autom., vol. 20, no. 3,
+pp. 480–487, Jun. 2004. : \\
+passive controller to track reference curve in potential field. missing : the controller is no longer passive if there is a mismatch between actual and measured velocity
+
+7 [14] : Y. Kishi, Z. Luo, F. Asano, and S. Hosoe, “Passive impedance control
+with time-varying impedance center,” in Proc. IEEE Int. Symp. Comput.
+Intell. Robot. Autom., 2003, pp. 1207–1212.:\\
+definition passivity, improvement of [10] with impedence control
+
+8 [15]:  S. M. Khansari-Zadeh and A. Billard, “Learning control Lyapunov
+function to ensure stability of dynamical system-based robot reaching
+motions,” Robot. Auton. Syst., vol. 62, no. 6, pp. 752–765, Jun. 2014. :\\
+learning from demonstration:  Control Lyapunov Function-based Dynamic Movements (CLF-DM)\\
+
+[16] : not available\\
+
+[17]-[21] : on energy tanks, speak of it ?\\
+
+[Added by Lukas] \\
+Tulbure, A., and Khatib, O. (2020, October). Closing the loop: Real-time perception and control for robust collision avoidance with occluded obstacles. In 2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) (pp. 5700-5707). IEEE.\\
+uses potential field (worse version of DS control), closes the control loop to handle perception + control, i.e. real-time obs avoidance with global elastic planing, maybe computationally slower than method of lukas ???\\
+
+10 Sepulchre, R., Jankovic, M., \& Kokotovic, P. V. (2012). Constructive nonlinear control. Springer Science & Business Media.\\
+definition of passivity, other things @lukas ?\\
+[End Lukas] \\
+
+
+other : \\
+
+11 Khansari-Zadeh, S. M., and Billard, A. (2011). Learning stable nonlinear dynamical systems with gaussian mixture models. IEEE Transactions on Robotics, 27(5), 943-957. :\\
+learning from human demo -> DS : SEDS\\
+
+12 Kronander, K., Khansari, M., and Billard, A. (2015). Incremental motion learning with locally modulated dynamical systems. Robotics and Autonomous Systems, 70, 52-62.:\\
+local modulation of existing DS, DS learning\\
+
+13 Huber, L., Billard, A., and Slotine, J. J. (2019). Avoidance of convex and concave obstacles with convergence ensured through contraction. IEEE Robotics and Automation Letters, 4(2), 1462-1469.: \\
+obstacle avoidance with DS modulation\\
+
+not available : Van der Schaft, A. (2000). L2-gain and passivity techniques in nonlinear control. Berlin, Heidelberg: Springer Berlin Heidelberg.\\
+fundation of passivity theory\\
+
+14 Amanhoud, W., Khoramshahi, M., and Billard, A. (2019). A dynamical system approach to motion and force generation in contact tasks. Robotics: Science and Systems (RSS).\\
+passive force control, uses control law of kronander\\
+
+15 Khoramshahi, M., and Billard, A. (2020). A dynamical system approach for detection and reaction to human guidance in physical human–robot interaction. Autonomous Robots, 44(8), 1411-1429. :\\
+shows how to distinguish between human guidance and external disturbance, transition between stiff and compliant impedence control, uses admittance control\\
+
+16 Khoramshahi, M., and Billard, A. (2019). A dynamical system approach to task-adaptation in physical human–robot interaction. Autonomous Robots, 43, 927-946.:\\
+uses impedence control of kronander, alows for many task + smooth switching\\
+
+17 Figueroa Fernandez, N. B., & Billard, A. (2018). A physically-consistent bayesian non-parametric mixture model for dynamical system learning (No. CONF).\\
+learning DS from human demo : LPV DS\\
+
+18 : Huber, L., Slotine, J. J., & Billard, A. (2022). Fast obstacle avoidance based on real-time sensing. IEEE Robotics and Automation Letters.\\
+fast, based on real time points measurment
+
+19: Slotine, J. J. E., & Li, W. (1991). Applied nonlinear control (Vol. 199, No. 1, p. 705). Englewood Cliffs, NJ: Prentice hall.
+
+\section{order of citation}
+
+why DS
+
+how to learn DS : 
+from human demonstration, conveniant ways : 
+    ~bad : 4 (library of primitive motion, complex moov generation),
+    with ML : 3 (GMM), 8 (CLF-DM), 11 (SEDS), 17 (LPV DS)
+    local modulation : 12 
+
+concept of passivity :
+10 19
+
+keep system passive : 
+5 (flywheel,1999), 6 (potential field, 2004), 7 (impedance control, 2003)
+
+control law of kronander
+2 : control law formulation, passive impedence damping control
+
+application of cotrol law
+15 : admitance control, directional compliance-stiffness 
+14 : force control
+16 : smooth switching between different impedance controlled tasks
+
+
+obstacle avoidance
+9 : non-DS, uses atr. pot fields + global elastic planing
+13, 1 : obs avoidance of lukas + 
+18 : descrete points measurements of lukas
+
+> then why we need obstacle aware passive control
+
+\appendix
+\subsection{Passivity around obstacles - Second method}
+During this work, we came up with another approach to build the damping matrix $\boldsymbol D(\boldsymbol\xi)$. This method shows similar results on simulation but does not offer the same guarantees. The previously introduced method involves an orthonormal basis $\boldsymbol{e_1}, ..., \boldsymbol{e_N}$, but this method differs in that the basis is no longer orthonormal.
+
+Let $\boldsymbol{e_{1,DS}}$ and $\boldsymbol{e_{2,obs}}$ be the same as in the first method, pointing respectively in the direction given by the DS and in the direction of the resultant normal (i.e. $\boldsymbol{e_{1,DS}} = \frac{\boldsymbol f(\boldsymbol\xi)}{\lVert \boldsymbol f(\boldsymbol\xi)\rVert}$ and $\boldsymbol{e_{2,obs}} = \frac{\boldsymbol n(\boldsymbol \xi)}{\lVert \boldsymbol n(\boldsymbol\xi)\rVert}$. The other vectors of the basis $\boldsymbol{e_3}, ... ,\boldsymbol{e_N}$ are defined as before, being perpendicular to both $\boldsymbol{e_{1,DS}}$ and $\boldsymbol{e_{2, obs}}$ and between each other. 
+
+We will again construct $\boldsymbol{e_{2,DS}}$, perpendicular to $\boldsymbol{e_{1,DS}}$ as in section \ref{sec:obstacle_aware_passivity} and define $w(\boldsymbol\xi)$ like in \eqref{weight_function}.
+
+The vector $\boldsymbol{e_{2,both}}$ is define as before in \eqref{e2_both_ortho} but this time $\boldsymbol{e_{1,both}} = \boldsymbol{e_{1,DS}}$ stays always align to the DS. Fig.~\ref{fig_basis_both_2D_not_ortho} shows the construction of the basis. \\
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/basis_both_2D_not_ortho.png}}
+\caption{Example of construction of the basis with the second method in an environment with one obstacle and a weight of $w = 0.7$}
+\label{fig_basis_both_2D_not_ortho}
+\end{figure}
+
+Note that the set $\boldsymbol{e_{1,both}}, ..., \boldsymbol{e_N}$ still spans $\mathbb{R}^N$ (except in one case of which we will discuss later) but is not necessarily an orthonormal basis.
+
+The matrix $\boldsymbol Q(\boldsymbol\xi)$ is the matrix whose columns are the previous basis. The matrix $\boldsymbol\Lambda(\boldsymbol\xi)$ is the same as in the first method. Then, $\boldsymbol D(\boldsymbol\xi)$ and $\boldsymbol{\tau_c}$ are defined with \eqref{D_matrix_shaping} and \eqref{control_command}.\\
+
+As $\boldsymbol{e_{1,both}}$ always stays aligned with the DS, this method ensures a better tracking of the DS, at the cost of a smaller disturbance rejection against the obstacle. Moreover, as $\boldsymbol{e_{1,both}}$ and $\boldsymbol{e_{2,both}}$ are no longer orthogonal, coupling effects may appear, causing the contribution to compensate each other. \\
+
+This method also presents a risk of the basis being ill-defined (both eigenvectors being collinear). This extreme case happens when the DS and the normal are collinear, and when the weight function is equal to 1. In practice, this should never happen as this point is constructed to be reachable only with infinite time (it is the saddle point of the obstacle avoidance modulation framework, at the boundary of the obstacle).
+
+To deal with the issue of the discontinuities in $\boldsymbol Q(\boldsymbol\xi)$, we implemented the same trick as in \ref{limit_cases}.
+
+The fact the basis is not orthonormal leads to a problem when trying to prove passivity with a technique similar to the one used in section \ref{passivity_proof}. The term $-\boldsymbol{\dot\xi}^T \boldsymbol D(\boldsymbol\xi)\boldsymbol{\dot\xi}$ is not guaranteed to be negative since $\boldsymbol D(\boldsymbol\xi)$ is no longer positive semi-definite. However, we've come up with a novel approach to prove passivity presented in the next section. 
+
+%% \input{appendix_lukas}
+
+\subsection{Third approach}
+On the third approach, $\boldsymbol D(\boldsymbol\xi)$ is defined as:
+\begin{equation}
+   \boldsymbol D(\boldsymbol\xi) = w (\boldsymbol\xi) \boldsymbol{D_{obs}}(\boldsymbol\xi) + (1-w(\boldsymbol\xi)) \boldsymbol{D_{DS}}(\boldsymbol\xi)
+\end{equation}
+using the same $w(\boldsymbol\xi)$ as in \eqref{weight_function}. \\
+
+$\boldsymbol{D_{DS}}(\boldsymbol\xi)$ is defined as in traditional passive interaction control \cite{kronander2015passive}, also explained in the section \ref{trad_passive}. \\
+
+$\boldsymbol{D_{obs}} (\boldsymbol\xi)$ is the damping matrix that only considers the obstacle. It is construct like in \eqref{D_matrix_shaping} : $\boldsymbol{D_{obs}}(\boldsymbol\xi) = \boldsymbol{Q_{obs}}(\boldsymbol\xi) \boldsymbol{\Lambda_{obs}}(\boldsymbol\xi) \boldsymbol{Q_{obs}}(\boldsymbol\xi)^{-1}$. However, $\boldsymbol{Q_{obs}}(\boldsymbol\xi)$ and $\boldsymbol{\Lambda_{obs}}(\boldsymbol\xi)$ are not built in the same manner. Let $\boldsymbol{e_2} = \frac{\boldsymbol n(\boldsymbol\xi)}{\lVert \boldsymbol n(\boldsymbol\xi) \rVert}$ and let $\boldsymbol{e_1}, \boldsymbol{e_3}, ..., \boldsymbol{e_N}$ be a orthonormal basis for $\boldsymbol{e_2}$. $\boldsymbol n(\boldsymbol\xi)$ is the resultant normal calculated with \eqref{resultant_normal}. $\boldsymbol{Q_{obs}}(\boldsymbol\xi)$ is the orthonormal matrix whose columns are the previously defined basis. $\boldsymbol\Lambda_{obs}(\boldsymbol\xi)$ is a diagonal matrix which has the coefficient $\lambda_1, ..., \lambda_N$ on its diagonal. As we want stiffness only towards the obstacle, we define:
+\begin{equation}
+\begin{cases}
+    \lambda_2(\boldsymbol\xi) = w(\boldsymbol\xi)\lambda_{obs} + (1-w(\boldsymbol\xi))\lambda_{perp}\\
+    \lambda_i = \lambda_{perp} \; \forall i = 1, 3, ..., N
+\end{cases}
+\end{equation}
+
+To address the problem of the vanishing normal, we reduce the weight to zero as $\boldsymbol n(\boldsymbol\xi) \rightarrow 0$ as in \eqref{weight_vanish_norm}.
+
+Note that as both $\boldsymbol{D_{DS}}(\boldsymbol\xi)$ and $\boldsymbol{D_{obs}}(\boldsymbol\xi)$ are positive semi-definite matrices, $\boldsymbol D(\boldsymbol\xi)$ is also positive semi-definite.\\
+
+This approach is simpler as it doesn't face as many corner cases as the two others. However, it is less clear what the resulting control will look like, and one could see unexpected behavior appear.
+
+\subsection{Proof sketch}
+Here is a sketch of the proof utilizing less the energy tank: 
+
+Let $\boldsymbol f(\boldsymbol\xi) = -\nabla V_f(\boldsymbol\xi)$ be a conservative function.
+We would need to prove the existence of $N$ potential functions $V_i(\boldsymbol\xi)$ such that :
+\begin{equation}
+    \boldsymbol{f_i}(\boldsymbol\xi) = -\nabla V_i(\boldsymbol\xi) \text{  } \forall i
+\end{equation}
+with $\boldsymbol{f_i}(\boldsymbol\xi) = (\boldsymbol f(\boldsymbol\xi)^T\boldsymbol{e_i}(\boldsymbol\xi))\boldsymbol{e_i}(\boldsymbol\xi)$ and $V_f(\xi) = \sum_i^N V_i(\boldsymbol\xi)$. $\boldsymbol{e_i}$ are the eigenvectors of $\boldsymbol D(\boldsymbol\xi)$ 
+
+If this is true, then we could decompose $f$ into $f_c$ and $f_R$, a conservative and non-conservative part, and control $f_c$ without the use of energy tanks.
+
+----
+NEED TO INCLUDE THE FOLLOWING?
+
+Let $W$ be an energy function: 
+$W(\xi, \dot\xi) = \frac{1}{2}\dot\xi^T M(\xi)\dot\xi + \lambda_1 V_1(\xi) + \lambda_2 V_2(\xi)$
+
+Since M is positive definite : 
+\begin{equation}
+    \dot W(\xi, \dot\xi) = \dot\xi^T M(\xi)\ddot\xi + \frac{1}{2}\dot\xi^T \dot M(\xi)\dot\xi + \lambda_1 \nabla V_1(\xi) \dot\xi + \lambda_2 \nabla V_2(\xi) \dot\xi
+\end{equation}
+
+lambda2 is function of time -> derivative in 16 !!!
+
+Substituting $M(\xi)\ddot\xi$ from \eqref{robot_dynamics} and $\tau_c$ from \eqref{control_command} leads:
+
+\begin{equation}
+\begin{aligned}
+    \dot W(\xi, \dot\xi) 
+    & = \dot\xi^T (-C(\xi,\dot\xi)\dot\xi - G(\xi) + G(\xi) - D(\xi)(\dot\xi - f(\xi))\\
+    & + \tau_e) + \frac{1}{2}\dot\xi^T \dot M(\xi)\dot\xi + \lambda_1 \nabla V_1(\xi) \dot\xi + \lambda_2 \nabla V_2(\xi) \dot\xi \\
+    & = \frac{1}{2}\dot\xi^T(\dot M(\xi) - 2C(\xi,\dot\xi))\dot\xi - \dot\xi^T D(\xi)\dot\xi + \dot\xi^T D(\xi) f(\xi)\\
+    & + \dot\xi^T \tau_e + \lambda_1 \nabla V_1(\xi) \dot\xi + \lambda_2 \nabla V_2(\xi) \dot\xi
+\end{aligned}
+\end{equation}
+
+By decomposing $f(\xi)$ in the basis of Q, we get $f(\xi) = f_1(\xi) + f_2(\xi)$, with $f_1(\xi)$ being the component along $e_1(\xi)$ and $f_2(\xi)$ the component along $e_2(\xi)$. Then,  $$D(\xi) f(\xi) = D(\xi) (f_1(\xi) + f_2(\xi)) =\lambda_1 f_1(\xi) + \lambda_2 f_2(\xi)$$. 
+
+Furthermore, due to the skew symmetry of $\dot M(\xi) - 2C(\xi,\dot\xi)$, the first term cancels, and with \eqref{f1_f2_pot}: 
+
+\begin{equation}
+\begin{aligned}
+    \dot W(\xi, \dot\xi) 
+    & = - \dot\xi^T D(\xi)\dot\xi + \dot\xi^T \tau_e \leq \dot\xi^T \tau_e
+\end{aligned}
+\end{equation}
+
+The last inequality holds from the fact that $D(\xi)$ is a positive semi-definite matrix, which concludes the proof.
+
+
+\begin{thebibliography}{00}
+
+\bibitem{b1} Pastor, P., Hoffmann, H., Asfour, T., \& Schaal, S. (2009, May). Learning and generalization of motor skills by learning from demonstration. In 2009 IEEE International Conference on Robotics and Automation (pp. 763-768). IEEE.
+
+\bibitem{b2} Gribovskaya, E., Khansari-Zadeh, S. M., \& Billard, A. (2011). Learning non-linear multivariate dynamics of motion in robotic manipulators. The International Journal of Robotics Research, 30(1), 80-117.
+
+\bibitem{b3} Khansari-Zadeh, S. M., \& Billard, A. (2014). Learning control Lyapunov function to ensure stability of dynamical system-based robot reaching motions. Robotics and Autonomous Systems, 62(6), 752-765.
+
+\bibitem{b4} Khansari-Zadeh, S. M., \& Billard, A. (2011). Learning stable nonlinear dynamical systems with gaussian mixture models. IEEE Transactions on Robotics, 27(5), 943-957.
+
+\bibitem{b5} Figueroa Fernandez, N. B., \& Billard, A. (2018). A physically-consistent bayesian non-parametric mixture model for dynamical system learning (No. CONF).
+
+\bibitem{b6} Kronander, K., Khansari, M., \& Billard, A. (2015). Incremental motion learning with locally modulated dynamical systems. Robotics and Autonomous Systems, 70, 52-62.
+
+\bibitem{b19} Slotine, J. J. E., \& Li, W. (1991). Applied nonlinear control (Vol. 199, No. 1, p. 705). Englewood Cliffs, NJ: Prentice hall.
+
+\bibitem{b7} Sepulchre, R., Jankovic, M., \& Kokotovic, P. V. (2012). Constructive nonlinear control. Springer Science \& Business Media.
+
+\bibitem{b8} Li, P. Y., \& Horowitz, R. (1999). Passive velocity field control of mechanical manipulators. IEEE Transactions on robotics and automation, 15(4), 751-763.
+
+\bibitem{b9} Duindam, V., Stramigioli, S., \& Scherpen, J. M. (2004). Passive compensation of nonlinear robot dynamics. IEEE transactions on robotics and automation, 20(3), 480-488.
+
+\bibitem{b10} Kishi, Y., Luo, Z. W., Asano, F., \& Hosoe, S. (2003, July). Passive impedance control with time-varying impedance center. In Proceedings 2003 IEEE International Symposium on Computational Intelligence in Robotics and Automation. Computational Intelligence in Robotics and Automation for the New Millennium (Cat. No. 03EX694) (Vol. 3, pp. 1207-1212). IEEE.
+
+\bibitem{b11} Kronander, K., \& Billard, A. (2015). Passive interaction control with dynamical systems. IEEE Robotics and Automation Letters, 1(1), 106-113.
+
+\bibitem{b12} Amanhoud, W., Khoramshahi, M., \& Billard, A. (2019). A dynamical system approach to motion and force generation in contact tasks. Robotics: Science and Systems (RSS).
+
+\bibitem{b13} Khoramshahi, M., \& Billard, A. (2020). A dynamical system approach for detection and reaction to human guidance in physical human–robot interaction. Autonomous Robots, 44(8), 1411-1429.
+
+\bibitem{b14} Khoramshahi, M., \& Billard, A. (2019). A dynamical system approach to task-adaptation in physical human–robot interaction. Autonomous Robots, 43, 927-946.
+
+\bibitem{b15} Tulbure, A., \& Khatib, O. (2020, October). Closing the loop: Real-time perception and control for robust collision avoidance with occluded obstacles. In 2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) (pp. 5700-5707). IEEE.
+
+\bibitem{b16} Huber, L., Billard, A., \& Slotine, J. J. (2019). Avoidance of convex and concave obstacles with convergence ensured through contraction. IEEE Robotics and Automation Letters, 4(2), 1462-1469.
+
+\bibitem{b17} Huber, L., Slotine, J. J., \& Billard, A. (2022). Avoiding dense and dynamic obstacles in enclosed spaces: Application to moving in crowds. IEEE Transactions on Robotics, 38(5), 3113-3132.
+
+\bibitem{b18} Huber, L., Slotine, J. J., \& Billard, A. (2022). Fast obstacle avoidance based on real-time sensing. IEEE Robotics and Automation Letters.
+
+\end{thebibliography}

@@ -1,0 +1,640 @@
+\documentclass[conference]{IEEEtran}
+%\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%% \usepackage{cite}
+\usepackage{hyperref}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm} % Allows usage of '\theoremstyle'
+
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage[font=small,labelfont=bf]{caption} % small fontsize in caption
+
+%% \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%%     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\usepackage[
+    backend=biber,
+    style=ieee,
+    sorting=none,
+    %% citestyle=authoryear
+    ]{biblatex}
+\addbibresource{bibliography.bib}
+
+\usepackage[normalem]{ulem}
+
+
+\begin{document}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\vecs}[1]{\boldsymbol{#1}}
+\newcommand{\matr}[1]{\boldsymbol{#1}}
+\newcommand{\matd}[1]{\mathcal{#1}}
+
+\newcommand{\dotprod}[2]{\left\langle {#1}, \, {#2} \right\rangle}
+\newcommand{\normdotprod}[2]{\frac{\left\langle #1, \, #2 \right\rangle}{\| #1 \| \, \| #2 \|}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}{Lemma}[theorem]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+
+\title{Obstacle Aware Passive Control for Dynamical Systems}
+\author{
+  \IEEEauthorblockN{Lukas Huber, Trinca Thibaud, Jean-Jacques Slotine, Aude Billard}
+}
+
+\maketitle
+\thispagestyle{plain}
+\pagestyle{plain}
+
+\begin{abstract}
+Recent work on dynamical systems (DS) has enabled new ways of robot control. DS can be learned with various methods and often modified so that all points in space converge to the attractor, making the system more robust to noise or disturbances.
+One can use DS modulation to avoid obstacles, with solid guarantees of impenetrability consistently. To transfer from DS velocity control to torque control, passive control theory is a powerful method to accurately track the desired speed, while having the freedom to be compliant.
+In this work, we present a method that extends the concept of passivity.
+The method maintains compliant behavior away from obstacles but increases the stiffness of the control when approaching one of them, allowing the robot to be aware of its environment.
+The proof of concept was tested in a simulation in Python. The robot shows great tracking performance and successfully rejects disturbances that would have led to a collision with an obstacle. 
+\end{abstract}
+
+\begin{IEEEkeywords}
+Obstacle avoidance, dynamical systems, passivity, human robot interaction
+\end{IEEEkeywords}
+
+
+\section{Introduction}
+Robots moving in real-world scenario need to be adaptable and reactive.
+While on the one hand, they robot needs to complete its motion, on the other hand it is important that its movement is safe, i.e., it can avoid collisions at all time.
+
+
+\subsection{Literature Review}
+One of big task of controlling a robot is planing a trajectory to reach a desired goal. Trajectories can often be very complex and one has to find methods to parametrize those easily. Human demonstration is an easy way of showing the robot what to do. Simple movement can be sequenced to generate a complex motion \cite{gribovskaya2011motion}.
+%% More recent techniques rely on machine learning to generate the trajectories \cite{b2}, \cite{b3}, \cite{b4} \& \cite{b5}. Those approachs learn a dynamical system (DS) which offers several advantages over classical path planning.
+It has a closed-form control law does not require constant replanning for every position. In addition, DS control can provide stability and convergence guarantees for navigation in dynamic environments.
+% Other techniques to modulate an existing DS also brings diversity to DS-controlled robot \cite{b6}.
+% Impedance Control
+Impedance control: An approach to manipulation + implementation
+\cite{hogan1984impedance, hogan1985impedance}
+
+
+A key concept of robot control is maintaining a passive relationship between the command input and external disturbances. Passivity can be ensured by adding a virtual flywheel to the system \cite{li1999passive, kishi2003passive}, or tracking the reference curve of a potential field \cite{duindam2004passive}. The most recent approach uses impedance control based on selective dissipation of the energy \cite{kronander2015passive}. This method, called passive interaction control, allows the robot to be stiff or compliant depending on the direction of the disturbance.
+
+Feedback controllers have been used to control robotic manipulators to follow a vector field \cite{li1999passive}. The controller was extended to have variable stiffness to favor task completion \cite{kronander2015passive}. However, both approaches rely on energy tanks for general, desired dynamics and do not give any guarantees in the presence of obstacles.
+
+% Differential Geometry
+Recent approaches use differential geometry to encapsulate the robot's dynamics and the collision constraints \cite{peters2008unifying}.
+% \cite{ratliff2021generalized}
+% \cite{bylard2021composable}
+This has been applied to dynamic multi-obstacle avoidance on a 7DoF robot arm \cite{van2022geometric}. However, in the current state the 
+
+% Several application uses this passive control method. \cite{b12} uses this control law to generate specific forces while in contact with an object. On a similar idea, the control law can be modified to perform admittance control \cite{b13}, which is then used by the robot to perform many tasks and smoothly transition between them \cite{b14}.
+
+
+Another big topic of robotic control is obstacle avoidance. A solution is to use a global potential field with global elastic planning for obstacles \cite{tulbure2020closing}. Another approach again uses a DS-controlled robot and implements a way to modulate the initial DS so that all trajectories avoid obstacles \cite{huber2022avoiding}, and has shown to work with a virtual obstacle which represents all obstacles present in the environment \cite{huber2022fast}.
+
+Dynamic motion planning for robots in partially unknown environments (Using circular / potential fields to guide the desired dynamics)
+\cite{haddadin2011dynamic}
+
+General approach for collaborative robots, how to control them \\
+A unified passivity-based control framework for position, torque and impedance control of flexible joint robots
+\cite{albu2007unified}
+
+A unified approach for motion and force control of robot manipulators: The operational space formulation
+\cite{khatib1987unified}
+
+Using Riemanian Motion Policies to describe motion [Geometric fabrics: Generalizing classical mechanics to capture the physics of behavior]
+\cite{van2022geometric}
+And similarly,
+\cite{cheng2020rmp}
+
+Passive-set-position-modulation framework for interactive robotic systems
+\cite{lee2010passive}
+Passive velocity field control of mechanical manipulators
+\cite{li1999passive}
+
+Sampled data systems passivity and discrete port-hamiltonian systems
+\cite{stramigioli2005sampled}
+
+Variable impedance control and learning—a review
+\cite{abu2020variable}
+
+Progress and prospects of the human--robot collaboration
+\cite{ajoudani2018progress}
+
+%% Variable admittance control of a hand exoskeleton for virtual reality-based rehabilitation tasks
+%% \cite{topini2022variable}
+
+Although DS passive-controlled robots work well in some simple cases, they do not yet have a reliable way of safely navigating through an obstacle environment. This issue could lead to collisions if unknown disturbances push the agent toward an obstacle. This work presents a method to address this problem by modifying the passive control law design. The resulting controller is now aware of its environment.
+
+\subsection{Contribution}
+In this work, we introduce the following contributions:
+\begin{itemize}
+\item A passive controller which ensures obstacle avoidance (Sec.~\ref{sec:obstacle_aware_passivity})
+\item A (general) passivity analysis  without the need for storage tank which holds for a general impedance controller for vector fields (Theorem~\ref{theorem:passivity})
+\item Implementation and test on real robots (Sec.~\ref{sec:results})
+\end{itemize}
+
+\section{Preliminaries}
+Let $\vecs\xi \in \mathbb{R}^N$ describe the generalized state of the system $d$ dimensions, e.g., the robot's joint positions or the Cartesian space position.
+Now let $\vecs f(\vecs \xi)$ be a dynamical system describing the desired velocity at a given state: $\vecs{\dot\xi}^{\mathrm{des}} = \vecs f( \vecs \xi)$.
+This DS should be continuous and defined for all states $\vecs \xi$. Furthermore, all trajectories converge to the unique attractor state $\vecs \xi ^a \in \mathbb{R}^N$. 
+
+\subsection{Obstacle Avoidance}
+%% Robots navigating in realistic environments will encounter many obstacles. \cite{huber2022avoiding} presents a way to modulate the initial DS $\vecs{f_0}(\vecs \xi)$, such that all trajectories avoid obstacles. Furthermore, this method ensures impenetrability and guarantees that almost all\footnote{There is one trajectory per obstacle that ends up on a saddle point. However, for the theoretical analysis, we exclude those trajectories. In practical implementation, the system always leaves those trajectories due to noise present in the real world.} trajectories converge to the attractor.
+
+%% In short, a modulation matrix $\vecs M(\vecs\xi)$ is defined for every possible state $\vecs\xi$ and modulates the initial DS : $\vecs{f_{mod}}(\vecs\xi) = \vecs M(\vecs\xi)\vecs {f_0}(\vecs\xi)$. This matrix scales some components of $\vecs{f_0}$ and reduces others, such that the flow avoids the obstacle. In the following, we will refer to $\vecs{\dot\xi_{des}} = \vecs{f_{mod}}(\vecs\xi) = \vecs f(\vecs\xi)$ as being the DS modulated to avoid obstacles.\\
+
+Obstacle avoidance based on Modulation (DSM) for point masses has been proposed in \cite{huber2022avoiding, huber2022fast}. A collision-free path is obtained by modulating the initial dynamics $\vect f^I(\vecs \xi)$ as follows:
+%% \begin{equation}
+%% \dot{\vecs \xi}^{\mathrm{des}}= \textbf{M}(\vecs \xi)\textbf{f}(\vecs \xi) \ \textrm{with}  \ \textbf{M}(\vecs \xi)= \textbf{E}(\vecs \xi)\textbf{D}(\vecs \xi)\textbf{E}(\vecs{\xi})^{-1}\label{eq:modulated}
+%% \end{equation}
+\begin{equation}
+  \vecs f(\vecs \xi) = \textbf{E}(\vecs \xi) \text{diag} \left(\lambda^r, \lambda^e, ..., \lambda^e \right) \textbf{E}(\vecs{\xi})^{-1} \vect f^I(\vecs \xi)
+  \label{eq:modulated} 
+  % \textbf{M}(\vecs \xi)\textbf{f}(\vecs \xi) \ \textrm{with}  \ \textbf{M}(\vecs \xi)= \textbf{E}(\vecs \xi)\textbf{D}(\vecs \xi)\textbf{E}(\vecs{\xi})^{-1}\label{eq:modulated}
+\end{equation}
+where the orthonormal basis matrix $\textbf{E}(\vecs \xi)$, defined as:
+\begin{equation}
+\textbf{E}(\vecs \xi) = \left[ \textbf{r}(\vecs \xi) \ \textbf{e}_1(\vecs \xi) \ ... \ \textbf{e}_{d-1}(\vecs \xi) \right]
+\label{eq:matrix_E}
+\end{equation}
+with the tangent directions $\textbf{e}_{(\cdot)} \in \mathbb{R}^N$ perpendicular to the surface normal $\vect n(\vecs \xi)$, and $\textbf{r}(\vect{\xi}) =  \left( \vecs{\xi}-\vecs{\xi}^r \right) / \| \vecs \xi-\vecs \xi ^r \|$ is the reference direction, with respect to the reference point $\vecs \xi^r \in \mathbb{R}^N$, a point placed inside the obstacle's boundaries.
+The eigenvalues in reference direction  $\lambda^r$ and tangent direction $\lambda^e$ are evaluated as follows:
+\begin{equation}
+\begin{split}
+    %% \matr{D}(\vecs \xi) = \text{diag} \left(\lambda^r(\vecs \xi), \lambda^e(\vecs \xi), ..., \lambda^e(\vecs \xi ) \right) \quad \text{with} \\
+    % \label{eq:D_matrix} \\
+    \lambda^r(\vecs \xi) = 1 - 1 /\Gamma(\vecs \xi) , \quad \lambda^e(\vecs \xi) = 1 + 1 / \Gamma(\vecs \xi)
+    \label{eq:eigenvalues}
+    \end{split}
+\end{equation}
+with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}$, which has a value of 1 on the boundary of an obstacle, and $\Gamma(\vecs \xi) > 1$ outside the obstacle. We use:
+\begin{equation}
+  \Gamma(\vecs \xi) = 1 + d (\vecs \xi)
+\end{equation}
+where $d (\vecs \xi)$ is the distance to the surface.
+
+As $\lambda^r(\vecs \xi) \leq 1$, the initial dynamics are decreased towards the obstacle, and with $\lambda^e(\vecs \xi) \geq 1$, the dynamics are increased in tangent direction. It has been shown in \cite{huber2022avoiding} that this leads to convergence around (star-shaped) obstacles.
+
+\subsection{Passive Interaction Control} \label{sec:trad_passive}
+Passive interaction control \cite{kronander2015passive}is useful for transitioning from velocity-controlled to torque-controlled robots. It allows for selective disturbances rejection, given the direction of motion. For example, one could desire a stiff behavior in the direction of the DS, but want compliance in the direction perpendicular to the motion.
+A stiff behavior means that the actual speed will rapidly converge to the desired speed, leading to great tracking performance. Compliance is opposed to stiffness. It is the ability to have flexible behavior and to move away from external forces, instead of resisting them.
+
+\begin{definition}[Passivity \cite{willems1972dissipative, sepulchre2012constructive}]
+  A dynamical system with input $ u \in \mathcal{U}$ and output $y \in \mathcal{Y}$ is passive with respect to the supply rate $s : \mathcal{U} \times \mathcal{Y} \rightarrow{R}$ if, for any $u: \mathbb{R}_{>0} \rightarrow \mathcal{U}$ and any time $t \geq 0$ the following is satisfied
+  \begin{equation}
+    \int_0^t s \left( u(\tau),  y (\tau) \right) \geq c^2
+  \end{equation}
+  where $c \in \mathbb{R}$ depends on the initial conditions.
+\end{definition}
+
+Since two passive systems results in a passive system \cite{sepulchre2012constructive}, ensuring that a robotic controller is passive will directly ensure that interaction with its (passive) environment results in a passive.
+
+Both behaviors benefit a robot, and passive control provides a reliable way to apply those to the robot.
+Furthermore, the passive control is quite modular, and one can easily increase the stiffness of the damping (e.g., close to dangerous areas) or decrease it (e.g. close to humans). Moreover, a passive controller ensures stable behavior between a robot and its environment, which is its major advantage. Mainly, given any external force,
+% the system will always decrease its \textit{storage function}, often modeled as the system's energy
+.
+
+The DS $\vecs f(\vecs \xi)$ now returns the desired speed for a given state, but one still needs to convert this information into motor torques the robot understands. Let us introduce the passive interaction control theory in \cite{kronander2015passive}.
+
+\subsection{Rigid Body Dynamics}
+For the robot, we consider rigid-body dynamics described with the generalized state variable $\vecs \xi$:
+\begin{equation}
+\matd{M}(\vecs\xi)\vecs{\ddot\xi} + \matd{C}(\vecs\xi, \vecs{\dot\xi})\vecs{\dot\xi} + \vect g(\vecs\xi) = \vecs{\tau_c} + \vecs{\tau_e}
+ \label{eq:robot_dynamics}
+\end{equation}
+where $\matd M(\vecs\xi)$ is the mass matrix of the robot, $\matd C(\vecs\xi,\vecs{\dot\xi})$ the Coriolis matrix, and  $\vect g(\vecs\xi)$ the gravity vector, $\vecs{\tau_c}$ the control torque and $\vecs{\tau_e}$ the external torque (also referred as disturbance).
+
+The passivity control law proposed in \cite{kronander2015passive} has following form:
+%% \begin{equation}
+%% \vecs{\tau_c} = \vecs G(\vecs\xi) - \vecs D(\vecs\xi)(\vecs{\dot\xi} -\vecs f(\vecs\xi)) 
+%% \label{control_command}
+%% \end{equation}
+
+\begin{equation}
+\vecs{\tau_c} = \vect g (\vecs\xi) - \matd{D}(\vecs\xi)(\vecs{\dot\xi} -\vecs f(\vecs\xi)) 
+\label{eq:control_command}
+\end{equation}
+
+This control law embeds a gravity compensation term and a damping term, which decreases the difference between the desired velocity $\vecs f(\vecs\xi)$ and the actual velocity $\vecs{\dot\xi}$.
+The damping matrix $\matd D(\vecs\xi)$ is designed to allow for damping in each sub-direction as follows:
+%% To have selective damping depending on the direction, one must carefully design  as a matrix composition:
+%% \begin{equation}
+%% \vecs D(\vecs\xi) = \vecs Q(\vecs\xi)\vecs\Lambda{\vecs Q(\vecs\xi)^{-1}} 
+%% \label{D_matrix_shaping}
+%% \end{equation}
+\begin{equation}
+  %% \matd {D}(\vecs \xi) = \matd{Q}(\vecs\xi)\matd{E}{\matd{Q}(\vecs \xi)^{-1}}
+  \matd {D}(\vecs \xi) = \matd{Q}(\vecs\xi)\matd{S} \matd{Q} (\vecs \xi)^{-1}
+\label{D_matrix_shaping}
+\end{equation}
+where $\matd Q(\vecs \xi)$ is an othonormal basis matrix and $\matd{S}$ a diagonal matrix consisting of the damping factors. Let $\vecs{q}_1, \vecs q_2, ..., \vecs q_N$ be an orthonormal basis for $\mathbb{R^N}$ with the first vector pointing in the desired direction of motion, i.e., $\vecs q_1 = \dot{\vecs \xi} / \lVert \dot{\vecs \xi} \rVert$, and the remaining vectors from the orthonormal basis.
+% Now let $\matd{Q}(\vecs\xi)$ be the matrix whose columns are the vectors $\vecs{e_1},..., \vecs{e_N}$.
+% The coefficient $\lambda_1, ..., \lambda_N \geq 0$ on the diagonal of $\vecs\Lambda$ are the damping factors along the corresponding directions given by the vectors $\vecs{q}_1, ..., \vecs{q}_N$.
+
+A common control strategy is to set $\lambda_1$ to a high value so that the speed along the DS direction moves along the desired speed. The stretching in the remaining directions $\lambda_o$ with $o = 2 .. d$ is set lower to allow compliance perpendicular to the motion. 
+
+%% In the case where $\vecs f (\vecs\xi)$ is conservative (i.e. there exists a potential function $V_f(\vecs \xi)$ such that $\vecs f(\vecs\xi) = -\nabla V_f(\vecs\xi)$), the system is proven to be passive. When $\vecs f (\vecs\xi)$ is not conservative, one has to introduce an energy tank and some other control to maintain passivity. 
+
+\subsection{Problem Statement}
+We will make the following assumptions about $\vecs f(\vecs\xi)$:
+\begin{enumerate}
+    \item $ \vecs f(\vecs\xi)$ is defined for all reachable states $\vecs\xi$ and is continuous.
+    %% \item $\vecs f(\vecs\xi)$ has a single equilibrium point $\vecs\xi^a$, such that $\{ \vecs \xi : \vecs f(\vecs \xi) = \vecs 0 \} = \{ \vecs\xi^a \}$. 
+    \item $\vecs f(\vecs\xi)$ is bounded, i.e., there exists a constant $v^{\mathrm{max}} \in \mathbb{R}$ such that $\| \vecs f(\vecs\xi) \| \leq v^{\mathrm{max}} \;\; \forall \, \vecs \xi \in \mathbb{R}^N$
+\end{enumerate}
+
+Furthermore, we require that all the trajectories are collision-free,: 
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item $\vecs{n_o}(\vecs\xi)^T \vecs f(\vecs\xi) \geq 0$ as $\Gamma_o \rightarrow 1$
+\end{enumerate}
+with $\vecs n_o (\vecs \xi)$ and $d_o$ the normal and the distance of the $i$-th obstacle, see Section~\ref{sec:obstacle_normals}. 
+Note that the DS obtained after DSM as described in \eqref{eq:modulated} fulfills these conditions if initial DS $\vecs f^I$ is continuous, bounded, and has a sing convergence to the attractor.
+
+We require that the initial dynamics are collision-free
+
+
+\section{Obstacle Aware Passivity} \label{sec:obstacle_aware_passivity}
+The controller created in this work is based on the design proposed \cite{takegaki1981new,  kronander2015passive}.
+% The method of \cite{kronander2015passive} presented above allows for being stiff in the direction of motion and compliant in the perpendicular directions.
+
+However, this method does not consider obstacles when computing $\matd D$. Unfortunately, if a disturbance happens to push the robot into an obstacle that is perpendicular to the direction of motion, it will not be damped. This could lead to the robot crashing into the obstacle. In those cases, we would like to increase the stiffness of the control and dampen the disturbance.
+
+We propose a novel controller, which ensures passivity as defined in \eqref{eq:control_command} but adapts the damping matrix given in \eqref{D_matrix_shaping} based on the desired dynamics $\dot{\vecs \xi}$ and obstacles in the surrounding. 
+
+The idea is that the matrix $\matd Q$ smoothly transitions from an orthonormal basis aligned to the DS direction (traditional passive control) to a basis aligned with the normal of the obstacle when approaching one.
+
+\subsection{Averaged Normal Direction} \label{sec:obstacle_normals}
+Let us define the unit normal $\vecs{n_o} (\vecs\xi)$  pointing away from the obstacle $o \in \{1,  ..,  N^{\mathrm{obs}} \}$, the averaged normal can be evaluated as:
+% Let the resultant normal of the obstacles $\vecs n(\vecs\xi)$ be expressed as:
+%% \begin{equation}
+%%     \vecs n(\vecs\xi) = \frac{\sum_{i=1}^{M} \frac{\vecs{n_i}(\vecs\xi)}{d_i(\vecs\xi) + \epsilon} }{\sum_{i=1}^{M} \frac{1}{d_i(\vecs\xi) + \epsilon}}
+%% \end{equation}
+%% for a small $\epsilon$.
+\begin{equation}
+  \vecs n(\vecs\xi) = \sum_{o=1}^{N^{\mathrm{obs}}} \vecs{n_o}(\vecs\xi)
+  \frac{\Gamma_o(\vecs \xi) - 1}{\sum_{o=1}^{N^\mathrm{obs}} \Gamma_o(\vecs \xi) - 1}
+  %% \;\; , \quad 
+  %% w^\Gamma_o(\xi) =  
+\end{equation}
+The resultant normal $\vecs n(\vecs \xi)$ is a weighted linear combination of the obstacles' normals, giving more importance to closer obstacles.
+Further, the resultant converges to an obstacle normal as we converge towards it, i.e., $\lim_{\Gamma_o(\vecs \xi) \rightarrow 1} \vecs n(\vecs \xi) = \vecs n_o(\vecs \xi)$.
+% The advantage of this function is that $\vecs n$ converges to $ \vecs n_i$ as the robot gets closer to obstacle $i$. An example is provided in Fig.~\ref{resultant_normal}.\\
+Note, that when two obstacles are opposing each other, the normal is a zero-vector. This case will be further discusses in the next section.
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/resultant_normal.png}}
+\caption{Resultant normal construction}
+\label{resultant_normal}
+\end{figure}
+
+% There could be cases where the resultant normal is not defined (due to $\vecs{n_i}$'s canceling each other). A solution to this issue is proposed in \ref{limit_cases}.
+
+\subsection{Danger Weight}
+Let us define the danger weight function $w(\vecs\xi) \in [0, 1]$ based on the distance to obstacles:
+\begin{equation}
+  \begin{split}
+w(\vecs\xi) =
+\max \left(0,  \frac{\Gamma^{\mathrm{crit}} - \Gamma(\vecs\xi)}{\Gamma^{\mathrm{crit}} - 1} \right) \| \vecs n(\vecs \xi) \| \\
+\text{with} \quad
+\Gamma(\vecs\xi) = \min_{o = 1..N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
+\label{eq:weight_function}
+\end{split}
+\end{equation}
+%% \begin{equation}
+%%   %% \Gamma(\vecs\xi) = \min_{o \in \{1, .., N^{\mathrm{obs}} \}} \Gamma_o(\vecs\xi)
+%%   \Gamma(\vecs\xi) = \min_{o = 1..N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
+%% \end{equation}
+The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}$ defines the distance where the system behaves stiffly towards the obstacle.
+Note that $w(\vecs \xi) = 0$ far away from obstacles, and $w(\vecs \xi) = 1$ as it approaches a boundary.
+
+\subsection{Damping Matrix}
+While most robotics systems is moving in dimensions $d = 3$, the development in this section can be applied to $d \geq 2$.
+% In the following sections, we will consider $N = 3$, which limits the control to a 3-dimensional (Cartesian space in our case). However, the theory presented can easily be extrapolated to work in greater dimensions.
+% \subsubsection{Combinaison of the damping matrices}
+%% Let us now combine the two matrices:
+The desired damping matrix has two goals: it should maintain and follow the desired DS, and at the same time, it has to ensure collision avoidance with obstacles. We define it as a linear combination that achieves these two parts:
+\begin{equation}
+    \matd D(\vecs\xi) = \left(1 - w(\vecs\xi) \right) {\matd D^{DS}}(\vecs\xi) + w(\vecs\xi)  {\matd D^{\mathrm{obs}}}(\vecs\xi) \label{eq:damping_summation}
+\end{equation}
+Away from any obstacle, the behavior is fully controlled by $\vecs {D_{DS}}(\vecs\xi)$, and when approaching one, the damping matrix smoothly shifts to also stiffen the control against the obstacle. 
+Note that as ${\matd D^{DS}}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ are positive semi-definite matrices, thus $\matd {D}(\vecs\xi)$ is positive semi-definite, too.
+
+
+\subsubsection{Dynamic System Following}
+The damping matrix, which achieves the dynamical system following $\matd D^{DS}$, is designed as presented in Section~\ref{sec:trad_passive}, following the theory of \cite{kronander2015passive}. $\matd D^{DS}$ has high stiffness in the direction of the desired velocity $\dot{\vecs \xi}$, but is compliant perpendicular to it.
+
+\begin{equation}
+  \begin{split}
+  s_i^{DS} =
+  \begin{cases}
+    s^{DS} & i = 1 \\
+    w^p s^{\mathrm{obs}} + (1- w^p) s^s & i \geq 2 
+  \end{cases} \\
+  \text{with} \quad
+  w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma(\vecs \xi) -1}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)
+  \end{split}
+\end{equation}
+where the ds-damping $s^{DS} \in \mathbb{R}$, obstacle-damping $s^{\mathrm{obs}} \in \mathbb{R}$, and the compliant-damping $s^c \in \mathbb{R}$ are user-defined values which define the behavior of the passive-controller.
+
+
+\subsubsection{Obstacle Repulsion}
+Let us define $\vecs q^{DS}_1 (\vecs\xi) = \dot{\vecs \xi} / \lVert \dot{\vecs \xi}\rVert$ the vector aligned to the direction of desired motion and $\vecs q_1^{\mathrm{obs}}(\vecs\xi) =  \vecs n(\vecs\xi) / \lVert\vecs n(\vecs\xi)\rVert$ the vector aligned to the obstacles normal.
+In the following, we will omit the dependency of the vectors on $\vecs\xi$ for readability purposes.
+
+% We will now define $\vecs{e_{3,obs}} = \vecs{e_{1,obs}} \times \vecs {e_{1,DS}}$ and $\vecs{e_{2,obs}} = \vecs{e_{3,obs}} \times \vecs {e_{1,obs}}$. This defines the orthonormal basis related to the obstacle, with its second vector being the closest to the DS-following vector $\vecs{e_{1,DS}}$.
+\begin{equation}
+  \vecs q_2^{\mathrm{obs}} = \frac{\hat{\vecs q}_2^{\mathrm{obs}}}{\| \hat{\vecs q}_2^{\mathrm{obs}} \|}
+  \quad
+  \hat{\vecs q}_2^{\mathrm{obs}} = \vecs q_1^{DS} - \vecs q_1^{\mathrm{obs}} p \quad  \forall \vecs \xi : | p | < 1
+\end{equation}
+where the object weight is given as $p = \dotprod{\vecs q_1^{\mathrm{obs}}}{\vecs q_1^{DS}}$
+The remaining vectors $\vecs q_i^{\mathrm{obs}}, i = 3, .., N$ are set to be orthonormal. For the case that $| p | = 1$, the second basis $\vecs q_2^{\mathrm{obs}}$ is set to be any orthonormal vector. 
+Consequently, we define the damping values to ensure smoothness:
+\begin{equation}
+  s_i^{\mathrm{obs}} =
+  \begin{cases}
+    s^{\mathrm{obs}} & i = 1 \\
+    (1 -  | p | ) s^c + | p | s^{DS} & i = 2 \\
+    s^c & i \geq 3 
+  \end{cases}
+\end{equation}
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/fig_basis_3D_DS_obs.png}}
+\caption{Construction of the basis $\vecs{e_{1,obs}}$, $\vecs{e_{2,obs}}$ and $\vecs{e_{3,obs}}$ in 3D}
+\label{fig_basis_3D_DS_obs}
+\end{figure}
+
+% Let the matrix $\vecs{Q_{obs}}(\vecs\xi) \in \mathbb{R}^{3\times 3}$ be the matrix whose columns are formed by the orthonormal basis $\vecs {e_{1,obs}}, \vecs {e_{2,obs}}, \vecs{e_{3,obs}}$.\\
+
+% Moreover, let the diagonal matrix $\vecs\Lambda(\vecs\xi) \in \mathbb{R}^{N\times N}$ be the matrix whose diagonal is $\lambda_1(\vecs\xi), \lambda_2(\vecs\xi)$ and $ \lambda_3$. Each eigenvalue corresponds to the damping coefficient along its respective direction given by the vectors.
+
+% Finally we construct $\vecs {D_{obs}}(\vecs\xi)$ as in \eqref{D_matrix_shaping}. Note that the columns of $\vecs Q(\vecs\xi)$ always form an orthonormal basis and that $\lambda_i \geq 0$ $\forall i=1,...,N$. $\vecs D(\vecs\xi)$ is thus a positive semi-definite matrix.
+
+%In the general case, we would have $\lambda_1 = \lambda_{obs}$  corresponding to the damping coefficients associated with moving into an obstacle, $\lambda_2 = \lambda_{DS}$ the tracking stiffness and $\lambda_3 = \lambda_{perp}$ is the coefficient responsible for being compliant in the remaining direction.
+
+
+% First, we want the damping coefficient $\lambda_2(\vecs\xi)$ to be equal to $\lambda_{DS}$ only when the DS and the obstacle normal are perpendicular. Likewise, we want this coefficient to be equal to $\lambda_{perp}$ when the normal and the DS are collinear. We thus define: 
+% \begin{equation}
+%     \lambda_2' = \lambda_{perp} \lvert \vecs {e_{1,obs}}^T \vecs {e_{1,DS}} \rvert + \lambda_{DS} (1 - \lvert \vecs {e_{1,obs}}^T \vecs {e_{1,DS}}\rvert)
+% \end{equation}
+% This also solves the case where $\vecs{e_{1,DS}}$ and $\vecs{e_{2,obs}}$ are perfectly collinear. In this case, the matrix $Q(\xi)$ would become discontinuous, making $D_{obs}$ also discontinuous. This definition of $\lambda_2'$ is designed to converge to the same value as $\lambda_3$, which keeps $D_obs$ always defined.
+
+% The damping coefficient $\lambda_1$ could stay constant. However, we introduce a design that allows for more compliance in XX section.
+
+%% \subsection{Special cases} \label{limit_cases}
+%% \subsubsection{Obstacle normal undefined}
+%% It could happen that $\vecs n(\vecs \xi)$ is undefined (zero-vector) due to normals of many obstacles canceling each other. To solve this issue, we use smooth step functions. These functions, $H_{a,b}(x)$ and $H_{a,b}^-(x)$, take a value of 0 before $a$ and 1 after $b$, and inversely. They are properly defined in the appendix.
+%% As $\lVert \vecs n(\vecs \xi) \rVert \rightarrow 0$, we modify the weight $w$ and make it tend to $0$. This has the effect of smoothly returning to $\vecs D = \vecs{D_{DS}}$, the traditional passive control damping matrix. An implementation is proposed here:  
+%% \begin{equation}
+%% \label{weight_vanish_norm}
+%%     w' = w H_{0, \epsilon}(\lVert \vecs n(\vecs \xi) \rVert)
+%% \end{equation}
+%% with $\epsilon = 0.01$ chosen in practice.\\
+%% Fig.~\ref{fig_smooth_w} shows how this affects the weight function.
+
+%% \begin{figure}
+%% \centerline{\includegraphics[width=0.5\textwidth]{figures/smooth_step_weight.png}}
+%% \caption{Function used to modify the weight when $\lVert \vecs n(\vecs \xi) \rVert \rightarrow 0$. As an example, we took $w = 0.5$.}
+%% \label{fig_smooth_w}
+%% \end{figure}
+
+\subsection{Damping Only Towards Obstacle} \label{sec:damping_only_toward}
+To reject only the disturbances that push the agent against the obstacle and allow compliance in the perpendicular direction away from the obstacle, we have added a new feature. Suppose the robot is currently moving away from the obstacle ($\vecs{\dot\xi}^T \vecs n(\vecs\xi) > 0$). In that case, the value of $\lambda_1$ gets overwritten with $\lambda_{perp}$, the desired damping coefficient for compliance in the orthogonal direction. This ensures that only the disturbances pushing the agent into the obstacle are damped. \\
+
+%% With this feature active, the damping matrix also depends on the velocity. However, as $\vecs{\dot\xi}^T \vecs n(\vecs\xi)$ changes of sign, $\lambda_2$ changes abruptly. This causes $\frac{\partial}{\partial \vecs{\dot\xi}} \vecs D(\vecs{\dot\xi}, \vecs\xi)$ to be infinite at some places, which loses continuity. This can be avoided using again the smooth step functions $H_{a,b}(x)$ and $H_{a,b}^-(x)$. We define,
+%% \begin{equation}
+%%     \lambda_1' = \lambda_{obs} H_{0,\epsilon}^-(\vecs{\dot\xi}^T \vecs n(\vecs\xi)) + \lambda_{perp} H_{0, \epsilon}(\vecs{\dot\xi}^T \vecs n(\vecs\xi))
+%% \end{equation}
+%% which is now smoothly defined. We used $\epsilon = 0.01$ in practice.\\
+
+\begin{equation}
+  s_1^{DS} =
+  \begin{cases}
+    s^{DS} & \text{if} \;\; \vecs{\dot \xi}^T \vecs n(\vect \xi) > 0 \\
+    0 & \text{otherwise}
+  \end{cases}
+\end{equation}
+
+Note that in the rest of this work, we will continue referring to $\matd{D}(\vecs{\dot\xi}, \vecs\xi)$ as $\matd D(\vecs\xi)$.
+
+
+\subsection{Damping Parameter Design}
+The damping values are chosen such that $s^{\mathrm{obs}}$ is high to ensure a big damping towards the obstacle. $s^{DS}$ should have a medium-high value to ensure motion in the desired direction. And finally, $s^{c}$ is chosen smaller to allow compliance in all other directions. Thus, we have:
+\begin{equation}
+s^{\mathrm{obs}} > s^{DS} \gg s^{c} > 0
+\end{equation}
+
+% here the subsection with proof of lukas
+\subsection{Passivity Analysis}
+\input{input/passivity_proof}
+
+\section{Collision Avoidance}
+
+
+\subsection{Inertia Avoidance}
+Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
+
+
+\subsection{Disturbance Repulsion}
+Let us assume a disturbance impact at time $t_0$, which results in the robot having an impact velocity of $\vecs{\dot \xi} = \vect v^I$, which is pointing towards the obstacle. The impact velocity is much larger than the robot's initial velocity. Thus the latter is neglected, and the obstacle is approximated as locally flat. Furthermore, we assume to be close to the robot, i.e., $\Gamma(\vecs \xi) \approx 1$, hence the $w(\vecs \xi) \approx 1$, and the stiffness in the direction of the obstacle is approximated as $s_^{\mathrm{obs}}$.
+No further impact forces are applied after the initial impact is absorbed. And Coriolis effect and gravity are neglected in the short time frame.
+
+\begin{equation}
+    \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = 
+\end{equation}
+
+\subsection{Disturbance Repulsion with Force Limit}
+Robotic systems have a maximum force that can be exerted based on the motors and their geometry, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Note that this maximum might be state dependent.
+
+Let  us assume strong damping concerning the maximum force, i.e., $s^{\mathrm{obs}} / \tau_c^{\mathrm{max}} \gg 1$, hence we can assume that the magnitude of the obstacle repulsive force is equal to the maximum force close to the obstacle. Hence, the maximum disturbance.
+
+\subsection{Practical Considerations}
+
+
+
+
+
+% continue here, noisy graphs ready to run
+
+\section{Results} 
+\subsection{Qualitative Comparison} \label{sec:qual_comp}
+The control law presented was tested in simulation in Python. The state space is the Cartesian coordinates $xy$ in 2D and $xyz$ in 3D. In practice, the damping matrix $\matd D(\vecs\xi)$ and the control command $\vecs {\tau_c}$ are recomputed at each time step.\\
+
+Let us compare traditional passive interaction control and the presented method (Fig.~\ref{fig_diff_obs_pass}). On the setup, the same disturbance is applied to both systems simultaneously. One can already see the robot equipped with traditional passive control (left) penetrates the obstacle, while ours (right) successfully damps the disturbance.
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.5\columnwidth}
+  \centerline{\includegraphics[width=\textwidth]{figures/run_without_pass.png}}
+  \caption{Traditional passive control}
+\end{subfigure}%
+\begin{subfigure}{0.5\columnwidth}
+  \centerline{\includegraphics[width=\textwidth]{figures/run_with_pass.png}}
+  \caption{Obstacle aware passive control}
+\end{subfigure}
+\caption{Comparison of the two control methods}
+\label{fig:diff_obs_pass}
+\end{figure}
+
+\subsection{Comparison to Reference Trajectory}
+We will now look at the performance of our controller in different scenarios. Fig.~\ref{fig_run_with_obs} shows a simulation with 3 obstacles. The red arrows represent manually applied disturbances. The ideal trajectory is also displayed (perfect DS tracking, not subjected to real dynamics). Based on this simulation, we can observe the robots' behavior in different scenarios.
+
+The first disturbance (A) pushed the robot in a direction perpendicular to the desired motion. Since we want compliance in this direction and the robot is far from any obstacle, it deviates greatly from its previous trajectory. It continues its path to the attractor on another DS line.
+
+Another disturbance (B) pushed the robot toward the obstacle and was successfully damped, avoiding the collision.
+
+A disturbance (C) pushed the robot away from an obstacle. The control algorithm is made such that when moving away from an obstacle, disturbances are not damped, and the robot shows compliant behavior. 
+
+The last disturbance (D) was applied along the direction of motion. As the desired behavior is stiff in this direction, the robot almost kept the same speed and continued toward the attractor. \\
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/run_with_obs.png}}
+\caption{Simulation with a complex environment and disturbances applied to the robot}
+\label{fig_run_with_obs}
+\end{figure}
+
+Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle.
+The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
+
+\subsection{Noise analysis}
+Gaussian noise was added to the simulation to assert the control law's robustness. We added two types of noise, noise on the position measurements and noise on the velocity measurements. 
+
+The experiment is done on a simple setup with one obstacle. The noise added has a mean of $0$, and the standard deviation is increasing linearly from $0.0$ to $0.7m$ for position and $0.0$ to $7.0 \frac{m}{s}$ for velocity measurements. For each noise level, the simulation was run 10 times. The output variable is the smallest distance of the agent from the obstacle during the simulation. This metric was chosen to observe how the noise could lead to a crash in the obstacle. 
+
+For the noise acting on the position measurement, the controller presents good rejection for a small noise variance. As it increases, the robot's behavior quickly worsens (Fig.~\ref{fig_pos_noise}). The robot penetrates the obstacle for noises of standard deviation $ > 0.4 m$. An example of a run with $\sigma_{noise} = 0.7 m$ is shown in Fig.~\ref{fig_pos_noise_0_7}.
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/noise_pos_v2.png}}
+\caption{Noise on the position measurements (shaded region are within one standard deviation from the mean)}
+\label{fig_pos_noise}
+\end{figure}
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/noise_effect_0_7.png}}
+\caption{Noise on the position measurement with a standard deviation of 0.7 $m$ (with ideal trajectory displayed)}
+\label{fig_pos_noise_0_7}
+\end{figure}
+
+The obstacle was never penetrated for the velocity measurement noise, asserting the robustness of the control for this type of noise (Fig.~\ref{fig_vel_noise}). Fig.~\ref{fig_2_vel_noise} provides an image of the simulation with big noise standard deviation ($4.0 \frac{m}{s}$). Thanks to the feature presented in Section~\ref{sec:damping_only_toward} (damping only toward the obstacle), the robot has even the tendency to drift away from the obstacle, increasing the safety margin.
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/vel_noise_0.png}}
+\caption{ NOT this one - Noise on the velocity measurements (shaded regions are within one standard deviation from the mean)}
+\label{fig_vel_noise}
+\end{figure}
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/vel_noise_cliped_0.png}}
+\caption{Noise on the velocity measurements (shaded regions are within one standard deviation from the mean) - NEW FINAL }
+\label{fig_vel_noise}
+\end{figure}
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/noise_setup.png}}
+\caption{setup}
+\label{fig_vel_noise}
+\end{figure}
+
+
+\begin{figure}
+\centerline{\includegraphics[width=\columnwidth]{figures/vel_noise_4.0.png}}
+\caption{A simulation with noise on the velocity measurement with a standard deviation of $4.0 \frac{m}{s}$  (with ideal trajectory displayed)}
+\label{fig_2_vel_noise}
+\end{figure}
+ 
+\section{Discussion}
+Overall, the simulated robot shows pleasing results. It has good tracking performances, compliance in the direction perpendicular to the motion, and great damping of the disturbances towards obstacles.
+Away from obstacles, the controller presented shows similar behavior as the one in \cite{kronander2015passive}. When approaching one obstacle, the control gets stiffer to avoid collisions without losing its tracking properties. This makes the proposed controller a suitable option to cumulate good tracking and safety regarding obstacle penetration.\\
+
+There is a variety of approaches that led to good results in simulation. In this work, we presented the first method that we worked the most on. 
+
+However, we've come up with other approaches that could be promising, which are presented in the appendix.\\
+The second method is free from the orthogonality constraint of $\vecs Q(\vecs\xi)$. We have worked on a proof for passivity that would not rely on energy tanks. This proof would greatly simplify the control, even for traditional passive control. However, this method still needs testing, and the proof needs to be verified. \\
+The third method abstracts some of the calculations. It is simpler but it is sometimes difficult to see what is going on.\\
+Fig.~\ref{fig_all_3_meth} provides a situation where the three methods we're tested and shows the differences between each of them. \\
+
+Further testing could be done to determine which method is better and whether there are better ways to treat individual cases. But in general, we provided suitable options to answer the initial question and found a solution to every difficulty encountered.
+
+
+\begin{figure}
+\centering
+\begin{subfigure}{1\columnwidth}
+\centerline{\includegraphics[width=\textwidth]{figures/first_meth.png}}
+  \caption{First method (presented)}
+\end{subfigure}\\
+
+%% \begin{subfigure}{1\columnwidth}
+%% \centerline{\includegraphics[width=\textwidth]{figures/second_meth.png}}
+%%   \caption{Second method (appendix)}
+%% \end{subfigure}\\
+
+%% \begin{subfigure}{1\columnwidth}
+%% \centerline{\includegraphics[width=\textwidth]{figures/third_meth.png}}
+%%   \caption{Third method (appendix)}
+%% \end{subfigure}
+
+\caption{Little disturbance is observed when 3}
+\label{fig_all_3_meth}
+\end{figure}
+
+
+% \appendix
+% \section{Appendix}
+% \label{Appendix}
+
+
+% \subsection{Energy tank functions}
+% When proving passivity with energy tanks \ref{passivity_proof}, special functions were introduced. The functions $\alpha, \beta_{s,i}, \beta_{R,i}$ used during the simulation are strongly inspired by \cite{kronander2015passive}.
+
+% A smoother version of the step function is defined as follows:
+% \begin{equation}
+% H_{a,b}(x) = 
+% \begin{cases}
+%     0 & \text{if } x < a \\
+%     6(\frac{x-a}{b-a})^5 - 15(\frac{x-a}{b-a})^4 + 10(\frac{x-a}{b-a})^3 & \text{if } a \leq x \leq b \\
+%     1 & \text{if} x > b
+%     \end{cases}
+% \end{equation}
+% \begin{equation}
+%     H_{a,b}^-(x) = 1 - H_{a,b}(x)
+% \end{equation}
+% The coefficients, same as in\cite{kronander2015passive}, are chosen to keep the function continuous and match first and second order derivatives at $a$ and $b$.
+
+% Then we define : 
+% \begin{equation}
+%     \alpha(s) = H_{\bar s - \delta_s, \bar s}^-(s)
+% \end{equation}
+% where $\delta_s$ determines the length of the transition. We took $\delta_s = 0.1 \bar s$ in the simulation. 
+
+% The function $\beta_{s, i}$ are defined $\forall i$ as :
+
+% \begin{equation}
+%     \beta_{s,i}(s, z_i) = 1 - H_{-\delta_z, 0}(z_i) H_{0, \delta_s}^-(s) - H_{0, \delta_z}^-(z_i) H_{\bar s - \delta_s, \bar s}(s)
+% \label{beta_s_eq}
+% \end{equation}
+% where $\delta_z$ determines the length of the transition. We took $\delta_s = 0.01$ in the simulation. As a reminder, $z_i = \vecs{f_i}^T \vecs{\dot\xi}$, with $\vecs{f_i}$ the component of $\vecs{f}$ projected onto the i-th eigenvector of $\vecs D$, $\vecs{e_i}$.
+
+% Finally, we define $\beta_{R, i}$ $\forall i$ as: 
+% \begin{equation}
+% \begin{aligned}
+%     \beta_{R,i}(s, z_i) = 
+%     & \bigl( 1 - H_{-\delta_z, 0}(z_i) H_{0, \delta_s}^-(s) \bigr) * \\ 
+%     & \bigl( 1 - H_{-\delta_z, 0}(z_i) H_{0, \delta_z}^-(z_i) H_{\bar s - \delta_s, \bar s}(s) \bigr)
+% \end{aligned}
+% \label{beta_R_eq}
+% \end{equation}
+
+% It is important to notice that the second step function in \eqref{beta_s_eq} and \eqref{beta_R_eq} is different than the one presented in \cite{kronander2015passive} ($H_{0, \delta_s}^-(s)$ instead of $H_{\bar s, \bar s + \delta_s}^-(s)$). This modification gave us better results.
+
+
+\renewcommand*{\bibfont}{\footnotesize}
+\printbibliography
+
+\end{document}
