@@ -38,8 +38,8 @@
 \newcommand{\normdotprod}[2]{\frac{\left\langle #1, \, #2 \right\rangle}{\| #1 \| \, \| #2 \|}}
 
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{corollary}{Corollary}[theorem]
-\newtheorem{lemma}{Lemma}[theorem]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}{Lemma}[section]
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
@@ -181,8 +181,8 @@ where $d (\vecs \xi)$ is the distance to the surface.
 As $\lambda^r(\vecs \xi) \leq 1$, the initial dynamics are decreased towards the obstacle, and with $\lambda^e(\vecs \xi) \geq 1$, the dynamics are increased in tangent direction. It has been shown in \cite{huber2022avoiding} that this leads to convergence around (star-shaped) obstacles.
 
 \subsection{Passive Interaction Control} \label{sec:trad_passive}
-Passive interaction control \cite{kronander2015passive}is useful for transitioning from velocity-controlled to torque-controlled robots. It allows for selective disturbances rejection, given the direction of motion. For example, one could desire a stiff behavior in the direction of the DS, but want compliance in the direction perpendicular to the motion.
-A stiff behavior means that the actual speed will rapidly converge to the desired speed, leading to great tracking performance. Compliance is opposed to stiffness. It is the ability to have flexible behavior and to move away from external forces, instead of resisting them.
+Passive interaction control \cite{kronander2015passive}is useful for transitioning from velocity-controlled to torque-controlled robots. It allows for selective disturbances rejection, given the direction of motion. For example, one could desire stiff behavior in the direction of the DS but want compliance in the direction perpendicular to the motion.
+A stiff behavior means the actual speed will rapidly converge to the desired speed, leading to great tracking performance. Compliance is opposed to stiffness. It is the ability to have flexible behavior and to move away from external forces instead of resisting them.
 
 \begin{definition}[Passivity \cite{willems1972dissipative, sepulchre2012constructive}]
   A dynamical system with input $ u \in \mathcal{U}$ and output $y \in \mathcal{Y}$ is passive with respect to the supply rate $s : \mathcal{U} \times \mathcal{Y} \rightarrow{R}$ if, for any $u: \mathbb{R}_{>0} \rightarrow \mathcal{U}$ and any time $t \geq 0$ the following is satisfied
@@ -192,10 +192,10 @@ A stiff behavior means that the actual speed will rapidly converge to the desire
   where $c \in \mathbb{R}$ depends on the initial conditions.
 \end{definition}
 
-Since two passive systems results in a passive system \cite{sepulchre2012constructive}, ensuring that a robotic controller is passive will directly ensure that interaction with its (passive) environment results in a passive.
+Since two passive systems result in a passive system \cite{sepulchre2012constructive}, ensuring that a passive robotic controller is passive will directly ensure that interaction with its (passive) environment results in a passive one.
 
 Both behaviors benefit a robot, and passive control provides a reliable way to apply those to the robot.
-Furthermore, the passive control is quite modular, and one can easily increase the stiffness of the damping (e.g., close to dangerous areas) or decrease it (e.g. close to humans). Moreover, a passive controller ensures stable behavior between a robot and its environment, which is its major advantage. Mainly, given any external force,
+Furthermore, the passive control is quite modular, and one can easily increase the stiffness of the damping (e.g., close to dangerous areas) or decrease it (e.g., close to humans). Moreover, a passive controller ensures stable behavior between a robot and its environment, which is its major advantage. Mainly, given any external force,
 % the system will always decrease its \textit{storage function}, often modeled as the system's energy
 .
 
@@ -285,12 +285,13 @@ Let us define the unit normal $\vecs{n_o} (\vecs\xi)$  pointing away from the ob
 The resultant normal $\vecs n(\vecs \xi)$ is a weighted linear combination of the obstacles' normals, giving more importance to closer obstacles.
 Further, the resultant converges to an obstacle normal as we converge towards it, i.e., $\lim_{\Gamma_o(\vecs \xi) \rightarrow 1} \vecs n(\vecs \xi) = \vecs n_o(\vecs \xi)$.
 % The advantage of this function is that $\vecs n$ converges to $ \vecs n_i$ as the robot gets closer to obstacle $i$. An example is provided in Fig.~\ref{resultant_normal}.\\
-Note, that when two obstacles are opposing each other, the normal is a zero-vector. This case will be further discusses in the next section.
+Note that the normal is a zero-vector when two obstacles oppose each other. This case will be further discussed in the next section.
 
 \begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/resultant_normal.png}}
-\caption{Resultant normal construction}
-\label{resultant_normal}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/normal_and_gamma_field_visualization}}
+\caption{The $\Gamma$-field for the two obstacles is used to evaluate the averaged normal $\vecs n$ (red arrow). 
+Both parameters must ensure the motion follows the avoidance dynamics (gray) towards the attractor (black star) while remaining compliant.}
+\label{fig:resultant_normal}
 \end{figure}
 
 % There could be cases where the resultant normal is not defined (due to $\vecs{n_i}$'s canceling each other). A solution to this issue is proposed in \ref{limit_cases}.
@@ -438,17 +439,37 @@ s^{\mathrm{obs}} > s^{DS} \gg s^{c} > 0
 \section{Collision Avoidance}
 
 
-\subsection{Inertia Avoidance}
+\subsection{Inertia Drift}
 Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
 
 
 \subsection{Disturbance Repulsion}
-Let us assume a disturbance impact at time $t_0$, which results in the robot having an impact velocity of $\vecs{\dot \xi} = \vect v^I$, which is pointing towards the obstacle. The impact velocity is much larger than the robot's initial velocity. Thus the latter is neglected, and the obstacle is approximated as locally flat. Furthermore, we assume to be close to the robot, i.e., $\Gamma(\vecs \xi) \approx 1$, hence the $w(\vecs \xi) \approx 1$, and the stiffness in the direction of the obstacle is approximated as $s_^{\mathrm{obs}}$.
-No further impact forces are applied after the initial impact is absorbed. And Coriolis effect and gravity are neglected in the short time frame.
+Let us assume a disturbance impact at time $t_0$, which results in the robot having an impact velocity of $\vecs{\dot \xi} = \vect v^I$, which is pointing towards the obstacle. The impact velocity is much larger than the robot's initial velocity. Thus the latter is neglected, and the obstacle is approximated as locally flat and the velocity locally constant (see Fig.~\ref{fig:collision_avoidance}). Furthermore, we assume to be close to the robot, i.e., $\Gamma(\vecs \xi) \approx 1$, hence the $w(\vecs \xi) \approx 1$, and the stiffness in the direction of the obstacle is approximated as $s^{\mathrm{obs}}$.
+No further impact forces are applied after the initial impact is absorbed. The Coriolis effect is neglected in the short time frame.
 
+The velocity with the controller can be analyzed as follows:
 \begin{equation}
-    \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = 
+    \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = \int \matd{D} \matd{M}^{-1} \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt
 \end{equation}
+
+Let us analyze when the decoupled velocity along the normal reaches zero:
+\begin{equation}
+    \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{\dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} \vecs{\xi} + \| \vecs v^I \| \label{eq:velocity_with_control}
+\end{equation}
+It can be seen that the velocity along the normal reaches zero at position, i.e., 
+\begin{equation}
+    \vecs{\xi} = \| \vecs v^I \| {m} / {s^{\mathrm{obs}}} 
+    \quad \Rightarrow \quad
+    \| \vecs{\dot \xi} \| =
+\end{equation}
+
+\begin{lemma}
+
+\end{lemma}
+
+\begin{proof}
+The statement follows directly from \eqref{eq:velocity_with_control}.
+\end{proof}
 
 \subsection{Disturbance Repulsion with Force Limit}
 Robotic systems have a maximum force that can be exerted based on the motors and their geometry, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Note that this maximum might be state dependent.
@@ -457,8 +478,19 @@ Let  us assume strong damping concerning the maximum force, i.e., $s^{\mathrm{ob
 
 \subsection{Practical Considerations}
 
-
-
+\begin{figure}
+\centering
+\begin{subfigure}{0.99\columnwidth}
+  \centerline{\includegraphics[width=\textwidth]{figures/parallel_avoidance_obstacle}}
+  \caption{Traditional passive control}
+\end{subfigure}
+\begin{subfigure}{0.5\columnwidth}
+  \centerline{\includegraphics[width=\textwidth]{}}
+  \caption{Obstacle aware passive control}
+\end{subfigure}
+\caption{Comparison of the two control methods}
+\label{fig:collision_avoidance}
+\end{figure}
 
 
 % continue here, noisy graphs ready to run
