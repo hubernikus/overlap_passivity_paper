@@ -67,19 +67,28 @@ Obstacle avoidance, dynamical systems, passivity, human robot interaction
 
 
 \section{Introduction}
-Robots moving in real-world scenario need to be adaptable and reactive.
-While on the one hand, they robot needs to complete its motion, on the other hand it is important that its movement is safe, i.e., it can avoid collisions at all time.
+Robots moving in real-world scenarios need to be adaptable and reactive.
+While on the one hand, the robot needs to complete its motion, on the other hand, it is important that its movement is safe, i.e., it can avoid collisions at all times.
+
+One of the big tasks of controlling a robot is planning a trajectory to reach a desired goal. Trajectories can often be very complex and one has to find methods to parametrize those easily. The human demonstration is an easy way of showing the robot what to do. Simple movement can be sequenced to generate a complex motion \cite{gribovskaya2011motion}.
+
+It has a closed-form control law that does not require constant replanning for every position. In addition, DS control can provide stability and convergence guarantees for navigation in dynamic environments.
+
+Applications that involve interactions with an unknown and dynamic environment, for example manipulation around humans require controllers for actuators that are not which exceed classical stiffness controllers.
+
+Biological muscles outperform mechanical devices in terms of functional and neuro-mechanical control. One key distinction is the adaptable compliance or variable stiffness exhibited in biological systems, which contrasts with the performance of traditional stiff electrical drives commonly used in industrial robotics. Unlike these drives, which rely on precise reference-trajectory tracking, biological systems possess inherent flexibility and adaptability.
 
 
 \subsection{Literature Review}
-One of big task of controlling a robot is planing a trajectory to reach a desired goal. Trajectories can often be very complex and one has to find methods to parametrize those easily. Human demonstration is an easy way of showing the robot what to do. Simple movement can be sequenced to generate a complex motion \cite{gribovskaya2011motion}.
 %% More recent techniques rely on machine learning to generate the trajectories \cite{b2}, \cite{b3}, \cite{b4} \& \cite{b5}. Those approachs learn a dynamical system (DS) which offers several advantages over classical path planning.
-It has a closed-form control law does not require constant replanning for every position. In addition, DS control can provide stability and convergence guarantees for navigation in dynamic environments.
+
 % Other techniques to modulate an existing DS also brings diversity to DS-controlled robot \cite{b6}.
 % Impedance Control
 Impedance control: An approach to manipulation + implementation
 \cite{hogan1984impedance, hogan1985impedance}
 
+In the past, many improvements have been proposed to improve this work.
+\cite{vanderborght2013variable} (Literature overview of passive impedance controller)
 
 A key concept of robot control is maintaining a passive relationship between the command input and external disturbances. Passivity can be ensured by adding a virtual flywheel to the system \cite{li1999passive, kishi2003passive}, or tracking the reference curve of a potential field \cite{duindam2004passive}. The most recent approach uses impedance control based on selective dissipation of the energy \cite{kronander2015passive}. This method, called passive interaction control, allows the robot to be stiff or compliant depending on the direction of the disturbance.
 
@@ -92,6 +101,9 @@ Recent approaches use differential geometry to encapsulate the robot's dynamics 
 This has been applied to dynamic multi-obstacle avoidance on a 7DoF robot arm \cite{van2022geometric}. However, in the current state the 
 
 % Several application uses this passive control method. \cite{b12} uses this control law to generate specific forces while in contact with an object. On a similar idea, the control law can be modified to perform admittance control \cite{b13}, which is then used by the robot to perform many tasks and smoothly transition between them \cite{b14}.
+
+Another energy tank:
+\cite{ferraguti2013tank}
 
 
 Another big topic of robotic control is obstacle avoidance. A solution is to use a global potential field with global elastic planning for obstacles \cite{tulbure2020closing}. Another approach again uses a DS-controlled robot and implements a way to modulate the initial DS so that all trajectories avoid obstacles \cite{huber2022avoiding}, and has shown to work with a virtual obstacle which represents all obstacles present in the environment \cite{huber2022fast}.
