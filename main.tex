@@ -85,6 +85,7 @@ However, for improved behavior, the robot should avoid collisions proactively be
 
 
 \subsection{Literature Review}
+\cite{takegaki1981new}
 Impedance control is a feedback control algorithm that imposes a Cartesian impedance to the end-point of a nonlinear manipulator resulting \cite{hogan1985impedance}. This results in the elimination of the \textit{inverse kinematics problem} in favor of \textit{forward kinematics}.
 Conversely, to position control algorithms, impedance control creates a dynamic relation between desired position, velocity, and force rather than controlling for these values individually.   
 While the first impedance controller used constant stiffness, many approaches have been proposed for dynamic control parameters to have improved adaptation to the environment \cite{vanderborght2013variable, abu2020variable}. 
@@ -262,16 +263,15 @@ Furthermore, we require that all the trajectories are collision-free,:
 \begin{enumerate}
   \setcounter{enumi}{3}
   \item $\vecs{n_o}(\vecs\xi)^T \vecs f(\vecs\xi) \geq 0$ as $\Gamma_o \rightarrow 1 
-  \quad \foarl o = 1 .. N^{\mathrm{obs}}$
+  \quad \forall o = 1 .. N^{\mathrm{obs}}$
 \end{enumerate}
 with $\vecs n_o (\vecs \xi)$ and $d_o$ the normal and the distance of the $i$-th obstacle, see Section~\ref{sec:obstacle_normals}. 
 Note that the DS obtained after DSM as described in \eqref{eq:modulated} fulfills these conditions if initial DS $\vecs f^I$ is continuous, bounded, and has a sing convergence to the attractor.
 
 We require that the initial dynamics are collision-free
 
-
 \section{Obstacle Aware Passivity} \label{sec:obstacle_aware_passivity}
-The controller created in this work is based on the design proposed \cite{takegaki1981new,  kronander2015passive}.
+The controller is inspired by the design proposed \cite{kronander2015passive}.
 % The method of \cite{kronander2015passive} presented above allows for being stiff in the direction of motion and compliant in the perpendicular directions.
 
 However, this method does not consider obstacles when computing $\matd D$. Unfortunately, if a disturbance happens to push the robot into an obstacle that is perpendicular to the direction of motion, it will not be damped. This could lead to the robot crashing into the obstacle. In those cases, we would like to increase the stiffness of the control and dampen the disturbance.
@@ -378,9 +378,11 @@ Consequently, we define the damping values to ensure smoothness:
 \end{equation}
 
 \begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/fig_basis_3D_DS_obs.png}}
-\caption{Construction of the basis $\vecs{e_{1,obs}}$, $\vecs{e_{2,obs}}$ and $\vecs{e_{3,obs}}$ in 3D}
-\label{fig_basis_3D_DS_obs}
+  \center
+  \includegraphics[width=0.6\columnwidth]{figures/damping_basis_construction}
+\caption{The damping matrix enforcing DS following $\matd{D}^{\mathrm{DS}}$ has the first basis vector $\vect q_1^{\mathrm{DS}}$ which follows the avoidance dynamics $\dot{\vecs \xi}$ and damping to enforce collision avoidance with $\matd{D}^{\mathrm{obs}}$ uses the normal $\vect n(\vecs \xi)$ to construct the first direction of the decomposition basis $\vect q^{\mathrm{obs}}_1$.}
+\label{fig:damping_basis_construction}
+%% \label{fig_basis_3D_DS_obs}
 \end{figure}
 
 % Let the matrix $\vecs{Q_{obs}}(\vecs\xi) \in \mathbb{R}^{3\times 3}$ be the matrix whose columns are formed by the orthonormal basis $\vecs {e_{1,obs}}, \vecs {e_{2,obs}}, \vecs{e_{3,obs}}$.\\
@@ -463,13 +465,13 @@ The velocity with the controller can be analyzed as follows:
 
 Let us analyze when the decoupled velocity along the normal reaches zero:
 \begin{equation}
-    \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{\dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} \vecs{\xi} + \| \vecs v^I \| \label{eq:velocity_with_control}
+    \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{\dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} \vecs{\xi} + \vecs v^I \label{eq:velocity_with_control}
 \end{equation}
-It can be seen that the velocity along the normal reaches zero at position, i.e., 
+The velocity along the normal reaches zero at position, i.e., 
 \begin{equation}
-    \vecs{\xi} = \| \vecs v^I \| {m} / {s^{\mathrm{obs}}} 
+    \| \vecs{\dot \xi} \| = 0
     \quad \Rightarrow \quad
-    \| \vecs{\dot \xi} \| =
+    \|\vecs{\xi} \| = \| \vecs v^I \| {m} / {s^{\mathrm{obs}}} 
 \end{equation}
 
 \begin{lemma}
@@ -486,25 +488,29 @@ Robotic systems have a maximum force that can be exerted based on the motors and
 Let  us assume strong damping concerning the maximum force, i.e., $s^{\mathrm{obs}} / \tau_c^{\mathrm{max}} \gg 1$, hence we can assume that the magnitude of the obstacle repulsive force is equal to the maximum force close to the obstacle. Hence, the maximum disturbance.
 
 \subsection{Practical Considerations}
+As described in \cite{huber2022avoiding, huber2023avoidance}, the avoidance velocity when approaching an obstacle can be directed along the normal of the obstacle to point away from the surface when reaching the obstacle and inside. This allows improved recovery, for scenarios such as presented 
 
 \begin{figure}
 \centering
 \begin{subfigure}{0.99\columnwidth}
   \centerline{\includegraphics[width=\textwidth]{figures/parallel_avoidance_obstacle}}
-  \caption{Traditional passive control}
+  \caption{Parallel to surface velocity}
+  \label{fig:disturbance_with_parallel_velocity}
 \end{subfigure}
-% \begin{subfigure}{0.5\columnwidth}
-%   \centerline{\includegraphics[width=\textwidth]{}}
-%   \caption{Obstacle aware passive control}
-% \end{subfigure}
+\begin{subfigure}{0.5\columnwidth}
+  %% \centerline{\includegraphics[width=\textwidth]{}}
+  \caption{Repulsive surface velocity}
+  \label{fig:disturbance_with_repulsive_velocity}
+\end{subfigure}
 \caption{Comparison of the two control methods}
-\label{fig:collision_avoidance}
+\label{fig:disturbance_rejection_schematics}
 \end{figure}
 
 
 % continue here, noisy graphs ready to run
 
 \section{Evaluation}  \label{sec:evaluation}
+
 \subsection{Qualitative Comparison} \label{sec:qual_comp}
 The control law presented was tested in simulation in Python. The state space is the Cartesian coordinates $xy$ in 2D and $xyz$ in 3D. In practice, the damping matrix $\matd D(\vecs\xi)$ and the control command $\vecs {\tau_c}$ are recomputed at each time step.\\
 
