@@ -3,6 +3,7 @@
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 %% \usepackage{cite}
 \usepackage{hyperref}
+\usepackage{svg}
 
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{amsthm} % Allows usage of '\theoremstyle'
@@ -289,7 +290,7 @@ Let us define the unit normal $\vecs{n_o} (\vecs\xi)$  pointing away from the ob
 %% for a small $\epsilon$.
 \begin{equation}
   \vecs n(\vecs\xi) = \sum_{o=1}^{N^{\mathrm{obs}}} \vecs{n_o}(\vecs\xi)
-  \frac{\Gamma_o(\vecs \xi) - 1}{\sum_{o=1}^{N^\mathrm{obs}} \Gamma_o(\vecs \xi) - 1}
+  \frac{1 / (\Gamma_o(\vecs \xi) - 1)}{\sum_{o=1}^{N^\mathrm{obs}} 1 / (\Gamma_o(\vecs \xi) - 1)}
   %% \;\; , \quad 
   %% w^\Gamma_o(\xi) =  
 \end{equation}
@@ -343,13 +344,14 @@ The damping matrix, which achieves the dynamical system following $\matd D^{DS}$
 
 \begin{equation}
   \begin{split}
-  s_i^{DS} =
+  s_d^{DS} =
   \begin{cases}
-    s^{DS} & i = 1 \\
-    w^p s^{\mathrm{obs}} + (1- w^p) s^s & i \geq 2 
-  \end{cases} \\
+    s^{DS} & d = 1 \\
+    w^p s^{\mathrm{obs}} + (1- w^p) s^s & d \geq 2 
+  \end{cases} \quad d = 1 .. N\\
   \text{with} \quad
-  w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma(\vecs \xi) -1}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)
+  %w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma(\vecs \xi) -1}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)
+   w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma^{\mathrm{crit}} -\Gamma(\vecs \xi)}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)
   \end{split}
 \end{equation}
 where the ds-damping $s^{DS} \in \mathbb{R}$, obstacle-damping $s^{\mathrm{obs}} \in \mathbb{R}$, and the compliant-damping $s^c \in \mathbb{R}$ are user-defined values which define the behavior of the passive-controller.
@@ -369,12 +371,13 @@ where the object weight is given as $p = \dotprod{\vecs q_1^{\mathrm{obs}}}{\vec
 The remaining vectors $\vecs q_i^{\mathrm{obs}}, i = 3, .., N$ are set to be orthonormal. For the case that $| p | = 1$, the second basis $\vecs q_2^{\mathrm{obs}}$ is set to be any orthonormal vector. 
 Consequently, we define the damping values to ensure smoothness:
 \begin{equation}
-  s_i^{\mathrm{obs}} =
+  s_d^{\mathrm{obs}} =
   \begin{cases}
-    s^{\mathrm{obs}} & i = 1 \\
-    (1 -  | p | ) s^c + | p | s^{DS} & i = 2 \\
-    s^c & i \geq 3 
+    s^{\mathrm{obs}} & d = 1 \\
+    | p | s^c + (1 - | p |) s^{DS} & d = 2 \\
+    s^c & d \geq 3 
   \end{cases}
+  \quad d = 1 .. N\
 \end{equation}
 
 \begin{figure}
@@ -516,18 +519,28 @@ The control law presented was tested in simulation in Python. The state space is
 
 Let us compare traditional passive interaction control and the presented method (Fig.~\ref{fig_diff_obs_pass}). On the setup, the same disturbance is applied to both systems simultaneously. One can already see the robot equipped with traditional passive control (left) penetrates the obstacle, while ours (right) successfully damps the disturbance.
 
+% \begin{figure}
+% \centering
+% \begin{subfigure}{0.8\columnwidth}
+%   \centerline{\includegraphics[width=\textwidth]{figures/run_without_pass.png}}
+%   \caption{Traditional passive control}
+% \end{subfigure}
+% \begin{subfigure}{0.8\columnwidth}
+%   \centerline{\includegraphics[width=\textwidth]{figures/run_with_pass.png}}
+%   \caption{Obstacle aware passive control}
+% \end{subfigure}
+% \caption{Comparison of the two control methods}
+% \label{fig:diff_obs_pass}
+% \end{figure}
+
 \begin{figure}
-\centering
-\begin{subfigure}{0.8\columnwidth}
-  \centerline{\includegraphics[width=\textwidth]{figures/run_without_pass.png}}
-  \caption{Traditional passive control}
-\end{subfigure}
-\begin{subfigure}{0.8\columnwidth}
-  \centerline{\includegraphics[width=\textwidth]{figures/run_with_pass.png}}
-  \caption{Obstacle aware passive control}
-\end{subfigure}
-\caption{Comparison of the two control methods}
-\label{fig:diff_obs_pass}
+  \centering
+  \centerline{\includesvg[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.svg}}
+  % \centerline{\includegraphics[width=0.5\textwidth]{figures/multi_obstacle_with_damping.svg}}
+  \caption{The desired dynamics $\dot{\vecs \xi}$ in gray are as input for the force controller. 
+  The mobile robot starting from the three positions navigates safely to the attractor (black star) despite the disturbances (red arrows) when using the obstacle aware controller.
+  Conversely, the baseline (blue) leads to collision when the disturbance happens close to the robot.}
+  \label{fig:obstacle_aware_damping_comparison}
 \end{figure}
 
 \subsection{Comparison to Reference Trajectory}
@@ -541,11 +554,11 @@ A disturbance (C) pushed the robot away from an obstacle. The control algorithm 
 
 The last disturbance (D) was applied along the direction of motion. As the desired behavior is stiff in this direction, the robot almost kept the same speed and continued toward the attractor. \\
 
-\begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/run_with_obs.png}}
-\caption{Simulation with a complex environment and disturbances applied to the robot}
-\label{fig_run_with_obs}
-\end{figure}
+% \begin{figure}
+% \centerline{\includegraphics[width=0.5\textwidth]{figures/run_with_obs.png}}
+% \caption{Simulation with a complex environment and disturbances applied to the robot}
+% \label{fig_run_with_obs}
+% \end{figure}
 
 Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle.
 The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
@@ -604,21 +617,9 @@ Away from obstacles, the controller presented shows similar behavior as the one 
 Note, that the theoretical analysis from Theorem~\ref{theorem:passivity}, indicates passivity for any velocity-bounded, uniquely damped system. As a result, work such as the damping-based controller in  \cite{kronander2015passive} does not require an energy tank anymore.
 Conversely, if the impedance controller has a proportional $\mathcal{K}$, the adaptive proportional term might induce instabilities even for stable desired dynamics as pointed out in \cite{ferraguti2013tank, kronander2016stability}.
 
-\begin{figure}
-\centering
-\begin{subfigure}{1\columnwidth}
-\centerline{\includegraphics[width=\textwidth]{figures/first_meth.png}}
-  \caption{First method (presented)}
-\end{subfigure}
-\caption{Little disturbance is observed when 3}
-\label{fig_all_3_meth}
-\end{figure}
-
-
 % \appendix
 % \section{Appendix}
 % \label{Appendix}
-
 
 \renewcommand*{\bibfont}{\footnotesize}
 \printbibliography
