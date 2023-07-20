@@ -329,6 +329,12 @@ As described in \cite{huber2022avoiding, huber2023avoidance}, the avoidance velo
 \label{fig:disturbance_rejection_schematics}
 \end{figure}
 
+\section{Discrete Time Avoidance}
+For the algorithm applied in discrete time, as will be the case for any digital controller, the evolution of the velocity is given by:
+\begin{equation}
+    \vect v_{t + 1} = \matr{D} \left \vect v^{\mathrm{des}}_t - \vect v_t 
+\end{equation}
+
 
 \input{input/results}
  
