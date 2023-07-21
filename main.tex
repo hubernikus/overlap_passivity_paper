@@ -269,7 +269,6 @@ s^{\mathrm{obs}} > s^{DS} \gg s^{c} > 0
 \end{equation}
 
 % here the subsection with proof of lukas
-\subsection{Passivity Analysis}
 \input{input/passivity_proof}
 
 \section{Collision Avoidance} \label{sec:collision_avoidance}
@@ -332,7 +331,7 @@ As described in \cite{huber2022avoiding, huber2023avoidance}, the avoidance velo
 \section{Discrete Time Avoidance}
 For the algorithm applied in discrete time, as will be the case for any digital controller, the evolution of the velocity is given by:
 \begin{equation}
-    \vect v_{t + 1} = \matr{D} \left \vect v^{\mathrm{des}}_t - \vect v_t 
+    \vect v_{t + 1} = \matr{D} \left( \vect v^{\mathrm{des}}_t - \vect v_t \right)
 \end{equation}
 
 

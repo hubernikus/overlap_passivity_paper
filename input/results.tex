@@ -23,7 +23,7 @@ Let us compare traditional passive interaction control and the presented method 
 
 \begin{figure}
   \centering
-  \centerline{\includesvg{}[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.svg}}
+  \centerline{\includegraphics[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.pdf}}
   % \centerline{\includegraphics[width=0.5\textwidth]{figures/multi_obstacle_with_damping.svg}}
   \caption{The desired dynamics $\dot{\vecs \xi}$ in gray are as input for the force controller. 
   The mobile robot starting from the three positions, navigates safely to the attractor (black star) despite the disturbances (red arrows) when using the obstacle-aware controller.
@@ -51,27 +51,7 @@ The last disturbance (D) was applied along the direction of motion. As the desir
 Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle.
 The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
 
-\subsection{Noise analysis}
-Gaussian noise was added to the simulation to assert the control law's robustness. We added two types of noise, noise on the position measurements and noise on the velocity measurements. 
-
-The experiment is done on a simple setup with one obstacle. The noise added has a mean of $0$, and the standard deviation is increasing linearly from $0.0$ to $0.7m$ for position and $0.0$ to $7.0 \frac{m}{s}$ for velocity measurements. For each noise level, the simulation was run 10 times. The output variable is the smallest distance of the agent from the obstacle during the simulation. This metric was chosen to observe how the noise could lead to a crash in the obstacle. 
-
-For the noise acting on the position measurement, the controller presents good rejection for a small noise variance. As it increases, the robot's behavior quickly worsens (Fig.~\ref{fig_pos_noise}). The robot penetrates the obstacle for noises of standard deviation $ > 0.4 m$. An example of a run with $\sigma_{noise} = 0.7 m$ is shown in Fig.~\ref{fig_pos_noise_0_7}.
-
-\begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/noise_pos_v2.png}}
-\caption{Noise on the position measurements (shaded region are within one standard deviation from the mean)}
-\label{fig_pos_noise}
-\end{figure}
-
-\begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/noise_effect_0_7.png}}
-\caption{Noise on the position measurement with a standard deviation of 0.7 $m$ (with ideal trajectory displayed)}
-\label{fig_pos_noise_0_7}
-\end{figure}
-
-The obstacle was never penetrated for the velocity measurement noise, asserting the robustness of the control for this type of noise (Fig.~\ref{fig_vel_noise}). Fig.~\ref{fig_2_vel_noise} provides an image of the simulation with big noise standard deviation ($4.0 \frac{m}{s}$). Thanks to the feature presented in Section~\ref{sec:damping_only_toward} (damping only toward the obstacle), the robot has even the tendency to drift away from the obstacle, increasing the safety margin.
-
+\subsection{Velocity Noise Resistance}
 
 \begin{figure}
     \centering
@@ -90,17 +70,59 @@ The obstacle was never penetrated for the velocity measurement noise, asserting 
 \end{figure}
 
 
-\begin{figure}
-\centerline{\includegraphics[width=\columnwidth]{figures/vel_noise_4.0.png}}
-\caption{A simulation with noise on the velocity measurement with a standard deviation of $4.0 \frac{m}{s}$  (with ideal trajectory displayed)}
-\label{fig_2_vel_noise}
-\end{figure}
-
-
-\subsection{Evaluation on Robot Arm}
+\subsection{Position Noise Resistance}
 
 \begin{figure}
     \centering
+    \begin{subfigure}{\columnwidth}
+      \centerline{\includegraphics[width=\textwidth]{figures/trajectory_position_noise}}
+      \caption{A single trajectory with a standard deviation of the noise level of 1.0 m/s.}
+      \label{fig:trajectory_position_noise}
+    \end{subfigure}
+    \begin{subfigure}{\columnwidth}
+    \includegraphics[width=\textwidth]{figures/comparison_position_noise}
+      \caption{Closest distances concerning different noise levels over 10 epochs.}
+      \label{fig:comparison_position_noise}
+    \end{subfigure}
+    \caption{}
+\label{fig:position_noise}
+\end{figure}
+
+
+
+\subsection{Noise analysis}
+Gaussian noise was added to the simulation to assert the control law's robustness. We added two types of noise, noise on the position measurements and noise on the velocity measurements. 
+
+The experiment is done on a simple setup with one obstacle. The noise added has a mean of $0$, and the standard deviation is increasing linearly from $0.0$ to $0.7m$ for position and $0.0$ to $7.0 \frac{m}{s}$ for velocity measurements. For each noise level, the simulation was run 10 times. The output variable is the smallest distance of the agent from the obstacle during the simulation. This metric was chosen to observe how the noise could lead to a crash in the obstacle. 
+
+For the noise acting on the position measurement, the controller presents good rejection for a small noise variance. As it increases, the robot's behavior quickly worsens (Fig.~\ref{fig_pos_noise}). The robot penetrates the obstacle for noises of standard deviation $ > 0.4 m$. An example of a run with $\sigma_{noise} = 0.7 m$ is shown in Fig.~\ref{fig_pos_noise_0_7}.
+
+The obstacle was never penetrated for the velocity measurement noise, asserting the robustness of the control for this type of noise (Fig.~\ref{fig_vel_noise}). Fig.~\ref{fig_2_vel_noise} provides an image of the simulation with big noise standard deviation ($4.0 \frac{m}{s}$). Thanks to the feature presented in Section~\ref{sec:damping_only_toward} (damping only toward the obstacle), the robot has even the tendency to drift away from the obstacle, increasing the safety margin.
+
+
+
+\subsection{Avoidance Performance Using Robot Arm}
+\begin{figure}
+    \centering
+   \begin{subfigure}{\columnwidth}
+    \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_obstacle_aware016}\hfill%
+    % \includegraphics[width=0.33\textwidth]{figures/franka_sequence/franka_obstacle_aware018}\hfill%
+    \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_obstacle_aware020}
+      \caption{Obstacle aware rejects repulsion and avoids collision}
+      \label{fig:franka_sequence_obstacle_aware}
+    \end{subfigure}
+	\begin{subfigure}{\columnwidth}
+    \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_velocity_conserving021}\hfill%
+    % \includegraphics[width=-1.33\textwidth]{figures/franka_sequence/franka_velocity_conserving023}\hfill%
+    \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_velocity_conserving025}\hfill%
+      \caption{}
+      \label{fig:franka_sequence_obstacle_aware}
+    \end{subfigure}
+%    \caption{Comparison of the two control methods}
+%    \label{fig:evaluation_on_robot_arm}
+% \end{figure}
+% \begin{figure}
+%     \centering
     \begin{subfigure}{\columnwidth}
       \centerline{\includegraphics[width=\textwidth]{figures/robot_arm_trajectory_xyz}}
       \caption{Parallel to surface velocity}
