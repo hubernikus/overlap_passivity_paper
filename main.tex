@@ -282,7 +282,7 @@ No further impact forces are applied after the initial impact is absorbed. The C
 
 The velocity with the controller can be analyzed as follows:
 \begin{equation}
-    \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = \int \matd{D} \matd{M}^{-1} \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt
+    \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D}  \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt
 \end{equation}
 
 Let us analyze when the decoupled velocity along the normal reaches zero:
@@ -331,7 +331,21 @@ As described in \cite{huber2022avoiding, huber2023avoidance}, the avoidance velo
 \section{Discrete Time Avoidance}
 For the algorithm applied in discrete time, as will be the case for any digital controller, the evolution of the velocity is given by:
 \begin{equation}
-    \vect v_{t + 1} = \matr{D} \left( \vect v^{\mathrm{des}}_t - \vect v_t \right)
+	\begin{bmatrix}
+	 \vecs \xi_{t+1} \\ \dot{\vecs \xi}_{t+1}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	 \vecs \xi_{t} \\ \dot{\vecs \xi}_{t}
+	\end{bmatrix}
+	+ 
+	\Delta t 
+	\begin{bmatrix}
+		\dot{\vecs \xi}_{t} \\ \ddot{\vecs \xi}_t 
+	\end{bmatrix}
+	=
+
+    \matd{D} \left( \vect v^{\mathrm{des}}_t - \vect v_t \right)
 \end{equation}
 
 
