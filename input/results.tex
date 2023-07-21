@@ -23,7 +23,7 @@ Let us compare traditional passive interaction control and the presented method 
 
 \begin{figure}
   \centering
-  \centerline{\includesvg[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.svg}}
+  \centerline{\includesvg{}[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.svg}}
   % \centerline{\includegraphics[width=0.5\textwidth]{figures/multi_obstacle_with_damping.svg}}
   \caption{The desired dynamics $\dot{\vecs \xi}$ in gray are as input for the force controller. 
   The mobile robot starting from the three positions, navigates safely to the attractor (black star) despite the disturbances (red arrows) when using the obstacle-aware controller.
@@ -72,22 +72,21 @@ For the noise acting on the position measurement, the controller presents good r
 
 The obstacle was never penetrated for the velocity measurement noise, asserting the robustness of the control for this type of noise (Fig.~\ref{fig_vel_noise}). Fig.~\ref{fig_2_vel_noise} provides an image of the simulation with big noise standard deviation ($4.0 \frac{m}{s}$). Thanks to the feature presented in Section~\ref{sec:damping_only_toward} (damping only toward the obstacle), the robot has even the tendency to drift away from the obstacle, increasing the safety margin.
 
-\begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/vel_noise_0.png}}
-\caption{ NOT this one - Noise on the velocity measurements (shaded regions are within one standard deviation from the mean)}
-\label{fig_vel_noise}
-\end{figure}
 
 \begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/vel_noise_cliped_0.png}}
-\caption{Noise on the velocity measurements (shaded regions are within one standard deviation from the mean) - NEW FINAL }
-\label{fig_vel_noise}
-\end{figure}
-
-\begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/noise_setup.png}}
-\caption{setup}
-\label{fig_vel_noise}
+    \centering
+    \begin{subfigure}{\columnwidth}
+      \centerline{\includegraphics[width=\textwidth]{figures/trajectory_velocity_noise}}
+      \caption{A single trajectory with a standard deviation of the noise level of 1.0 m/s.}
+      \label{fig:trajectory_velocity_noise}
+    \end{subfigure}
+    \begin{subfigure}{\columnwidth}
+    \includegraphics[width=\textwidth]{figures/comparison_velocity_noise}
+      \caption{Closest distances concerning different noise levels over 10 epochs.}
+      \label{fig:comparison_velocity_noise}
+    \end{subfigure}
+    \caption{}
+\label{fig:velocity_noise}
 \end{figure}
 
 
