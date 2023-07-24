@@ -271,7 +271,10 @@ s^{\mathrm{obs}} > s^{DS} \gg s^{c} > 0
 % here the subsection with proof of lukas
 \input{input/passivity_proof}
 
+
 \section{Collision Avoidance} \label{sec:collision_avoidance}
+
+
 \subsection{Inertia Drift}
 Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
 
@@ -328,26 +331,7 @@ As described in \cite{huber2022avoiding, huber2023avoidance}, the avoidance velo
 \label{fig:disturbance_rejection_schematics}
 \end{figure}
 
-\section{Discrete Time Avoidance}
-For the algorithm applied in discrete time, as will be the case for any digital controller, the evolution of the velocity is given by:
-\begin{equation}
-	\begin{bmatrix}
-	 \vecs \xi_{t+1} \\ \dot{\vecs \xi}_{t+1}
-	\end{bmatrix}
-	=
-	\begin{bmatrix}
-	 \vecs \xi_{t} \\ \dot{\vecs \xi}_{t}
-	\end{bmatrix}
-	+ 
-	\Delta t 
-	\begin{bmatrix}
-		\dot{\vecs \xi}_{t} \\ \ddot{\vecs \xi}_t 
-	\end{bmatrix}
-	=
-
-    \matd{D} \left( \vect v^{\mathrm{des}}_t - \vect v_t \right)
-\end{equation}
-
+\input{input/discrete_time}
 
 \input{input/results}
  

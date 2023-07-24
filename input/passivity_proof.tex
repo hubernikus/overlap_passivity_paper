@@ -13,15 +13,17 @@ The kinetic energy of the system is given as:
   
 \begin{proof}
 The time derivative of storage function $W$ can be evaluated as:
-\begin{gather}
-  \begin{split}
+\begin{align}
+  % \begin{split}
     \dot W(\vecs \xi, \vecs{\dot \xi}) &=
-    \frac{1}{2} \vecs{\dot \xi}^T \matd M(\vecs \xi) \vecs{\ddot \xi}  + \frac{1}{2} \vecs{\dot \xi}^T \dot{\matd M}(\vecs \xi) \vecs{\dot \xi} \\
-    &= \frac{1}{2} \vecs{\dot \xi}^T \left( \matd M(\vecs \xi) - 2 \matd C(\vecs \xi) \right) \dot{\vecs \xi} - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \vecs{\dot \xi} + \vecs{\dot \xi}^T \vecs \tau_e \\
+    \vecs{\dot \xi}^T \matd M(\vecs \xi) \vecs{\ddot \xi}  + \frac{1}{2} \vecs{\dot \xi}^T \dot{\matd M}(\vecs \xi) \vecs{\dot \xi}  \nonumber \\
+  &= \frac{1}{2} \vecs{\dot \xi}^T \left( \dot{\matd M}(\vecs \xi) - 2 \matd C(\vecs \xi) \right) \dot{\vecs \xi} - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \vecs{\dot \xi} + \vecs{\dot \xi}^T \vecs \tau_e \nonumber \\
   &= - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \left( \vecs{\dot\xi} - \mathbf{f}(\vecs \xi) \right) + \vecs{\dot\xi}^T \tau_e
-  \end{split}
-\end{gather}
+  % \end{split}
+\end{align}
+where we use the fact that $\dot{\matd M} - 2 \matd C$ is skew symmetric, and hence the corresponding sumand is zero.
 
+Note, that even if we use a coriolis compensation in the control law, the corresponding term does not vanish. However, the mass matrix $\matr M(\vecs \xi)$ is a system property and it has an upper limit. Hence, this upper limit can be thought of as the maximum the storage function.
 
 \subsubsection{Stability with Uniform Damping}
 Let us investigate the region where the passivity holds. For this, we first look at the simplest case where all damping values are equal to one. Hence we have:
