@@ -71,11 +71,11 @@ The stability with different damping values can be observed in Figure~\ref{fig:d
 \subsection{Asymptotic Stability}
 For a general nonlinear system no asymptotic convergence evaluation can be made. This is due to the fact, that for any system there is a slight drift due to the damping values.
 And hence, if there are high nonlinearities in the system it could happen that even with a stable system, the dynamics get caught in a limit cycle. However, for most common globally asymptotic systems (for velocity-position), the force controller as proposed leads to globally asymptoticly stable behavior, too.
+
 \begin{figure}[htb]
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison_stable}
-  \caption{A point like agent which is following the desired dynamics of $\vect f(\vecs \xi) = \matr R(30^\deg) (\vect \xi  \vect \xi^a) $ where $R(\cdot)$ is the rotation matrix, and with equal damping values $s_i$, where $m$ is the mass of the agent. Damping values above $s_i = 0.0 m / \Delta t$ lead to instable behavior where the higher value leads to higher oscillations. Conversely, the lowest value leads to more deviation from the straight trajectory resulting from the higher impedance. The critical value of $s_i = 2.0 m / \Delta t$ results in stable behavior with immediate correction to the desired velocity.}
+  % \caption{A point like agent which is following the desired dynamics of $\vect f(\vecs \xi) = \matr R(30^\deg) (\vect \xi  - \vect \xi^a)$ where $R(\cdot)$ is the rotation matrix, and with equal damping values $s_i$, where $m$ is the mass of the agent.}
   \label{fig:discrete_controller_parameters_comparison_stable}
 \end{figure}
-
 
