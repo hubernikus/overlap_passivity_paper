@@ -1,25 +1,29 @@
+\subsection{Passivity Analysis}
+
 The kinetic energy of the system is given as:
 \begin{equation}
 	W(\vecs \xi, \vecs{\dot \xi}) = \frac{1}{2}  \dot{\vecs{\xi}}^T \matd{M}(\vecs \xi) \dot{\vecs{\xi}} \label{eq:energy_system}
 \end{equation}
 
-\begin{theorem} \label{theorem:passivity}
-  Let $\vect f(\xi)$ is are desired dynamics with bounded magnitude, i.e., $\| \vect f(\xi) \| < v^{\mathrm{max}}, \forall \xi \in \mathbb{R}^N$.
-  Let the system \eqref{eq:robot_dynamics} be controlled by \eqref{eq:control_command} using is \eqref{eq:damping_summation}.
-  There exist a (lower) limit velocity $\vecs{\bar v} = \text{const.}$ such that the system is passive with respect to the input-output pair $\vecs \xi_e$, $\vecs{\dot \xi}$ when exceeding the limit velocity, i.e., $\dot{W} \leq \vecs{\dot \xi}^T \vecs \tau_e, \; \forall \vecs \xi \in \mathbb{R}^N: \| \vecs{\dot \xi} \| \geq \vecs{\bar v}$ and the storage function being the kinetic energy $W \in \mathbb{R}$ given in \eqref{eq:energy_system}
-\end{theorem}
+% \begin{theorem} \label{theorem:passivity}
+%   Let $\vect f(\xi)$ is are desired dynamics with bounded magnitude, i.e., $\| \vect f(\xi) \| < v^{\mathrm{max}}, \forall \xi \in \mathbb{R}^N$.
+%   Let the system \eqref{eq:robot_dynamics} be controlled by \eqref{eq:control_command} using is \eqref{eq:damping_summation}.
+%   There exists a (lower) limit velocity $\vecs{\bar v} = \text{const.}$ such that the system is passive with respect to the input-output pair $\vecs \xi_e$, $\vecs{\dot \xi}$ when exceeding the limit velocity, i.e., $\dot{W} \leq \vecs{\dot \xi}^T \vecs \tau_e, \; \forall \vecs \xi \in \mathbb{R}^N: \| \vecs{\dot \xi} \| \geq \vecs{\bar v}$ and the storage function being the kinetic energy $W \in \mathbb{R}$ given in \eqref{eq:energy_system}
+% \end{theorem}
   
 \begin{proof}
 The time derivative of storage function $W$ can be evaluated as:
-\begin{gather}
-  \begin{split}
+\begin{align}
+  % \begin{split}
     \dot W(\vecs \xi, \vecs{\dot \xi}) &=
-    \frac{1}{2} \vecs{\dot \xi}^T \matd M(\vecs \xi) \vecs{\ddot \xi}  + \frac{1}{2} \vecs{\dot \xi}^T \dot{\matd M}(\vecs \xi) \vecs{\dot \xi} \\
-    &= \frac{1}{2} \vecs{\dot \xi}^T \left( \matd M(\vecs \xi) - 2 \matd C(\vecs \xi) \right) \dot{\vecs \xi} - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \vecs{\dot \xi} + \vecs{\dot \xi}^T \vecs \tau_e \\
+    \vecs{\dot \xi}^T \matd M(\vecs \xi) \vecs{\ddot \xi}  + \frac{1}{2} \vecs{\dot \xi}^T \dot{\matd M}(\vecs \xi) \vecs{\dot \xi}  \nonumber \\
+  &= \frac{1}{2} \vecs{\dot \xi}^T \left( \dot{\matd M}(\vecs \xi) - 2 \matd C(\vecs \xi) \right) \dot{\vecs \xi} - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \vecs{\dot \xi} + \vecs{\dot \xi}^T \vecs \tau_e \nonumber \\
   &= - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \left( \vecs{\dot\xi} - \mathbf{f}(\vecs \xi) \right) + \vecs{\dot\xi}^T \tau_e
-  \end{split}
-\end{gather}
+  % \end{split}
+\end{align}
+where we use the fact that $\dot{\matd M} - 2 \matd C$ is skew symmetric, and hence the corresponding sumand is zero.
 
+Note, that even if we use a coriolis compensation in the control law, the corresponding term does not vanish. However, the mass matrix $\matr M(\vecs \xi)$ is a system property and it has an upper limit. Hence, this upper limit can be thought of as the maximum the storage function.
 
 \subsubsection{Stability with Uniform Damping}
 Let us investigate the region where the passivity holds. For this, we first look at the simplest case where all damping values are equal to one. Hence we have:
@@ -41,8 +45,8 @@ Hence using Thale's theorem, this region can be evaluated as a circle with radiu
 
 \begin{figure}[b]
 	\centering
-	%% \includesvg]{}[width=0.7\columnwidth]{figures/passivity_analysis.svg}
-      \includesvg[width=0.7\columnwidth]{figures/passivity_analysis.svg}
+	% \includesvg[width=0.7\columnwidth]{figures/passivity_analysis.svg}
+    \includegraphics[width=0.7\columnwidth]{figures/passivity_analysis}
 	\caption{In the velocity space, the region of non-passivity is circular (red). All remaining desired velocity $\mathrm f(\mathrm{{\vecs \xi}})$ and observed velocity $\dot{\mathrm {\vecs \xi}}$ pairs ensure passivity (green region).}
 	\label{fig:passivity_analysis}
 \end{figure}
