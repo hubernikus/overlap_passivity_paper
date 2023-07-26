@@ -15,6 +15,8 @@
 \usepackage{subcaption}
 \usepackage[font=small,labelfont=bf]{caption} % small fontsize in caption
 
+\usepackage{siunitx}
+
 %% \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
 %%     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
@@ -38,10 +40,11 @@
 \newcommand{\dotprod}[2]{\left\langle {#1}, \, {#2} \right\rangle}
 \newcommand{\normdotprod}[2]{\frac{\left\langle #1, \, #2 \right\rangle}{\| #1 \| \, \| #2 \|}}
 
+
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[section]
 \newtheorem{lemma}{Lemma}[section]
-\theoremstyle{definition}
+% \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
 
@@ -112,7 +115,8 @@ Let us define the unit normal $\vecs{n_o} (\vecs\xi)$  pointing away from the ob
   \vecs n(\vecs\xi) = \sum_{o=1}^{N^{\mathrm{obs}}} \vecs{n_o}(\vecs\xi)
   \frac{1 / (\Gamma_o(\vecs \xi) - 1)}{\sum_{o=1}^{N^\mathrm{obs}} 1 / (\Gamma_o(\vecs \xi) - 1)}
   %% \;\; , \quad 
-  %% w^\Gamma_o(\xi) =  
+  %% w^\Gamma_o(\xi) = 
+  \label{eq:averaged_normal}
 \end{equation}
 The resultant normal $\vecs n(\vecs \xi)$ is a weighted linear combination of the obstacles' normals, giving more importance to closer obstacles.
 Further, the resultant converges to an obstacle normal as we converge towards it, i.e., $\lim_{\Gamma_o(\vecs \xi) \rightarrow 1} \vecs n(\vecs \xi) = \vecs n_o(\vecs \xi)$.
@@ -174,10 +178,11 @@ The damping matrix, which achieves the dynamical system following $\matd D^{DS}$
    w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma^{\mathrm{crit}} -\Gamma(\vecs \xi)}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)
   \end{split}
 \end{equation}
-where the ds-damping $s^{DS} \in \mathbb{R}$, obstacle-damping $s^{\mathrm{obs}} \in \mathbb{R}$, and the compliant-damping $s^c \in \mathbb{R}$ are user-defined values which define the behavior of the passive-controller.
+where the damping along the nominal direction $s^{DS} \in \mathbb{R}$, obstacle-damping $s^{\mathrm{obs}} \in \mathbb{R}$, and the compliant-damping $s^c \in \mathbb{R}$ are user-defined values which define the behavior of the passive-controller.
 
 
-\subsubsection{Obstacle Repulsion}
+
+\subsubsection{Obstacle Repulsion} \label{sec:obstacle_repulsion}
 Let us define $\vecs q^{DS}_1 (\vecs\xi) = \dot{\vecs \xi} / \lVert \dot{\vecs \xi}\rVert$ the vector aligned to the direction of desired motion and $\vecs q_1^{\mathrm{obs}}(\vecs\xi) =  \vecs n(\vecs\xi) / \lVert\vecs n(\vecs\xi)\rVert$ the vector aligned to the obstacles normal.
 In the following, we will omit the dependency of the vectors on $\vecs\xi$ for readability purposes.
 
@@ -244,7 +249,7 @@ Consequently, we define the damping values to ensure smoothness:
 %% \end{figure}
 
 \subsection{Damping Only Towards Obstacle} \label{sec:damping_only_toward}
-To reject only the disturbances that push the agent against the obstacle and allow compliance in the perpendicular direction away from the obstacle, we have added a new feature. Suppose the robot is currently moving away from the obstacle ($\vecs{\dot\xi}^T \vecs n(\vecs\xi) > 0$). In that case, the value of $\lambda_1$ gets overwritten with $\lambda_{perp}$, the desired damping coefficient for compliance in the orthogonal direction. This ensures that only the disturbances pushing the agent into the obstacle are damped. 
+To reject only the disturbances that push the agent against the obstacle and allow compliance in the perpendicular direction away from the obstacle, we have added a new feature. Suppose the robot is currently moving away from the obstacle ($\vecs{\dot\xi}^T \vecs n(\vecs\xi) > 0$). In that case, the value of $\lambda_1$ gets overwritten with $\lambda_{perp}$, the desired damping coefficient for compliance in the orthogonal direction. This ensures that only the disturbances pushing the agent towards the obstacle are damped. 
 
 %% With this feature active, the damping matrix also depends on the velocity. However, as $\vecs{\dot\xi}^T \vecs n(\vecs\xi)$ changes of sign, $\lambda_2$ changes abruptly. This causes $\frac{\partial}{\partial \vecs{\dot\xi}} \vecs D(\vecs{\dot\xi}, \vecs\xi)$ to be infinite at some places, which loses continuity. This can be avoided using again the smooth step functions $H_{a,b}(x)$ and $H_{a,b}^-(x)$. We define,
 %% \begin{equation}
@@ -258,9 +263,10 @@ To reject only the disturbances that push the agent against the obstacle and all
     s^{DS} & \text{if} \;\; \left(\vect f(\vecs \xi) - \vecs{\dot \xi} \right)^T \vecs n(\vect \xi) > 0 \\
     0 & \text{otherwise}
   \end{cases}
+  \label{eq:leaving_compliance}
 \end{equation}
 
-Note that in the rest of this work, we will continue referring to $\matd{D}(\vecs{\dot\xi}, \vecs\xi)$ as $\matd D(\vecs\xi)$.
+% Note that in the rest of this work, we will continue referring to $\matd{D}(\vecs{\dot\xi}, \vecs\xi)$ as $\matd D(\vecs\xi)$.
 
 
 \subsection{Damping Parameter Design}
@@ -273,7 +279,7 @@ s^{\mathrm{obs}} > s^{DS} \gg s^{c} > 0
 \input{input/passivity_proof}
 
 
-\input{input/collsion_avoidance}
+\input{input/collision_avoidance}
 \input{input/discrete_time}
 
 \input{input/results}

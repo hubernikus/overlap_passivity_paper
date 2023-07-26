@@ -9,8 +9,14 @@ function convert_image () {
 }
 
 
-convert_image franka_obstacle_aware016 "0.00"
-convert_image franka_obstacle_aware020 "0.65"
+# convert_image franka_obstacle_aware016 "0.00"
+# convert_image franka_obstacle_aware020 "0.65"
 
-convert_image franka_velocity_conserving021 "0.00"
-convert_image franka_velocity_conserving025 "0.65"
+# convert_image franka_velocity_conserving021 "0.00"
+# convert_image franka_velocity_conserving025 "0.65"
+
+convert_image franka_obstacle_aware016 " 1.45 "
+convert_image franka_obstacle_aware020 " 2.10 "
+
+convert_image franka_velocity_conserving021 " 1.45 "
+convert_image franka_velocity_conserving025 " 2.10 "

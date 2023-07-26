@@ -5,12 +5,12 @@ The kinetic energy of the system is given as:
 	W(\vecs \xi, \vecs{\dot \xi}) = \frac{1}{2}  \dot{\vecs{\xi}}^T \matd{M}(\vecs \xi) \dot{\vecs{\xi}} \label{eq:energy_system}
 \end{equation}
 
-% \begin{theorem} \label{theorem:passivity}
-%   Let $\vect f(\xi)$ is are desired dynamics with bounded magnitude, i.e., $\| \vect f(\xi) \| < v^{\mathrm{max}}, \forall \xi \in \mathbb{R}^N$.
-%   Let the system \eqref{eq:robot_dynamics} be controlled by \eqref{eq:control_command} using is \eqref{eq:damping_summation}.
-%   There exists a (lower) limit velocity $\vecs{\bar v} = \text{const.}$ such that the system is passive with respect to the input-output pair $\vecs \xi_e$, $\vecs{\dot \xi}$ when exceeding the limit velocity, i.e., $\dot{W} \leq \vecs{\dot \xi}^T \vecs \tau_e, \; \forall \vecs \xi \in \mathbb{R}^N: \| \vecs{\dot \xi} \| \geq \vecs{\bar v}$ and the storage function being the kinetic energy $W \in \mathbb{R}$ given in \eqref{eq:energy_system}
-% \end{theorem}
-  
+\begin{theorem}  \label{theorem:passivity}
+	Let $\vect f(\xi)$ is are desired dynamics with bounded magnitude, i.e., $\| \vect f(\xi) \| < v^{\mathrm{max}}, \forall \xi \in \mathbb{R}^N$.
+  Let the system \eqref{eq:robot_dynamics} be controlled by \eqref{eq:control_command} using is \eqref{eq:damping_summation}.
+   There exists a (lower) limit velocity $\vecs{\bar v} = \text{const.}$ such that the system is passive with respect to the input-output pair $\vecs \xi_e$, $\vecs{\dot \xi}$ when exceeding the limit velocity, i.e., $\dot{W} \leq \vecs{\dot \xi}^T \vecs \tau_e, \; \forall \vecs \xi \in \mathbb{R}^N: \| \vecs{\dot \xi} \| \geq \vecs{\bar v}$ and the storage function being the kinetic energy $W \in \mathbb{R}$ given in \eqref{eq:energy_system}
+\end{theorem}
+ 
 \begin{proof}
 The time derivative of storage function $W$ can be evaluated as:
 \begin{align}
