@@ -61,7 +61,7 @@
 Recent work on dynamical systems (DS) has enabled new ways of robot control. DS can be learned with various methods and often modified so that all points in space converge to the attractor, making the system more robust to noise or disturbances.
 One can use DS modulation to avoid obstacles, with solid guarantees of impenetrability consistently. To transfer from DS velocity control to torque control, passive control theory is a powerful method to accurately track the desired speed while having the freedom to demonstrate compliant behavior.
 In this work, we present a method that extends the concept of passivity.
-The method maintains compliant behavior away from obstacles but increases the stiffness of the control when approaching one of them, allowing the robot to be aware of its environment.
+The method maintains compliant behavior away from obstacles but increases the damping of the control when approaching one of them, allowing the robot to be aware of its environment.
 The proof of concept was tested in a simulation in Python. The robot shows excellent tracking performance and successfully rejects disturbances that would have led to a collision with an obstacle. 
 \end{abstract}
 
@@ -96,9 +96,8 @@ We require that the initial dynamics are collision-free
 
 \section{Obstacle Aware Passivity} \label{sec:obstacle_aware_passivity}
 The controller is inspired by the design proposed \cite{kronander2015passive}.
-% The method of \cite{kronander2015passive} presented above allows for being stiff in the direction of motion and compliant in the perpendicular directions.
 
-However, this method does not consider obstacles when computing $\matd D$. Unfortunately, if a disturbance happens to push the robot into an obstacle that is perpendicular to the direction of motion, it will not be damped. This could lead to the robot crashing into the obstacle. In those cases, we would like to increase the stiffness of the control and dampen the disturbance.
+However, this method does not consider obstacles when computing $\matd D$. Unfortunately, if a disturbance happens to push the robot into an obstacle that is perpendicular to the direction of motion, it will not be damped. This could lead to the robot crashing into the obstacle. In those cases, we would like to increase the damping of the control and dampen the disturbance.
 
 We propose a novel controller, which ensures passivity as defined in \eqref{eq:control_command} but adapts the damping matrix given in \eqref{D_matrix_shaping} based on the desired dynamics $\dot{\vecs \xi}$ and obstacles in the surrounding. 
 
@@ -123,13 +122,6 @@ Further, the resultant converges to an obstacle normal as we converge towards it
 % The advantage of this function is that $\vecs n$ converges to $ \vecs n_i$ as the robot gets closer to obstacle $i$. An example is provided in Fig.~\ref{resultant_normal}.\\
 Note that the normal is a zero-vector when two obstacles oppose each other. This case will be further discussed in the next section.
 
-\begin{figure}
-\centerline{\includegraphics[width=0.5\textwidth]{figures/normal_and_gamma_field_visualization}}
-\caption{The $\Gamma$-field for the two obstacles is used to evaluate the averaged normal $\vecs n$ (red arrow). 
-Both parameters must ensure the motion follows the avoidance dynamics (gray) towards the attractor (black star) while remaining compliant.}
-\label{fig:resultant_normal}
-\end{figure}
-
 % There could be cases where the resultant normal is not defined (due to $\vecs{n_i}$'s canceling each other). A solution to this issue is proposed in \ref{limit_cases}.
 
 \subsection{Danger Weight}
@@ -147,8 +139,10 @@ w(\vecs\xi) =
 %%   %% \Gamma(\vecs\xi) = \min_{o \in \{1, .., N^{\mathrm{obs}} \}} \Gamma_o(\vecs\xi)
 %%   \Gamma(\vecs\xi) = \min_{o = 1..N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
 %% \end{equation}
-The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}$ defines the distance where the system behaves stiffly towards the obstacle.
+The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}$ defines the distance where the system has higher damping towards the obstacle.
 Note that $w(\vecs \xi) = 0$ far away from obstacles, and $w(\vecs \xi) = 1$ as it approaches a boundary.
+
+
 
 \subsection{Damping Matrix}
 While most robotics systems is moving in dimensions $d = 3$, the development in this section can be applied to $d \geq 2$.
@@ -159,12 +153,20 @@ The desired damping matrix has two goals: it should maintain and follow the desi
 \begin{equation}
     \matd D(\vecs\xi) = \left(1 - w(\vecs\xi) \right) {\matd D^{DS}}(\vecs\xi) + w(\vecs\xi)  {\matd D^{\mathrm{obs}}}(\vecs\xi) \label{eq:damping_summation}
 \end{equation}
-Away from any obstacle, the behavior is fully controlled by $\vecs {D_{DS}}(\vecs\xi)$, and when approaching one, the damping matrix smoothly shifts to also stiffen the control against the obstacle. 
+Away from any obstacle, the behavior is fully controlled by $\vecs {D_{DS}}(\vecs\xi)$, and when approaching one, the damping matrix smoothly shifts to also increase the damping of the conroller in the direction of the obstacle. 
 Note that as ${\matd D^{DS}}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ are positive semi-definite matrices, thus $\matd {D}(\vecs\xi)$ is positive semi-definite, too.
+
+\begin{figure}
+  \center
+  \includesvg[width=0.7\columnwidth]{figures/damping_basis_construction.svg}
+\caption{The damping matrix enforcing DS following $\matd{D}^{\mathrm{DS}}$ has the first basis vector $\vect q_1^{\mathrm{DS}}$ which follows the avoidance dynamics $\dot{\vecs \xi}$ and damping to enforce collision avoidance with $\matd{D}^{\mathrm{obs}}$ uses the normal $\vect n(\vecs \xi)$ to construct the first direction of the decomposition basis $\vect q^{\mathrm{obs}}_1$.}
+\label{fig:damping_basis_construction}
+%% \label{fig_basis_3D_DS_obs}
+\end{figure}
 
 
 \subsubsection{Dynamic System Following}
-The damping matrix, which achieves the dynamical system following $\matd D^{DS}$, is designed as presented in Section~\ref{sec:trad_passive}, following the theory of \cite{kronander2015passive}. $\matd D^{DS}$ has high stiffness in the direction of the desired velocity $\dot{\vecs \xi}$, but is compliant perpendicular to it.
+The damping matrix, which achieves the dynamical system following $\matd D^{DS}$, is designed as presented in Section~\ref{sec:trad_passive}, following the theory of \cite{kronander2015passive}. $\matd D^{DS}$ has high damping in the direction of the desired velocity $\dot{\vecs \xi}$, but is compliant perpendicular to it.
 
 \begin{equation}
   \begin{split}
@@ -205,22 +207,13 @@ Consequently, we define the damping values to ensure smoothness:
   \quad d = 1 .. N\
 \end{equation}
 
-\begin{figure}
-  \center
-  %% \includegraphics[width=0.6\columnwidth]{figures/damping_basis_construction}
-  \includesvg[width=0.6\columnwidth]{figures/damping_basis_construction.svg}
-\caption{The damping matrix enforcing DS following $\matd{D}^{\mathrm{DS}}$ has the first basis vector $\vect q_1^{\mathrm{DS}}$ which follows the avoidance dynamics $\dot{\vecs \xi}$ and damping to enforce collision avoidance with $\matd{D}^{\mathrm{obs}}$ uses the normal $\vect n(\vecs \xi)$ to construct the first direction of the decomposition basis $\vect q^{\mathrm{obs}}_1$.}
-\label{fig:damping_basis_construction}
-%% \label{fig_basis_3D_DS_obs}
-\end{figure}
-
 % Let the matrix $\vecs{Q_{obs}}(\vecs\xi) \in \mathbb{R}^{3\times 3}$ be the matrix whose columns are formed by the orthonormal basis $\vecs {e_{1,obs}}, \vecs {e_{2,obs}}, \vecs{e_{3,obs}}$.\\
 
 % Moreover, let the diagonal matrix $\vecs\Lambda(\vecs\xi) \in \mathbb{R}^{N\times N}$ be the matrix whose diagonal is $\lambda_1(\vecs\xi), \lambda_2(\vecs\xi)$ and $ \lambda_3$. Each eigenvalue corresponds to the damping coefficient along its respective direction given by the vectors.
 
 % Finally we construct $\vecs {D_{obs}}(\vecs\xi)$ as in \eqref{D_matrix_shaping}. Note that the columns of $\vecs Q(\vecs\xi)$ always form an orthonormal basis and that $\lambda_i \geq 0$ $\forall i=1,...,N$. $\vecs D(\vecs\xi)$ is thus a positive semi-definite matrix.
 
-%In the general case, we would have $\lambda_1 = \lambda_{obs}$  corresponding to the damping coefficients associated with moving into an obstacle, $\lambda_2 = \lambda_{DS}$ the tracking stiffness and $\lambda_3 = \lambda_{perp}$ is the coefficient responsible for being compliant in the remaining direction.
+%In the general case, we would have $\lambda_1 = \lambda_{obs}$  corresponding to the damping coefficients associated with moving into an obstacle, $\lambda_2 = \lambda_{DS}$ the tracking damping and $\lambda_3 = \lambda_{perp}$ is the coefficient responsible for being compliant in the remaining direction.
 
 
 % First, we want the damping coefficient $\lambda_2(\vecs\xi)$ to be equal to $\lambda_{DS}$ only when the DS and the obstacle normal are perpendicular. Likewise, we want this coefficient to be equal to $\lambda_{perp}$ when the normal and the DS are collinear. We thus define: 

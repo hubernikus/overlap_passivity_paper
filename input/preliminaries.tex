@@ -22,7 +22,7 @@ The eigenvalues in reference direction  $\lambda^r$ and tangent direction $\lamb
     \label{eq:eigenvalues}
     \end{split}
 \end{equation}
-with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}$, which has a value of 1 on the boundary of an obstacle, and $\Gamma(\vecs \xi) > 1$ outside the obstacle. In this work, we use following distance function
+with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}$, which has a value of 1 on the boundary of an obstacle, and $\Gamma(\vecs \xi) > 1$ outside the obstacle (Fig.~\ref{fig:resultant_normal}). In this work, we use following distance function
 \begin{equation}
   \Gamma(\vecs \xi) = 1 + \| \vecs \xi - \vecs \xi^b \|  
   \quad \text{with} \quad
@@ -32,6 +32,13 @@ with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}$, which 
 with $b \in \mathbb{R}_{>0}$, such that $\vect \xi^b \in \mathbb{R}^N$ lies on the surface of the obstacle.
 
 As $\lambda^r(\vecs \xi) \leq 1$, the initial dynamics are decreased towards the obstacle, and with $\lambda^e(\vecs \xi) \geq 1$, the dynamics are increased in tangent direction. It has been shown in \cite{huber2022avoiding} that this leads to convergence around (star-shaped) obstacles.
+
+\begin{figure}
+\centerline{\includegraphics[width=0.5\textwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
+\caption{The $\Gamma$-field for the two obstacles is used to evaluate the averaged normal $\vecs n$ (red arrow). 
+Both parameters must ensure the motion follows the avoidance dynamics (gray) towards the attractor (black star) while remaining compliant.}
+\label{fig:resultant_normal}
+\end{figure}
 
 \subsection{Passive Interaction Control} \label{sec:trad_passive}
 Passive interaction control \cite{kronander2015passive}is useful for transitioning from velocity-controlled to torque-controlled robots. It allows for selective disturbances rejection, given the direction of motion. For example, one could desire stiff behavior in the direction of the DS but want compliance in the direction perpendicular to the motion.

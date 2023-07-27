@@ -1,59 +1,63 @@
 \section{Collision Avoidance} \label{sec:collision_avoidance}
 
-\subsection{Inertia Drift}
-Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
 
+% \subsection{Inertia Drift}
+% Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
 
 \subsection{Disturbance Repulsion}
-Let us assume a disturbance impact at time $t_0$, which results in the robot having an impact velocity of $\vecs{\dot \xi} = \vect v^I$, which is pointing towards the obstacle. The impact velocity is much larger than the robot's initial velocity. Thus the latter is neglected, and the obstacle is approximated as locally flat and the velocity locally constant (see Fig.~\ref{fig:collision_avoidance}). Furthermore, we assume to be close to the robot, i.e., $\Gamma(\vecs \xi) \approx 1$, hence the $w(\vecs \xi) \approx 1$, and the stiffness in the direction of the obstacle is approximated as $s^{\mathrm{obs}}$.
+Let us assume a disturbance impact at time $t_0$, which results in the robot having an impact velocity of $\vecs{\dot \xi} = \vect v^I$, which is pointing towards the obstacle. The impact velocity is much larger than the robot's initial velocity. Thus the latter is neglected, and the obstacle is approximated as locally flat and the velocity locally constant (see Fig.~\ref{fig:collision_avoidance}). Furthermore, we assume to be close to the robot, i.e., $\Gamma(\vecs \xi) \approx 1$, hence the $w(\vecs \xi) \approx 1$, and the damping in the direction of the obstacle is approximated as $s^{\mathrm{obs}}$.
 No further impact forces are applied after the initial impact is absorbed. The Coriolis effect is neglected in the short time frame.
 
 \begin{lemma}
-	Using the control law in continuous time, ...
+	Let us consider a second order continous time system with postion $\vecs \xi_0 \in \mathbb{R}^N$ and velocity $\dot{\vecs \xi}_0 \in \mathbb{R}^N$, which evolves according to \eqref{eq:robot_dynamics} which is governed by the controller \eqref{eq:control_command}, damping matrix $\matd{D}$ defined in \eqref{eq:damping_summation}, and mass matrix with of smallest eigenvalue $m \in \mathbb{R}_{>0}$.
+	Let as assume the system behavior in a region close to the obstacle $\| \vecs \xi - \vecs \xi^b \| \ll 1$, where we have locally constant dynamics $\vect f(\vecs \xi)$ is parallel or away from the surface, and damping value in the direction of the obstacle $s^{\mathrm{obs}}$.
+	The controller is able to reject an impact velocity, i.e., $\Gamma(\vecs \xi_t) \geq 1, \forall t$, if the impact velocity is limited as follows $\| \vect v^I \| < s^{\mathrm{obs}} \| \vecs \xi - \vecs \xi^b \| / m$.
 \end{lemma}
 
+\begin{figure}[htb]
+\centering
+ % \begin{subfigure}{0.99\columnwidth}
+  \centerline{\includegraphics[width=0.99\columnwidth]{figures/parallel_avoidance_obstacle}}
+  \caption{Disturbance rejection of an impact in the direction of the velocity.}
+  \label{fig:disturbance_with_parallel_velocity}
+% \end{subfigure}
+\end{figure}
+
+
 \begin{proof}
-The velocity with the controller can be analyzed as follows:
+The velocity of using the proposed controller evolves as follows:
 \begin{equation}
-    \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D}  \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt
+    \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D}  
+	\left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt
 \end{equation}
 
-Let us analyze when the decoupled velocity along the normal reaches zero:
+Due to the proximity of the obstalce, we have from \eqref{eq:damping_summation} the weight being $w(\vecs \xi) = 1$. Hence, for the extreme case where the disturbance is towards the obstacle, the velocity evolves as:
 \begin{equation}
-    \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{\dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} \vecs{\xi} + \vecs v^I \label{eq:velocity_with_control}
+    \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{\dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} (\vecs{\xi} - \vecs \xi_0)  + \vecs v^I \label{eq:velocity_with_control}
 \end{equation}
-The velocity along the normal reaches zero at position, i.e., 
+
+Hence the velocity along the normal reaches zero at position, i.e., 
 \begin{equation}
     \| \vecs{\dot \xi} \| = 0
     \quad \Rightarrow \quad
-    \|\vecs{\xi} \| = \| \vecs v^I \| {m} / {s^{\mathrm{obs}}} 
+    \|\vecs \xi_0 - \vecs{\xi} \| = \| \vecs v^I \| {m} / {s^{\mathrm{obs}}} 
 \end{equation}
 
-The statement follows directly from \eqref{eq:velocity_with_control}.
+Hence, if starting at a position which is further or equal to the above distance, a disturbance velocity of $\vect v^I$ can be rejected, see Figure~\ref{fig:disturbance_with_parallel_velocity}.
 \end{proof}
 
+The above analysis has been specifically for disturbance velocities, however, in practice a system is disturbed by a force. The corresponding disturbance velocity by integrating the force over time (considering the mass matrix, too). 
+Note, that the proposed controller is not able to actively reject a continuous force. However, this can be achieved by designing the dynamics $\vect f(\vecs \xi)$ to point away from the surface, as is proposed in \cite{huber2023avoidance}.
+
 \subsection{Disturbance Repulsion with Force Limit}
-Robotic systems have a maximum force that can be exerted based on the motors and their geometry, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Note that this maximum might be state dependent.
+All robotic systems have a maximum force that which they  exerted based on the motors and their geometry, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Note, such a force might be state dependent.
 
-Let  us assume strong damping concerning the maximum force, i.e., $s^{\mathrm{obs}} / \tau_c^{\mathrm{max}} \gg 1$, hence we can assume that the magnitude of the obstacle repulsive force is equal to the maximum force close to the obstacle. Hence, the maximum disturbance.
+A limiting force increases the impact velocity $\vect v^I$ a controller is able to hande to ensure collision avoidance, see Fig.~\ref{fig:disturbance_with_parallel_velocity}. Nevertheless, a maximum control force can be interpreted as and adapting damping parameter, and hence the passivity from Theorem~\ref{theorem:passivity} still holds.
 
-\subsection{Practical Considerations}
-As described in \cite{huber2022avoiding, huber2023avoidance}, the avoidance velocity when approaching an obstacle can be directed along the normal of the obstacle to point away from the surface when reaching the obstacle and inside. This allows improved recovery, for scenarios such as those presented.
+% Such a force, can result in an increase of tmaximum impact velocity 
+% Let  us assume strong damping concerning the maximum force, i.e., $s^{\mathrm{obs}} / \tau_c^{\mathrm{max}} \gg 1$, hence we can assume that the magnitude of the obstacle repulsive force is equal to the maximum force close to the obstacle. Hence, the maximum disturbance.
 
-\begin{figure}
-\centering
-\begin{subfigure}{0.99\columnwidth}
-  \centerline{\includegraphics[width=\textwidth]{figures/parallel_avoidance_obstacle}}
-  \caption{Parallel to surface velocity}
-  \label{fig:disturbance_with_parallel_velocity}
-\end{subfigure}
-\begin{subfigure}{0.5\columnwidth}
-  %% \centerline{\includegraphics[width=\textwidth]{}}
-  \caption{Repulsive surface velocity}
-  \label{fig:disturbance_with_repulsive_velocity}
-\end{subfigure}
-\caption{Comparison of the two control methods}
-\label{fig:disturbance_rejection_schematics}
-\end{figure}
+% \subsection{Practical Considerations}
+% As described in \cite{huber2022avoiding, huber2023avoidance}, the avoidance velocity when approaching an obstacle can be directed along the normal of the obstacle to point away from the surface when reaching the obstacle and inside. This allows improved recovery, for scenarios such as those presented.
 
 

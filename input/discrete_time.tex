@@ -1,8 +1,7 @@
 \section{Discrete Time Avoidance}
 So far, we've considered that the system is continuous time. 
 This is a reasonable expectation, if we have a high sampling time $\Delta t$, compared to the dynamics, i.e., $\| \Delta t \, \dot{\vecs \xi} \| \ll 1$.
-
-However, for the disturbance rejection in the presence of obstacles, a high control force should be exerted to reject the disturbance acceleration (while still remaining within the control robots limits), hence $\| \Delta t \, \vecs \tau^c \| \gg 1$. 
+However, any digital controller sends a discrete control signal. And for the disturbance rejection in the presence of obstacles, a high control force is exerted to reject the disturbance acceleration (while still remaining within the control robots limits), hence $\| \Delta t \, \vecs \tau^c \| \gg 1$. 
 In this case, it is crucial to analyse the discrete time system to guarantee stability (see Figure~
 \ref{fig:discrete_controller_parameters_comparison}).
 
@@ -32,12 +31,13 @@ In this case, it is crucial to analyse the discrete time system to guarantee sta
 \end{equation}
 
 \begin{lemma}
-	Let us consider a discrete time system given in \eqref{eq:discrete_time_dynamics}, which is governed by the controller define in \eqref{eq:damping_summation}.
-	with starting velocity $\dot{\vecs \xi}_0 \in \mathbb{R}^N$ such that $\| \dot{\vecs \xi}_0\| \leq v^{\mathrm{max}}$ and a discrete time evolution given by \eqref{eq:discrete_time_dynamics}. The system's velocity is bounded for all t 
+	Let us consider a discrete time system given in \eqref{eq:discrete_time_dynamics}, which is governed by the controller \eqref{eq:control_command} and damping matrix $\matd{D}$ defined in \eqref{eq:damping_summation}.
+	Let us consider the input the desired dynamics $\vect f(\xi)$ and as output the system dynamics $\dot{\vecs \xi}$. 
+	The system is BIBO (bounded-input, bounded-stable) with respect to the velocity, i.e., $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, under following conditions for the eigenvalues $\matd{M}^{-1} \matd{D} \leq 2 / \Delta t$.
 \end{lemma}
 
 \begin{proof}
-For the algorithm applied in discrete time, as will be the case for any digital controller, the evolution of the velocity is given by:
+Hence, for the evaluation in discrete time the evolution of the velocity is given by:
 \begin{equation}
 	\begin{split}
 	& \begin{bmatrix}
@@ -46,9 +46,9 @@ For the algorithm applied in discrete time, as will be the case for any digital 
 	=
 	\begin{bmatrix}
 		\vect \xi_t + \Delta t  \; \dot{\vect \xi}_t \\ \
-		\dot{\vecs \xi}_t + \Delta t \, \matd{M}^{-1} \matd{D} \left( \vect f(\vecs \xi_t) - \dot{\vecs \xi}_t \right)
+		\dot{\vecs \xi}_t + \Delta t \, \matd{M}^{-1} \left( \matd{D}(\vect \xi_t) \left( \vect f(\vecs \xi_t) - \dot{\vecs \xi}_t \right) - \matr C \right)
 	\end{bmatrix} \\
-	&  =
+	&  \approx
 	\begin{bmatrix}
 		1 & \Delta t \\
 		0 & 1 - \Delta t \matd{M}^{-1} \matd D 
@@ -58,19 +58,23 @@ For the algorithm applied in discrete time, as will be the case for any digital 
 	\end{bmatrix}
 	+ \begin{bmatrix}
 		0 \\ 
-		\Delta t \, \matd{M}^{-1} \matd{D} \vect f(\vecs \xi_t) 
-	\end{bmatrix} \\
-	& \approx 
-	\begin{bmatrix}
-		1 & \Delta t \\
-		\Delta t \matd{M}^{-1} \matd D \frac{\partial \vect f}{\partial \vecs \xi} & 1 - \Delta t \matd{M}^{-1} \matd D 
+		\Delta t \, \matd{M}^{-1} \matd{D} 
 	\end{bmatrix}
-	\begin{bmatrix}
-		\vect \xi_t \\ \dot{\vect \xi}_t
-	\end{bmatrix}
+	\hat{\vect f}(\vecs \xi_t) 
+	% & \approx 
+	% \begin{bmatrix}
+	% 	1 & \Delta t \\
+	% 	\Delta t \matd{M}^{-1} \matd D \frac{\partial \vect f}{\partial \vecs \xi} & 1 - \Delta t \matd{M}^{-1} \matd D 
+	% \end{bmatrix}
+	% \begin{bmatrix}
+	% 	\vect \xi_t \\ \dot{\vect \xi}_t
+	% \end{bmatrix}
 	\label{eq:discrete_time_proof}
 	\end{split}
 \end{equation}
+where $\hat{\vect f}(\vecs \xi_t) = \vect f(\vecs \xi_t) - \matd{D}^{-1} C$. Note, that we omitted the dependency of coriolis and mass matrix on state vectors.
+As we look at global stability, the Coriolis acceleration $\matd{C}$ is merged to the dynamical system. Since the coriolis force is bounded, it follows that if the system is BIBO stable for $\hat{\vect f}(\vect \xi)$ then it is also BIBO stable for $\vect f(\vecs \xi)$ 
+
 
 % Let us introduce the coordinate transform $\dot{\vect \gamma}_t = \dot{\vect \xi}_t - \vect f(\vecs \xi)$  and hence for the position we have $\vect \gamma_t = \vect \xi_t - \Delta t \vect f(\vecs \xi)$, and hence 
 % \begin{equation}
@@ -95,31 +99,51 @@ For the algorithm applied in discrete time, as will be the case for any digital 
 % 	\end{bmatrix}
 % 	\end{split}
 % \end{equation}
-The summand $\vect t \vect f(\vecs \xi_t)$ changes the relative position value $\vect \gamma_t$ as long as the desired velocity is not zero. However, this only moves the relative position, but does not influence kinetic energy, which has been used as the stability function (Section~\ref{sec:passivity_analysis}).
+% The summand $\vect t \vect f(\vecs \xi_t)$ changes the relative position value $\vect \gamma_t$ as long as the desired velocity is not zero. However, this only moves the relative position, but does not influence kinetic energy, which has been used as the stability function (Section~\ref{sec:passivity_analysis}).
 
-Hence, we look at the closed loop system. From which the eigenvalues can be calculated as:
+BIBO stability of a discrete time system requires that all the eigenvalues of the feedback matrix are smaller or equal one.
+The eigenvalues of the above feedback matrix are given as:
 \begin{equation}
 	\vect \lambda_1 = 1 \qquad \vect \lambda_2 = 1 - \Delta t \, \matd{M}^{-1} \matd{D}
 \end{equation}
-Hence, if the eigenvalues are smaller or equal to one, the system is stable. This is the case, if the maximum eigenvalue of $\Delta t \, \matd{M}^{-1} \matd{D} \leq 2$.
+The first eigenvalue is stable by design, the second feedback-eigenvalue is stable if the maximum eigenvalue of the matrix 
+Hence, if the eigenvalues are smaller or equal to one, the system is stable. This is the case, if the maximum eigenvalue fulfills following condition $\text{eig} \left( \matd{M}^{-1} \matd{D} \right) \leq 2 / \Delta t$.
 \end{proof}
 
-The stability with different damping values can be observed in Figure~\ref{fig:discrete_controller_parameters_comparison}.
+% The stability with different damping values can be observed in Figure~\ref{fig:discrete_controller_parameters_comparison}.
 
 
 \subsection{Asymptotic Stability}
-For a general nonlinear system no asymptotic convergence evaluation can be made. This is due to the fact, that for any system there is a slight drift due to the damping values.
-And hence, if there are high nonlinearities in the system it could happen that even with a stable system, the dynamics get caught in a limit cycle. However, for most common globally asymptotic systems (for velocity-position), the force controller as proposed leads to globally asymptoticly stable behavior, too (Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
+The stability guarantees in the previous section, the stability of the system was reduced to boundedness. 
+Due to the fact that the first eigenvalue is exactly equal to 1, aysmpotic convergence does not occur. 
+This implies, that if the input goes to zero, i.e., $\vect f(\vecs \xi) = \vect 0$, the system stops and does not convergence to a specified point. 
+However this could be achieved the controller could be modified by introducing an additional proportional term, as is common in an impedance controller:
+\begin{equation}
+	\vecs{\tau_c} = \vect g (\vecs\xi) 
+	% + \matd{D}(\vect \xi, \dot{\vect \xi}) \dot{\vect \xi}  
+	+ \matd{D}(\vecs\xi) \left(\vecs f(\vecs\xi) - \vecs{\dot\xi} \right) 
+	+ \matd{P}(\vecs \xi) \left(\vecs \xi - \vecs \xi^a \right)
+\label{eq:control_command}
+\end{equation}
 
-\subsection{Intertial Drift}
-Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
-
+However, this design interfers with the basis passive controller, and the convergence towards the attractor is facilated by (stable) dynamics $\vect f(\vecs \xi)$. 
+Note, that the asymptotic stability is not guaranteed for general nonlinear input dynamics under the linear dynamics analys. Especially for dynamics with high curvature and low damping value, the final trajectory can end up in limit cyclces ((Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
 
 \begin{figure}[htb]
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison_stable}
 \caption{A point like agent which is following the desired dynamics of
-$\vect f(\vecs \xi) = \matr R(\pi / 6) (\vect \xi  - \vect \xi^a)$ where $\matr R(\cdot)$ is the rotation matrix, and with equal damping values $s_i$, where $m$ is the mass of the agent.}
+$\vect f(\vecs \xi) = \matr R(\pi / 6) (\vect \xi  - \vect \xi^a)$ where $\matr R(\cdot)$ is the rotation matrix, and with equal damping values $s_i$, where $m$ is the mass of the agent.
+The controller with a critical sifness of $2.0 m / \Delta t$ leads to fast convergence and a stable system. With a lower damping (top left), there is drift and the system converges to a limit cycle. The high damping of $2.3 m / \Delta t$
+With a damping of 2.3, the system is instable. Interestingely, with a stifness of $2.1 m / \Delta t$ in combination, we obtain a visibly stable system.}
   \label{fig:discrete_controller_parameters_comparison_stable}
 \end{figure}
+
+% For a general nonlinear system no asymptotic convergence evaluation can be made. This is due to the fact, that for any system there is a slight drift due to the damping values.
+% And hence, if there are high nonlinearities in the system it could happen that even with a stable system, the dynamics get caught in a limit cycle. However, for most common globally asymptotic systems (for velocity-position), the force controller as proposed leads to globally asymptoticly stable behavior, too (Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
+
+% \subsection{Intertial Drift}
+% Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
+% 
+
 

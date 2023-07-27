@@ -1,6 +1,5 @@
 \section{Evaluation}  \label{sec:evaluation} 
-
-The comparison\footnote{Source coude: \url{https://github.com/hubernikus/obstacle_aware_damping}} of the controller is compared to the baseline of a dyanmics preserving controller \cite{kronander2015passive}.
+The proposed obstacle aware controller\footnote{Source coude: \url{https://github.com/hubernikus/obstacle_aware_damping}} is compared to a baseline, the dyanmics preserving controller \cite{kronander2015passive}.
 
 
 \subsection{Qualitative Comparison} \label{sec:qual_comp}
@@ -16,7 +15,7 @@ The top trajectory, the robot is pushed towards the stand-alone obstacle. The ob
 % a direction perpendicular to the desired motion. Since we want compliance in this direction and the robot is far from any obstacle, it deviates greatly from its previous trajectory. It continues its path to the attractor on another DS line.
 
 In the middle trajectory, the disturbance happens when the agent is between two obstacles. We expect that the normal $\vect n(\vecs \xi)$ as used in the controller (Sec.~\ref{sec:obstacle_repulsion}.
-However, by construction its magnitude becomes smaller in narrow passages, see \eqref{eq:averaged_normal}, and hence the stiffness increases, as described in \eqref{}.
+However, by construction its magnitude becomes smaller in narrow passages, see \eqref{eq:averaged_normal}, and hence the damping increases, as described in \eqref{}.
 As a result, the agent safely avoids the disturbance using the obstacle aware conroller. Whereas, the base line controller results in a colliding trajectory.
 
 Finally, during the bottom trajectory, the repulsive force points away from the obstacle. Due to the compliance when moving away from and obstacle as define in \eqref{eq:leaving_compliance}, the obstacle aware and the dynamics preserving controller follow almost identical trajectories.
@@ -25,7 +24,7 @@ k
 
 % A disturbance (C) pushed the robot away from an obstacle. The control algorithm is made such that when moving away from an obstacle, disturbances are not damped, and the robot shows compliant behavior. 
 
-% The last disturbance (D) was applied along the direction of motion. As the desired behavior is stiff in this direction, the robot almost kept the same speed and continued toward the attractor.
+% The last disturbance (D) was applied along the direction of motion. As the desired behavior is damped in this direction, the robot almost kept the same speed and continued toward the attractor.
 
 % \begin{figure}
 % \centerline{\includegraphics[width=0.5\textwidth]{figures/run_with_obs.png}}
@@ -68,7 +67,7 @@ The first disturbance is highly damped, while the second is much less. This feat
 A real controller is always subject to noise, unexpected disturbances. This can be noise or inaccuracies in sensor readings, or small physical disturbances such as air drag for a fast moving drone, or floor roughness for a mobile robot. 
 A high quality controller is able to reject such disturbances, while maintainingthe control ojbectives: collision avoidance and trajecotry tracking. 
 
-This section looks at noise disturbance of a simulated agent with an identity mass matrix $\matd M = \matr I$. The discrete time step is chosen as $\Delta t = $\qty{0.2}{s}, furthermore the stiffness values are set as
+This section looks at noise disturbance of a simulated agent with an identity mass matrix $\matd M = \matr I$. The discrete time step is chosen as $\Delta t = $\qty{0.2}{s}, furthermore the damping values are set as
 $s^{\mathrm{obs}}=$\qty{50}{s^{-1}},
 $s^{\mathrm{DS}}=$\qty{40}{s^{-1]}}, and
 $s^{\mathrm{c}}=$\qty{5}{s^{-1}}.
@@ -85,7 +84,7 @@ In the first evaluation, normally distributed noise with mean of zero is added t
 
 The obstacle aware controller is able to reject the noise acting on the velocity even with increasing noise variance. Nevertheless, the closest distance during the trajectory is decreasing with higerh values.
 Conversely, the dynamics following has a mean distance which is below zero already at velocity noise variance of $\qty{0.5}{m/s}$, indicating a large number of trajectories colliding with at least one obstacle. 
-It can futher be observed, without noise, the minimal distance along a trjaectory is higher for the obstacle aware controller. This is the result, that there is higher stiffness towards the obstacle, and hence the curvature of the dynamics guiding around the obstacle is followed more accurately.
+It can futher be observed, without noise, the minimal distance along a trjaectory is higher for the obstacle aware controller. This is the result, that there is higher damping towards the obstacle, and hence the curvature of the dynamics guiding around the obstacle is followed more accurately.
 
 \begin{figure}
     \centering
@@ -144,7 +143,7 @@ The joint torque is obtained using inverse kinemtatics:
 \end{equation}
 using the Moore-Penrose pseudo inverse of the Jacobian $\matr J^{\dag} = \matr J^T (\matr J \matr J^T)^{-1}$. The angle $\vecs \alpha$ describes the end effector orientation, and the desired orientation is pointing downward with a quaternio value of $\vecs \alpha^a = [0, 1, 0, 0]$. For the substraction, we use quaternion representation to avoid singularities, but for the evaluation of the torque from the angular offset angle-axis represtation of the orientation is used.
 
-The angular stiffness is chosesn as $p^\alpha = 5.5$.
+The angular damping is chosesn as $p^\alpha = 5.5$.
 The damping values are set as
 $s^{\mathrm{obs}}=\, $ \qty{160}{s^{-1}},
 $s^{\mathrm{DS}}= \,$ \qty{64}{s^{-1]}}, and
@@ -200,7 +199,7 @@ This results from a much weaker control force of the obstacle aware controller. 
 
 \section{Discussion}
 Overall, the simulated robot shows pleasing results. It has good tracking performances, compliance in the direction perpendicular to the motion, and great damping of the disturbances towards obstacles.
-Away from obstacles, the controller presented shows similar behavior as the one in \cite{kronander2015passive}. When approaching one obstacle, the control gets stiffer to avoid collisions without losing its tracking properties. This makes the proposed controller a suitable option to cumulate good tracking and safety regarding obstacle penetration.
+Away from obstacles, the controller presented shows similar behavior as the one in \cite{kronander2015passive}. When approaching one obstacle, the control gets damped more to avoid collisions without losing its tracking properties. This makes the proposed controller a suitable option to cumulate good tracking and safety regarding obstacle penetration.
 
 \subsection{Applicability Approach}
 Note, that the theoretical analysis from Theorem~\ref{theorem:passivity}, indicates passivity for any velocity-bounded, uniquely damped system. As a result, work such as the damping-based controller in  \cite{kronander2015passive} does not require an energy tank anymore.
