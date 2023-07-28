@@ -48,7 +48,10 @@
 \newtheorem{definition}{Definition}[section]
 
 
-\title{Obstacle Aware Passive Control for Dynamical Systems}
+\title{
+Obstacle Aware Passive Control \\
+to Follow Desired Velocities
+}
 \author{
   \IEEEauthorblockN{Lukas Huber, Trinca Thibaud, Jean-Jacques Slotine, Aude Billard}
 }
@@ -58,11 +61,21 @@
 \pagestyle{plain}
 
 \begin{abstract}
-Recent work on dynamical systems (DS) has enabled new ways of robot control. DS can be learned with various methods and often modified so that all points in space converge to the attractor, making the system more robust to noise or disturbances.
-One can use DS modulation to avoid obstacles, with solid guarantees of impenetrability consistently. To transfer from DS velocity control to torque control, passive control theory is a powerful method to accurately track the desired speed while having the freedom to demonstrate compliant behavior.
-In this work, we present a method that extends the concept of passivity.
-The method maintains compliant behavior away from obstacles but increases the damping of the control when approaching one of them, allowing the robot to be aware of its environment.
-The proof of concept was tested in a simulation in Python. The robot shows excellent tracking performance and successfully rejects disturbances that would have led to a collision with an obstacle. 
+Position-based velocity evaluation has revolutionized robot control methodologies, endowing the systems with enhanced resilience against noise and disturbances. The desired velocities can incorporate obstacle avoidance capabilities, further bolstered by passive torque control to ensure safe responses to external perturbations. 
+In this paper, we propose a novel method for designing passivity controllers that internalizes the presence of obstacles during the handling of external forces.
+
+Our method introduces a compliant behavior away from obstacles while strategically increasing control damping upon approaching obstacles, thereby enabling the robot to maintain heightened environmental awareness. The algorithm's passivity is proven to remain stable across all scenarios, effectively countering disturbances. Additionally, we show superior behavior in collision avoidance and overall stability, particularly in scenarios with high damping values. 
+
+We additionally observe that the obstacle-aware passive controller exhibits superior tracking and collision avoidance performance in the presence of noise.
+The practicality and effectiveness of our approach are validated through implementation on a 7DoF robot arm. Comparative analysis against a baseline method showcases the algorithm's prowess in achieving superior collision rejection, underscoring its potential for real-world applications. Overall, our proposed obstacle-aware passivity controller represents a significant step towards enhanced robot control and safety in complex and uncertain environments.
+% Position-based dynamical systems have enabled new ways of robot control, making the system more robust to noise or disturbances.
+% The dynamics can be designed to incorporate obstacle avoidance capabilities, and combined with passive torque control to safely react to disturbances.
+% In this work, we propose a novel method to design the passivity controller to improve the handling of external forces. 
+% The method maintains compliant behavior away from obstacles but increases the damping of the control when approaching one of them, allowing the robot to be aware of its environment.
+% The algorithm is shown to remain passive (stable) with respect to disturbances in all scenarios. 
+% Moreover, we obtained improved collision avoidance, and stability in the presence of high damping values. 
+% The obtacle-aware passive controller shows improved tracking and collision avoidance performance in the presence of noise. 
+% Finally, the algorithm was implemented on a 7DoF robot arm. Superior collision rejection was achieved compared to the baseline method.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -72,212 +85,25 @@ Obstacle avoidance, dynamical systems, passivity, human-robot interaction
 \input{input/introduction}
 \input{input/preliminaries}
 
-
-
-
 \subsection{Problem Statement}
-We will make the following assumptions about $\vecs f(\vecs\xi)$:
+Following assumptions are made about the desired velocity $\vecs f(\vecs\xi)$:
 \begin{enumerate}
-    \item $ \vecs f(\vecs\xi)$ is defined for all reachable states $\vecs\xi$ and is continuous.
+    \item $\vecs f(\vecs\xi)$ is continuously  for all reachable states.
     %% \item $\vecs f(\vecs\xi)$ has a single equilibrium point $\vecs\xi^a$, such that $\{ \vecs \xi : \vecs f(\vecs \xi) = \vecs 0 \} = \{ \vecs\xi^a \}$. 
     \item $\vecs f(\vecs\xi)$ is bounded, i.e., there exists a constant $v^{\mathrm{max}} \in \mathbb{R}$ such that $\| \vecs f(\vecs\xi) \| \leq v^{\mathrm{max}} \;\; \forall \, \vecs \xi \in \mathbb{R}^N$
-\end{enumerate}
-
-Furthermore, we require that all the trajectories are collision-free,: 
-\begin{enumerate}
-  \setcounter{enumi}{3}
-  \item $\vecs{n_o}(\vecs\xi)^T \vecs f(\vecs\xi) \geq 0$ as $\Gamma_o \rightarrow 1 
+    \item It leads to a collision-free motion $\vecs{n_o}(\vecs\xi)^T \vecs f(\vecs\xi) \geq 0$ as $\Gamma_o \rightarrow 1 
   \quad \forall o = 1 .. N^{\mathrm{obs}}$
+  with the normal $\vecs n_o (\vecs \xi)$ and distance $d_o$ of the $o$-th obstacle. 
 \end{enumerate}
-with $\vecs n_o (\vecs \xi)$ and $d_o$ the normal and the distance of the $i$-th obstacle, see Section~\ref{sec:obstacle_normals}. 
-Note that the DS obtained after DSM as described in \eqref{eq:modulated} fulfills these conditions if initial DS $\vecs f^I$ is continuous, bounded, and has a sing convergence to the attractor.
 
-We require that the initial dynamics are collision-free
+Note that velocities obtained using DSM, given in \eqref{eq:modulated}, fulfill these conditions if velocity function $\vecs f^I$ is continuous and bounded.
 
-\section{Obstacle Aware Passivity} \label{sec:obstacle_aware_passivity}
-The controller is inspired by the design proposed \cite{kronander2015passive}.
-
-However, this method does not consider obstacles when computing $\matd D$. Unfortunately, if a disturbance happens to push the robot into an obstacle that is perpendicular to the direction of motion, it will not be damped. This could lead to the robot crashing into the obstacle. In those cases, we would like to increase the damping of the control and dampen the disturbance.
-
-We propose a novel controller, which ensures passivity as defined in \eqref{eq:control_command} but adapts the damping matrix given in \eqref{D_matrix_shaping} based on the desired dynamics $\dot{\vecs \xi}$ and obstacles in the surrounding. 
-
-The idea is that the matrix $\matd Q$ smoothly transitions from an orthonormal basis aligned to the DS direction (traditional passive control) to a basis aligned with the normal of the obstacle when approaching one.
-
-\subsection{Averaged Normal Direction} \label{sec:obstacle_normals}
-Let us define the unit normal $\vecs{n_o} (\vecs\xi)$  pointing away from the obstacle $o \in \{1,  ..,  N^{\mathrm{obs}} \}$, the averaged normal can be evaluated as:
-% Let the resultant normal of the obstacles $\vecs n(\vecs\xi)$ be expressed as:
-%% \begin{equation}
-%%     \vecs n(\vecs\xi) = \frac{\sum_{i=1}^{M} \frac{\vecs{n_i}(\vecs\xi)}{d_i(\vecs\xi) + \epsilon} }{\sum_{i=1}^{M} \frac{1}{d_i(\vecs\xi) + \epsilon}}
-%% \end{equation}
-%% for a small $\epsilon$.
-\begin{equation}
-  \vecs n(\vecs\xi) = \sum_{o=1}^{N^{\mathrm{obs}}} \vecs{n_o}(\vecs\xi)
-  \frac{1 / (\Gamma_o(\vecs \xi) - 1)}{\sum_{o=1}^{N^\mathrm{obs}} 1 / (\Gamma_o(\vecs \xi) - 1)}
-  %% \;\; , \quad 
-  %% w^\Gamma_o(\xi) = 
-  \label{eq:averaged_normal}
-\end{equation}
-The resultant normal $\vecs n(\vecs \xi)$ is a weighted linear combination of the obstacles' normals, giving more importance to closer obstacles.
-Further, the resultant converges to an obstacle normal as we converge towards it, i.e., $\lim_{\Gamma_o(\vecs \xi) \rightarrow 1} \vecs n(\vecs \xi) = \vecs n_o(\vecs \xi)$.
-% The advantage of this function is that $\vecs n$ converges to $ \vecs n_i$ as the robot gets closer to obstacle $i$. An example is provided in Fig.~\ref{resultant_normal}.\\
-Note that the normal is a zero-vector when two obstacles oppose each other. This case will be further discussed in the next section.
-
-% There could be cases where the resultant normal is not defined (due to $\vecs{n_i}$'s canceling each other). A solution to this issue is proposed in \ref{limit_cases}.
-
-\subsection{Danger Weight}
-Let us define the danger weight function $w(\vecs\xi) \in [0, 1]$ based on the distance to obstacles:
-\begin{equation}
-  \begin{split}
-w(\vecs\xi) =
-\max \left(0,  \frac{\Gamma^{\mathrm{crit}} - \Gamma(\vecs\xi)}{\Gamma^{\mathrm{crit}} - 1} \right) \| \vecs n(\vecs \xi) \| \\
-\text{with} \quad
-\Gamma(\vecs\xi) = \min_{o = 1..N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
-\label{eq:weight_function}
-\end{split}
-\end{equation}
-%% \begin{equation}
-%%   %% \Gamma(\vecs\xi) = \min_{o \in \{1, .., N^{\mathrm{obs}} \}} \Gamma_o(\vecs\xi)
-%%   \Gamma(\vecs\xi) = \min_{o = 1..N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
-%% \end{equation}
-The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}$ defines the distance where the system has higher damping towards the obstacle.
-Note that $w(\vecs \xi) = 0$ far away from obstacles, and $w(\vecs \xi) = 1$ as it approaches a boundary.
-
-
-
-\subsection{Damping Matrix}
-While most robotics systems is moving in dimensions $d = 3$, the development in this section can be applied to $d \geq 2$.
-% In the following sections, we will consider $N = 3$, which limits the control to a 3-dimensional (Cartesian space in our case). However, the theory presented can easily be extrapolated to work in greater dimensions.
-% \subsubsection{Combinaison of the damping matrices}
-%% Let us now combine the two matrices:
-The desired damping matrix has two goals: it should maintain and follow the desired DS, and at the same time, it has to ensure collision avoidance with obstacles. We define it as a linear combination that achieves these two parts:
-\begin{equation}
-    \matd D(\vecs\xi) = \left(1 - w(\vecs\xi) \right) {\matd D^{DS}}(\vecs\xi) + w(\vecs\xi)  {\matd D^{\mathrm{obs}}}(\vecs\xi) \label{eq:damping_summation}
-\end{equation}
-Away from any obstacle, the behavior is fully controlled by $\vecs {D_{DS}}(\vecs\xi)$, and when approaching one, the damping matrix smoothly shifts to also increase the damping of the conroller in the direction of the obstacle. 
-Note that as ${\matd D^{DS}}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ are positive semi-definite matrices, thus $\matd {D}(\vecs\xi)$ is positive semi-definite, too.
-
-\begin{figure}
-  \center
-  \includesvg[width=0.7\columnwidth]{figures/damping_basis_construction.svg}
-\caption{The damping matrix enforcing DS following $\matd{D}^{\mathrm{DS}}$ has the first basis vector $\vect q_1^{\mathrm{DS}}$ which follows the avoidance dynamics $\dot{\vecs \xi}$ and damping to enforce collision avoidance with $\matd{D}^{\mathrm{obs}}$ uses the normal $\vect n(\vecs \xi)$ to construct the first direction of the decomposition basis $\vect q^{\mathrm{obs}}_1$.}
-\label{fig:damping_basis_construction}
-%% \label{fig_basis_3D_DS_obs}
-\end{figure}
-
-
-\subsubsection{Dynamic System Following}
-The damping matrix, which achieves the dynamical system following $\matd D^{DS}$, is designed as presented in Section~\ref{sec:trad_passive}, following the theory of \cite{kronander2015passive}. $\matd D^{DS}$ has high damping in the direction of the desired velocity $\dot{\vecs \xi}$, but is compliant perpendicular to it.
-
-\begin{equation}
-  \begin{split}
-  s_d^{DS} =
-  \begin{cases}
-    s^{DS} & d = 1 \\
-    w^p s^{\mathrm{obs}} + (1- w^p) s^s & d \geq 2 
-  \end{cases} \quad d = 1 .. N\\
-  \text{with} \quad
-  %w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma(\vecs \xi) -1}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)
-   w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma^{\mathrm{crit}} -\Gamma(\vecs \xi)}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)
-  \end{split}
-\end{equation}
-where the damping along the nominal direction $s^{DS} \in \mathbb{R}$, obstacle-damping $s^{\mathrm{obs}} \in \mathbb{R}$, and the compliant-damping $s^c \in \mathbb{R}$ are user-defined values which define the behavior of the passive-controller.
-
-
-
-\subsubsection{Obstacle Repulsion} \label{sec:obstacle_repulsion}
-Let us define $\vecs q^{DS}_1 (\vecs\xi) = \dot{\vecs \xi} / \lVert \dot{\vecs \xi}\rVert$ the vector aligned to the direction of desired motion and $\vecs q_1^{\mathrm{obs}}(\vecs\xi) =  \vecs n(\vecs\xi) / \lVert\vecs n(\vecs\xi)\rVert$ the vector aligned to the obstacles normal.
-In the following, we will omit the dependency of the vectors on $\vecs\xi$ for readability purposes.
-
-% We will now define $\vecs{e_{3,obs}} = \vecs{e_{1,obs}} \times \vecs {e_{1,DS}}$ and $\vecs{e_{2,obs}} = \vecs{e_{3,obs}} \times \vecs {e_{1,obs}}$. This defines the orthonormal basis related to the obstacle, with its second vector being the closest to the DS-following vector $\vecs{e_{1,DS}}$.
-\begin{equation}
-  \vecs q_2^{\mathrm{obs}} = \frac{\hat{\vecs q}_2^{\mathrm{obs}}}{\| \hat{\vecs q}_2^{\mathrm{obs}} \|}
-  \quad
-  \hat{\vecs q}_2^{\mathrm{obs}} = \vecs q_1^{DS} - \vecs q_1^{\mathrm{obs}} p \quad  \forall \vecs \xi : | p | < 1
-\end{equation}
-where the object weight is given as $p = \dotprod{\vecs q_1^{\mathrm{obs}}}{\vecs q_1^{DS}}$
-The remaining vectors $\vecs q_i^{\mathrm{obs}}, i = 3, .., N$ are set to be orthonormal. For the case that $| p | = 1$, the second basis $\vecs q_2^{\mathrm{obs}}$ is set to be any orthonormal vector. 
-Consequently, we define the damping values to ensure smoothness:
-\begin{equation}
-  s_d^{\mathrm{obs}} =
-  \begin{cases}
-    s^{\mathrm{obs}} & d = 1 \\
-    | p | s^c + (1 - | p |) s^{DS} & d = 2 \\
-    s^c & d \geq 3 
-  \end{cases}
-  \quad d = 1 .. N\
-\end{equation}
-
-% Let the matrix $\vecs{Q_{obs}}(\vecs\xi) \in \mathbb{R}^{3\times 3}$ be the matrix whose columns are formed by the orthonormal basis $\vecs {e_{1,obs}}, \vecs {e_{2,obs}}, \vecs{e_{3,obs}}$.\\
-
-% Moreover, let the diagonal matrix $\vecs\Lambda(\vecs\xi) \in \mathbb{R}^{N\times N}$ be the matrix whose diagonal is $\lambda_1(\vecs\xi), \lambda_2(\vecs\xi)$ and $ \lambda_3$. Each eigenvalue corresponds to the damping coefficient along its respective direction given by the vectors.
-
-% Finally we construct $\vecs {D_{obs}}(\vecs\xi)$ as in \eqref{D_matrix_shaping}. Note that the columns of $\vecs Q(\vecs\xi)$ always form an orthonormal basis and that $\lambda_i \geq 0$ $\forall i=1,...,N$. $\vecs D(\vecs\xi)$ is thus a positive semi-definite matrix.
-
-%In the general case, we would have $\lambda_1 = \lambda_{obs}$  corresponding to the damping coefficients associated with moving into an obstacle, $\lambda_2 = \lambda_{DS}$ the tracking damping and $\lambda_3 = \lambda_{perp}$ is the coefficient responsible for being compliant in the remaining direction.
-
-
-% First, we want the damping coefficient $\lambda_2(\vecs\xi)$ to be equal to $\lambda_{DS}$ only when the DS and the obstacle normal are perpendicular. Likewise, we want this coefficient to be equal to $\lambda_{perp}$ when the normal and the DS are collinear. We thus define: 
-% \begin{equation}
-%     \lambda_2' = \lambda_{perp} \lvert \vecs {e_{1,obs}}^T \vecs {e_{1,DS}} \rvert + \lambda_{DS} (1 - \lvert \vecs {e_{1,obs}}^T \vecs {e_{1,DS}}\rvert)
-% \end{equation}
-% This also solves the case where $\vecs{e_{1,DS}}$ and $\vecs{e_{2,obs}}$ are perfectly collinear. In this case, the matrix $Q(\xi)$ would become discontinuous, making $D_{obs}$ also discontinuous. This definition of $\lambda_2'$ is designed to converge to the same value as $\lambda_3$, which keeps $D_obs$ always defined.
-
-% The damping coefficient $\lambda_1$ could stay constant. However, we introduce a design that allows for more compliance in XX section.
-
-%% \subsection{Special cases} \label{limit_cases}
-%% \subsubsection{Obstacle normal undefined}
-%% It could happen that $\vecs n(\vecs \xi)$ is undefined (zero-vector) due to normals of many obstacles canceling each other. To solve this issue, we use smooth step functions. These functions, $H_{a,b}(x)$ and $H_{a,b}^-(x)$, take a value of 0 before $a$ and 1 after $b$, and inversely. They are properly defined in the appendix.
-%% As $\lVert \vecs n(\vecs \xi) \rVert \rightarrow 0$, we modify the weight $w$ and make it tend to $0$. This has the effect of smoothly returning to $\vecs D = \vecs{D_{DS}}$, the traditional passive control damping matrix. An implementation is proposed here:  
-%% \begin{equation}
-%% \label{weight_vanish_norm}
-%%     w' = w H_{0, \epsilon}(\lVert \vecs n(\vecs \xi) \rVert)
-%% \end{equation}
-%% with $\epsilon = 0.01$ chosen in practice.\\
-%% Fig.~\ref{fig_smooth_w} shows how this affects the weight function.
-
-%% \begin{figure}
-%% \centerline{\includegraphics[width=0.5\textwidth]{figures/smooth_step_weight.png}}
-%% \caption{Function used to modify the weight when $\lVert \vecs n(\vecs \xi) \rVert \rightarrow 0$. As an example, we took $w = 0.5$.}
-%% \label{fig_smooth_w}
-%% \end{figure}
-
-\subsection{Damping Only Towards Obstacle} \label{sec:damping_only_toward}
-To reject only the disturbances that push the agent against the obstacle and allow compliance in the perpendicular direction away from the obstacle, we have added a new feature. Suppose the robot is currently moving away from the obstacle ($\vecs{\dot\xi}^T \vecs n(\vecs\xi) > 0$). In that case, the value of $\lambda_1$ gets overwritten with $\lambda_{perp}$, the desired damping coefficient for compliance in the orthogonal direction. This ensures that only the disturbances pushing the agent towards the obstacle are damped. 
-
-%% With this feature active, the damping matrix also depends on the velocity. However, as $\vecs{\dot\xi}^T \vecs n(\vecs\xi)$ changes of sign, $\lambda_2$ changes abruptly. This causes $\frac{\partial}{\partial \vecs{\dot\xi}} \vecs D(\vecs{\dot\xi}, \vecs\xi)$ to be infinite at some places, which loses continuity. This can be avoided using again the smooth step functions $H_{a,b}(x)$ and $H_{a,b}^-(x)$. We define,
-%% \begin{equation}
-%%     \lambda_1' = \lambda_{obs} H_{0,\epsilon}^-(\vecs{\dot\xi}^T \vecs n(\vecs\xi)) + \lambda_{perp} H_{0, \epsilon}(\vecs{\dot\xi}^T \vecs n(\vecs\xi))
-%% \end{equation}
-%% which is now smoothly defined. We used $\epsilon = 0.01$ in practice.\\
-
-\begin{equation}
-  s_1^{DS} =
-  \begin{cases}
-    s^{DS} & \text{if} \;\; \left(\vect f(\vecs \xi) - \vecs{\dot \xi} \right)^T \vecs n(\vect \xi) > 0 \\
-    0 & \text{otherwise}
-  \end{cases}
-  \label{eq:leaving_compliance}
-\end{equation}
-
-% Note that in the rest of this work, we will continue referring to $\matd{D}(\vecs{\dot\xi}, \vecs\xi)$ as $\matd D(\vecs\xi)$.
-
-
-\subsection{Damping Parameter Design}
-The damping values are chosen such that $s^{\mathrm{obs}}$ is high to ensure a big damping towards the obstacle. $s^{DS}$ should have a medium-high value to ensure motion in the desired direction. And finally, $s^{c}$ is chosen smaller to allow compliance in all other directions. Thus, we have:
-\begin{equation}
-s^{\mathrm{obs}} > s^{DS} \gg s^{c} > 0
-\end{equation}
-
-% here the subsection with proof of lukas
+\input{input/obstacle_aware_passivity}
 \input{input/passivity_proof}
-
-
 \input{input/collision_avoidance}
 \input{input/discrete_time}
 
 \input{input/results}
- 
-
 
 % \appendix
 % \section{Appendix}

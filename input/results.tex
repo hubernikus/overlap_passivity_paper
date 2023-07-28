@@ -1,90 +1,49 @@
 \section{Evaluation}  \label{sec:evaluation} 
-The proposed obstacle aware controller\footnote{Source coude: \url{https://github.com/hubernikus/obstacle_aware_damping}} is compared to a baseline, the dyanmics preserving controller \cite{kronander2015passive}.
-
+The proposed obstacle aware controller\footnote{Source code: \url{https://github.com/hubernikus/obstacle_aware_damping}} is compared to a baseline, the velocity preserving controller \cite{kronander2015passive}.
 
 \subsection{Qualitative Comparison} \label{sec:qual_comp}
-We first qualitatively observe the behavior of the proposed controller in different scenarios (Fig.~\ref{fig:obstacle_aware_damping_comparison}). The scenario entails three obstacles, which the agent is approaching from different starting positions. The time step is $0.01 s$, the agent has a mass matrix of $\matd{M} = \matr{I}$, and follwing damping values: 
-$s^{\mathrm{obs}}=$\qty{200}{s^{-1}},
-$s^{\mathrm{DS}}=$\qty{100}{s^{-1]}}, and
-$s^{\mathrm{c}}=$\qty{20}{s^{-1}}.
-In each scenario, a disturbance (arrow) is applied at the same time step.
-The undisturbed trajectory is displayed for comparison.
-% Based on this simulation, we can observe the robots' behavior in different scenarios.
+We initially conduct a qualitative analysis of the proposed controller's behavior in various scenarios, as depicted in Figure~\ref{fig:obstacle_aware_damping_comparison}. In each scenario, the agent approaches three obstacles from distinct starting positions. The time step employed is $0.01$ seconds, and the agent's mass matrix is $\matd{M} = \matr{I} m$. The controller is implemented using the following damping values:
+$s^{\mathrm{obs}}=~$\qty{200}{s^{-1}},
+$s^{\mathrm{f}}=$~\qty{100}{s^{-1}}, and
+$s^{\mathrm{c}}=$~\qty{20}{s^{-1}}.
+In each scenario, a disturbance (indicated by an arrow) is applied at the same time step. To provide a basis for comparison, the undisturbed trajectory is also displayed alongside the disturbed trajectory.
 
-The top trajectory, the robot is pushed towards the stand-alone obstacle. The obstacle aware controller safely avoids collision and continues to towards the attractor. Conversely, the baseline controller which focuses on conserving the dynamics is begin pushed into the obstacle. 
-% a direction perpendicular to the desired motion. Since we want compliance in this direction and the robot is far from any obstacle, it deviates greatly from its previous trajectory. It continues its path to the attractor on another DS line.
+In the top trajectory, the robot encounters a stand-alone obstacle and experiences a disturbance that pushes it towards the obstacle. With the obstacle-aware controller, the robot adeptly avoids collision and continues moving towards the attractor. In contrast, the baseline controller, which prioritizes velocity conservation, fails to respond effectively and is pushed into the obstacle, resulting in a colliding trajectory.
 
-In the middle trajectory, the disturbance happens when the agent is between two obstacles. We expect that the normal $\vect n(\vecs \xi)$ as used in the controller (Sec.~\ref{sec:obstacle_repulsion}.
-However, by construction its magnitude becomes smaller in narrow passages, see \eqref{eq:averaged_normal}, and hence the damping increases, as described in \eqref{}.
-As a result, the agent safely avoids the disturbance using the obstacle aware conroller. Whereas, the base line controller results in a colliding trajectory.
+Moving to the middle trajectory, a disturbance occurs when the agent is positioned between two obstacles. The obstacle-aware controller utilizes the normal vector $\vect n(\vecs \xi)$, as described in Section~\ref{sec:obstacle_repulsion}. However, due to its construction, the magnitude of $\vect n(\vecs \xi)$ diminishes in narrow passages (as seen in \eqref{eq:averaged_normal}), leading to increased damping in all directions, as described in \eqref{eq:leaving_compliance}. As a result, the agent successfully avoids the disturbance using the obstacle-aware controller, while the baseline controller follows a colliding trajectory.
 
-Finally, during the bottom trajectory, the repulsive force points away from the obstacle. Due to the compliance when moving away from and obstacle as define in \eqref{eq:leaving_compliance}, the obstacle aware and the dynamics preserving controller follow almost identical trajectories.
-k
-% Another disturbance (B) pushed the robot toward the obstacle and was successfully damped, avoiding the collision.
+During the bottom trajectory, the repulsive force points away from the obstacle. The obstacle-aware and the velocity-preserving controllers produce nearly identical trajectories due to equal compliance when moving away from an obstacle as defined in \eqref{eq:leaving_compliance}.
 
-% A disturbance (C) pushed the robot away from an obstacle. The control algorithm is made such that when moving away from an obstacle, disturbances are not damped, and the robot shows compliant behavior. 
-
-% The last disturbance (D) was applied along the direction of motion. As the desired behavior is damped in this direction, the robot almost kept the same speed and continued toward the attractor.
-
-% \begin{figure}
-% \centerline{\includegraphics[width=0.5\textwidth]{figures/run_with_obs.png}}
-% \caption{Simulation with a complex environment and disturbances applied to the robot}
-% \label{fig_run_with_obs}
-% \end{figure}
-
-Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle.
-The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
-
-% The control law presented was tested in simulation in Python. The state space is the Cartesian coordinates $xy$ in 2D and $xyz$ in 3D. In practice, the damping matrix $\matd D(\vecs\xi)$ and the control command $\vecs {\tau_c}$ are recomputed at each time step.\\
-
-% Let us compare traditional passive interaction control and the presented method (Fig.~\ref{fig_diff_obs_pass}). On the setup, the same disturbance is applied to both systems simultaneously. One can already see the robot equipped with traditional passive control (left) penetrates the obstacle, while ours (right) successfully damps the disturbance.
-
-% \begin{figure}
-% \centering
-% \begin{subfigure}{0.8\columnwidth}
-%   \centerline{\includegraphics[width=\textwidth]{figures/run_without_pass.png}}
-%   \caption{Traditional passive control}
-% \end{subfigure}
-% \begin{subfigure}{0.8\columnwidth}
-%   \centerline{\includegraphics[width=\textwidth]{figures/run_with_pass.png}}
-%   \caption{Obstacle aware passive control}
-% \end{subfigure}
-% \caption{Comparison of the two control methods}
-% \label{fig:diff_obs_pass}
-% \end{figure}
+We observe the selective damping of disturbances towards the obstacle. The top and middle disturbances are highly damped, while the bottom disturbance is not damped. This feature imparts a natural behavior of moving away from obstacles.
+% Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle. The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
 
 \begin{figure}
   \centering
   \centerline{\includegraphics[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.pdf}}
-  % \centerline{\includegraphics[width=0.5\textwidth]{figures/multi_obstacle_with_damping.svg}}
-  \caption{The desired dynamics $\dot{\vecs \xi}$ in gray are as input for the force controller. 
-  The mobile robot starting from the three positions, navigates safely to the attractor (black star) despite the disturbances (red arrows) when using the obstacle-aware controller.
-  Conversely, the baseline (blue) leads to collision when the disturbance happens close to the robot.}
+  \caption{
+  The desired velocity $\vect f(\vecs \xi)$ is represented in gray and serves as the input for the force controller. The mobile robot, initially positioned at three different locations, navigates safely towards the attractor (black star) even when confronted with external disturbances (purple arrows) while employing the obstacle-aware controller (blue trajectories). In contrast, the baseline controller (red) results in collisions when disturbances occur in close proximity to the robot.
+  % The desired velocity $\vect f(\vecs \xi)$ in gray is as input for the force controller. The mobile robot starting from the three positions navigates safely to the attractor (black star) despite the disturbances (red arrows) when using the obstacle-aware controller.   Conversely, the baseline (blue) leads to collision when the disturbance happens close to the robot.
+  }
   \label{fig:obstacle_aware_damping_comparison}
 \end{figure}
 
 \subsection{Noise Analysis}
-A real controller is always subject to noise, unexpected disturbances. This can be noise or inaccuracies in sensor readings, or small physical disturbances such as air drag for a fast moving drone, or floor roughness for a mobile robot. 
-A high quality controller is able to reject such disturbances, while maintainingthe control ojbectives: collision avoidance and trajecotry tracking. 
+In practical robotic applications, real controllers are inevitably exposed to noise and unexpected disturbances, arising from sensor inaccuracies, environmental factors, or other external perturbations. A high-quality controller is able to effectively reject such disturbances while simultaneously achieving its control objectives, such as collision avoidance and trajectory tracking.
 
-This section looks at noise disturbance of a simulated agent with an identity mass matrix $\matd M = \matr I$. The discrete time step is chosen as $\Delta t = $\qty{0.2}{s}, furthermore the damping values are set as
-$s^{\mathrm{obs}}=$\qty{50}{s^{-1}},
-$s^{\mathrm{DS}}=$\qty{40}{s^{-1]}}, and
-$s^{\mathrm{c}}=$\qty{5}{s^{-1}}.
-% lambda_DS: 40.00
-% lambda_perp: 5.00
-% lambda_obs: 50.00
- The robot is tasked to follow a linear dynamics of  the form $\vect f(\vecs \xi) = (\vecs \xi^a -  \vecs \xi)$,nd the velocity is capped at a magnitude of \qty{1}{m/s}. 
- The controlless are compared by anaylyzing the minimal distance to the surface along a trajectory $ \min_t \| \vecs \xi_t - \vecs \xi^b \| $, see \eqref{eq:distance_function}.
-
+This section investigates the impact of noise disturbances on a simulated agent with an identity mass matrix $\matd M = \matr I m$. The discrete time step is set to $\Delta t = $\qty{0.2}{s}. Additionally, the damping values are configured as follows: 
+$s^{\mathrm{obs}}=$~\qty{50}{s^{-1}},
+$s^{\mathrm{f}}=$~\qty{40}{s^{-1]}}, and
+$s^{\mathrm{c}}=$~\qty{5}{s^{-1}}.
+%to follow the linear velocity field of  the form $\vect f(\vecs \xi) = (\vecs \xi^a -  \vecs \xi)$,nd the velocity is capped at a magnitude of \qty{1}{m/s}.  The controllers are compared by analyzing the minimal distance to the surface along a trajectory $ \min_t \| \vecs \xi_t - \vecs \xi^b \| $, see \eqref{eq:distance_function}.
+The robot's objective is to follow a linear velocity field of the form $\vect f(\vecs \xi) = (\vecs \xi^a - \vecs \xi)$ with a velocity cap of \qty{1}{m/s}.
+To evaluate the controller's performance, a comparative analysis is conducted by assessing the minimal distance to the surface along the trajectory, denoted as $ \min_t \| \vecs \xi_t - \vecs \xi^b \| $, with the boundary point $\vecs \xi_b$ described in \eqref{eq:distance_function}. 
 
 \subsubsection{Velocity Noise Resistance}
-In the first evaluation, normally distributed noise with mean of zero is added to the velocity $\dot{\vecs{ \xi}}$ before calulating the control force (Fig.~\ref{fig:velocity_noise}). Different variances of the noise are evaluated ranging from \qty{0}{m/s} to \qty{1.0}{m/s}. The start position is at $\vecs \xi_0 = [-2.5, 1.0]^T$ with an initial velocity of zero, and  the attractor at $\vecs \xi^a = [2.5, -1.0]^T$.
-% The experiment is done on a simple setup with one obstacle. The noise added has a mean of $0$, and the standard deviation is increasing linearly from $0.0$ to $0.7m$ for position and $0.0$ to $7.0 \frac{m}{s}$ for velocity measurements. For each noise level, the simulation was run 10 times. The output variable is the smallest distance of the agent from the obstacle during the simulation. This metric was chosen to observe how the noise could lead to a crash in the obstacle. 
+In the initial evaluation, we introduce normally distributed noise with a mean of zero into the agent's velocity $\dot{\vecs{ \xi}}$ before computing the control force (Fig.~\ref{fig:velocity_noise}). 
 
-The obstacle aware controller is able to reject the noise acting on the velocity even with increasing noise variance. Nevertheless, the closest distance during the trajectory is decreasing with higerh values.
-Conversely, the dynamics following has a mean distance which is below zero already at velocity noise variance of $\qty{0.5}{m/s}$, indicating a large number of trajectories colliding with at least one obstacle. 
-It can futher be observed, without noise, the minimal distance along a trjaectory is higher for the obstacle aware controller. This is the result, that there is higher damping towards the obstacle, and hence the curvature of the dynamics guiding around the obstacle is followed more accurately.
+Remarkably, the obstacle-aware controller effectively rejects the noise impacting the velocity, even as the noise variance increases. However, it is essential to note that the closest distance during the trajectory diminishes with higher noise variance. On the contrary, the velocity-following controller's mean distance falls below zero already at a velocity noise variance of $\qty{0.5}{m/s}$, indicating that a substantial number of trajectories collide with at least one obstacle.
+
+Furthermore, in the absence of noise, the obstacle-aware controller maintains a higher minimal distance along the trajectory. This effect results from the higher damping applied towards the obstacle, enabling more precise tracking of the curvature guiding the velocity around the obstacle.
 
 \begin{figure}
     \centering
@@ -98,21 +57,17 @@ It can futher be observed, without noise, the minimal distance along a trjaector
       \caption{The mean and variance (shaded) of the closest distances over 10 epochs.}
       \label{fig:comparison_velocity_noise}
     \end{subfigure}
-	\caption{An agent is navigating towards the attractor (black star) between two elongated obstacles (a), while white noise acting on the agent's velocity. The velocity noise has a mean of zero, and different variances between \qty{0.0}{m / s} and \qty{1.0}{m / s} are evaluated.}
+	\caption{The agent navigates between two elongated obstacles (a) towards the attractor (black star). The agent's velocity is subjected to white noise, with a mean of zero, and noise variances between \qty{0.0}{m/s} and \qty{1.0}{m/s}. The robot initiates its trajectory from the starting position $\vecs \xi_0 = [-2.5, 1.0]^T$, with an initial velocity of zero. It aims to reach the attractor located at $\vecs \xi^a = [2.5, -1.0]^T$.}
 \label{fig:velocity_noise}
 \end{figure}
 
 \subsubsection{Position Noise Resistance} \label{sec:position_noise}
-In the second experiment, normally distributed noise with mean of zero is added to the position $\vecs{ \xi}$ (Fig.~\ref{fig:position_noise}). The variances of the noise are ranging from \qty{0.0}{m/s} to \qty{0.3}{m/s}. The start position is at $\vecs \xi_0 = [-2.5, -1.0]^T$ with an initial velocity of zero, and  the attractor at $\vecs \xi^a = [2.5, 1.0]^T$.
-% For the noise acting on the position measurement, the controller presents good rejection for a small noise variance. As it increases, the robot's behavior quickly worsens (Fig.~\ref{fig_pos_noise}). The robot penetrates the obstacle for noises of standard deviation $ > 0.4 m$. An example of a run with $\sigma_{noise} = 0.7 m$ is shown in Fig.~\ref{fig_pos_noise_0_7}.
+In the second experiment, normally distributed noise with a mean of zero is added to the position $\vecs{ \xi}$ (Fig.~\ref{fig:position_noise}). 
 
-% The obstacle was never penetrated for the velocity measurement noise, asserting the robustness of the control for this type of noise (Fig.~\ref{fig_vel_noise}). Fig.~\ref{fig_2_vel_noise} provides an image of the simulation with big noise standard deviation ($4.0 \frac{m}{s}$). Thanks to the feature presented in Section~\ref{sec:damping_only_toward} (damping only toward the obstacle), the robot has even the tendency to drift away from the obstacle, increasing the safety margin.
-Similarly to the previous evaluatoin, the obstacle aware controller maintains a greater distance to the surface with zero noise, where the dynamics preserving already collides.
-This results in the means of the  distance above zero for standard deviations of the position noise smaller than \qty{0.023}{m} using the obstacle aware controller. Whereas, for the dynamics preserving controller, the mean of the distance to the surface is below zero, indicating collisions.
-However, this is the result of the buffer that comes from the obstacle aware controller. 
-As a similar decrease in distance is detected for both controllers. 
+The obstacle-aware controller maintains a greater distance to the surface even when no noise is present, while the velocity-preserving controller already exhibits collisions. As a result, the obstacle-aware creates trajectories with the mean of the distance above zero for standard deviations of the position noise smaller than \qty{0.023}{m}. Conversely, for the velocity-preserving controller, the mean distance to the surface is below zero for all experiment runs, indicating collisions.
+It is important to note that this difference is attributed to the buffer mechanism inherent in the obstacle-aware controller. Despite a similar decrease in distance for both controllers, the obstacle-aware controller effectively prevents collisions due to its higher impedance towards the obstacles.
 
-Furthermore, a higher variance of the distance is observed in the dynamics preserving controller. We assume that this comes from the fact, that the higher impedance of this controller makes it slower to adapt to a new velocity after being displaced by the noise. Hence, the velocity and the trajectory is more random. 
+Moreover, the velocity-preserving controller exhibits a higher variance of distance, likely stemming from its lower damping, causing it to adapt more slowly to new velocities after being displaced by the noise. Consequently, this behavior leads to more random variations in velocity and trajectory.
 
 \begin{figure}
     \centering
@@ -126,40 +81,57 @@ Furthermore, a higher variance of the distance is observed in the dynamics prese
       \caption{Closest distances concerning different noise levels over 10 epochs.}
       \label{fig:comparison_position_noise}
     \end{subfigure}
-	\caption{The agent is navigating towards the attractor (black star) between two concave obstacles (a), while white noise acting on the agent's position. The velocity noise has a mean of zero, different variances between \qty{0.0}{m} and \qty{0.03}{m} are evaluated.}
+	\caption{
+ The agent is navigating towards the attractor (black star) between two concave obstacles (a) while being subjected to white noise in its position. The position noise has a mean of zero, and various noise variances ranging between \qty{0.0}{m} and \qty{0.03}{m}. The robot starts at position $\vecs \xi_0 = [-2.5, -1.0]^T$, and the attractor is set to $\vecs \xi^a = [2.5, 1.0]^T$.
+ }
 \label{fig:position_noise}
 \end{figure}
 
 
-\subsubsection{Obstacle Aware Passivity Using a Robot Arm}
-The controller was used to guide a 7 degree of freedom robot arm (Pand from Franka Emika) while avoiding collisions. The state $\vect \xi$ of the robot is the end effectors positions, and the obtained control acceleration.final 
+\subsection{Obstacle Aware Passivity Using a Robot Arm}
+The obstacle-aware passivity controller was implemented to guide a 7-degree-of-freedom robot arm (Panda from Franka Emika) while effectively avoiding collisions. 
 
-The joint torque is obtained using inverse kinemtatics:
+The joint torque is computed using inverse kinematics:
 \begin{equation}
 	\vecs \tau_q = \matr J^{\dag}(\vect q) 
 	\begin{bmatrix} \matd D(\vecs \xi) \left( \vect f(\vecs \xi) - \dot{\vecs \xi} \right) \\  p^\alpha (\vecs \alpha - \vecs \alpha^a) \end{bmatrix}
-	% \;\; \text{with} \;\;
-	% \matr J^{\dag} = \matr J^T (\matr J \matr J^T)^{-1}
 \end{equation}
-using the Moore-Penrose pseudo inverse of the Jacobian $\matr J^{\dag} = \matr J^T (\matr J \matr J^T)^{-1}$. The angle $\vecs \alpha$ describes the end effector orientation, and the desired orientation is pointing downward with a quaternio value of $\vecs \alpha^a = [0, 1, 0, 0]$. For the substraction, we use quaternion representation to avoid singularities, but for the evaluation of the torque from the angular offset angle-axis represtation of the orientation is used.
+where $\matr J^{\dag}$ represents the Moore-Penrose pseudo inverse of the Jacobian matrix, and $\vecs \alpha$ and $\vecs \alpha^a$ denote the end effector's orientation and the desired orientation, respectively. The angular damping parameter is chosen as $p^\alpha = 5.5$.
+The desired orientation $\vecs \alpha^a$ is pointing downward with a quaternion value of $(w, x, y, z) = (0, 1, 0, 0)$. For the subtraction, we use quaternion representation to avoid singularities, but for the evaluation of the torque from the angular offset angle-axis representation of the orientation is used.
+% using the Moore-Penrose pseudo inverse of the Jacobian $\matr J^{\dag} = \matr J^T (\matr J \matr J^T)^{-1}$. The angle $\vecs \alpha$ describes the end effector orientation, and the desired orientation $\vecs \alpha^a$ is pointing downward with a quaternion value of $(w, x, y, z) = (0, 1, 0, 0)$. For the subtraction, we use quaternion representation to avoid singularities, but for the evaluation of the torque from the angular offset angle-axis representation of the orientation is used.
 
-The angular damping is chosesn as $p^\alpha = 5.5$.
+The angular damping is chosen as $p^\alpha = 5.5$.
 The damping values are set as
-$s^{\mathrm{obs}}=\, $ \qty{160}{s^{-1}},
-$s^{\mathrm{DS}}= \,$ \qty{64}{s^{-1]}}, and
-$s^{\mathrm{c}}= \,$ \qty{16}{s^{-1}}.
-% multiplier = 8.0  # increase for faster but less stable
-% self.linear_principle_damping = 8 * multiplier  # 50.
-% self.linear_obstacle_damping = 20 * multiplier  # 60.
-% self.linear_orthogonal_damping = 2 * multiplier  # 20.
+$s^{\mathrm{obs}}=$~\qty{160}{s^{-1}},
+$s^{\mathrm{f}}=$~\qty{64}{s^{-1]}}, and
+$s^{\mathrm{c}}=$~\qty{16}{s^{-1}}.
 
+The robot start position is approximately at $\vecs \xi_0 = [0.3\mathrm{m}, 0.4\mathrm{m}, 0.3\mathrm{m},]^T$ and the attractor is at position $\vecs \xi^a = [0.26 \mathrm{m}, -0.53\mathrm{m}, 0.33\mathrm{m}]^T$.
+The robot encounters a single squared box with axes length \qty{0.16}{m} and a margin of \qty{0.12}{m}, placed approximately at the center between the start and attractor positions. The precise location of the box is tracked in real-time using a marker-based vision system (Optitrack). As the robot passes by the box, it is disturbed by a strong push $\vecs t^e$ towards the box. The experiment is repeated ten times for both controllers, as well as for the undisturbed motion.
+% The motion is guided by the dynamical system in the presence of a single squared box with axes length \qty{0.16}{m}, and a margin of \qty{0.12}{m}. The box is placed approximately at the center of the start and attractor, but the precise location  is obtained at each time step using a marker based vision system (Optitrack).  While passing the box, the robot is disturbed by a strong push $\vecs t_e$ towards the box. The sequence is repeated 10 times for both controllers, as well as for the undisturbed motion.
 
-The robot was set to move from initial position approximately at $\vecs \xi_0 = [0.3\mathrm{m}, 0.4\mathrm{m}, 0.3\mathrm{m},]^T$ to the attractor $\vecs \xi^a = [0.26 \mathrm{m}, -0.53\mathrm{m}, 0.33\mathrm{m}]^T$.
-The motion is guided by dynamical system in the presence of a single squared box with axes length \qty{0.16}{m}, and a margin of \qty{0.12}{m}. The box is placed approximately at the center of start and attractior, but the precise loaction  is obtained at each time step using marke based vision system (optitrack). 
-While passing the box, the robot is disturbed by a strong push $\vecs t_e$ towards the box. The sequence is repeated 10 times for both controllers, as well as for the undisturbed motion.
+% From the experimental results in Figure~\ref{fig:evaluation_on_robot_arm}, it is observed that using the obstacle ware controller, the robot is able to stay on average \qty{0.15}{m} away from the obstacle surface. While for the velocity preserving controller, the mean distance is below \qty{0.05}{m}, and many trajectories collide with the box. 
+% This results from a much weaker control force of the obstacle-aware controller. Which has a high peak as soon as the disturbance occurs, at around \qty{1.45}{s}. Conversely, for the velocity preserving trajectory, no such high peak occurs, and the controller only acts when the robot is almost colliding. In fact, the obstacle-aware controller already shows high forces before the disturbance, this additionally results in improved tracking of the avoidance trajectory as we've seen in Section~\ref{sec:position_noise}.
+The experimental results in Figure~\ref{fig:evaluation_on_robot_arm} demonstrate that the obstacle-aware controller allows the robot to maintain an average distance of \qty{0.15}{m} away from the obstacle surface. In contrast, the velocity-preserving controller results in a mean distance below \qty{0.05}{m}, and numerous trajectories lead to collisions with the box. On average, the robot passes further away from the obstacle using the obstacle-aware controller and exhibits higher forces, Table~\ref{tab:evaluation_on_robot_arm}.
 
-From the experimental results in Figure~\ref{fig:evaluation_on_robot_arm}, it is observed that using the obstacle ware controller, the robot is able stay on average \qty{0.15}{m} away from the obstacle surface. While for the dynamics preserving controller, the mean distance is below \qty{0.05}{m}, and many trajectories collide with the box. 
-This results from a much weaker control force of the obstacle aware controller. Which has a high peak as soon as the disturbance occurs, at around \qty{1.45}{s}. Conversely, for the dynamics preserving trajecotry no such high peak occurs, and the controller only acts when the robot is almost in collision. In fact, the obstacle aware controller already show high forces before the disturbance, this additionally results in improved tracking of the avoidance trajectory as we've seen in Section~\ref{sec:position_noise}.
+\begin{table}[htb]
+% Distance [NoDist]: 0.1672703839  \pm 0.009033828534378131
+% Distance [PassiveDS]: 0.018012260429208955  \pm 0.02613021511175264
+% Distance [Aware]: 0.10564614093567434  \pm 0.02136799916777507
+% No-Interaction Force: 2.8572200673080523 \pm 0.36821047478539665 
+% No-Damping Force: 3.5782840941712544 \pm 0.23762587158014598 
+% Obstacle-Aware Force: 4.1208857008362125 \pm 0.25191997294727264 
+    \centering
+    \begin{tabular}{|l|c|c|c|} \hline
+        & Obstacle & Velocity & Undisturbed \\ \hline
+         Closest Distance [mm] &  105 $\pm$ 21 & 18 $\pm$ 21 & 167 $\pm$ 9 \\ \hline
+         Maximum Force [N] & 4.12 $\pm$ 0.25 & 3.58 $\pm$ 0.24 & 2.86 $\pm$ 0.37  \\ \hline 
+    \end{tabular}
+    \caption{The mean and standard deviation of the closest distance and maximum force over the 10 epochs.}
+    \label{tab:evaluation_on_robot_arm}
+\end{table}
+
+This outcome is attributed to the obstacle-aware controller's stronger control force, with a high peak occurring around \qty{1.45}{s} when the disturbance is encountered. In contrast, the velocity-preserving controller only reacts when the robot is almost colliding, leading to a delayed response. Additionally, the obstacle-aware controller exhibits higher forces even before the disturbance, which contributes to improved tracking of the avoidance trajectory, as observed in Section~\ref{sec:position_noise}. These findings affirm the superior collision avoidance capabilities and tracking performance of the obstacle-aware passivity controller in real-world robot arm scenarios.
 
 
 \begin{figure}
@@ -168,14 +140,14 @@ This results from a much weaker control force of the obstacle aware controller. 
     \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_obstacle_aware016}\hfill%
     % \includegraphics[width=0.33\textwidth]{figures/franka_sequence/franka_obstacle_aware018}\hfill%
     \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_obstacle_aware020}
-      \caption{Obstacle aware controller rejects repulsion and avoids collision}
+      \caption{Obstacle-aware controller rejects repulsion and avoids collision}
       \label{fig:franka_sequence_obstacle_aware}
     \end{subfigure}
 	\begin{subfigure}{\columnwidth}
     \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_velocity_conserving021}\hfill%
     % \includegraphics[width=-1.33\textwidth]{figures/franka_sequence/franka_velocity_conserving023}\hfill%
     \includegraphics[width=0.49\textwidth]{figures/franka_sequence/franka_velocity_conserving025}\hfill%
-      \caption{Dynamics preserving controller leads to collsion with obstacle}
+      \caption{Velocity preserving controller leads to collision with obstacle}
       \label{fig:franka_sequence_obstacle_aware}
     \end{subfigure}
 %    \caption{Comparison of the two control methods}
@@ -185,22 +157,24 @@ This results from a much weaker control force of the obstacle aware controller. 
 %     \centering
     \begin{subfigure}{\columnwidth}
       \centerline{\includegraphics[width=\textwidth]{figures/robot_arm_trajectory_xyz}}
-      \caption{The two control methods compared with the undisturbed trajectory. Wider line indicates higher x-value. The darker arrow is the actual, and the brighter the desired velocity.}
+      \caption{The two control methods compared with the undisturbed trajectory. The wider line indicates a higher x-value. The darker arrow is the actual, and the brighter is the desired velocity.}
       \label{fig:robot_arm_trajectory_xyz}
     \end{subfigure}
     \begin{subfigure}{\columnwidth}
 		\includegraphics[width=\textwidth]{figures/trajectory_comparison_force_and_distance}
-      \caption{The specific trajectory (full line), as well as average (dashed line) and variance (shaded area) over 10 runs are visualized. For the control force, mean and variance are evaluated in the logarithmic space.}
+      \caption{The specific trajectory is represented by a full line, while the average (dashed line) and variance (shaded area) are evaluated over 10.  Regarding the control force, both the mean and variance are evaluated in the logarithmic space.}
       \label{fig:trajectory_comparison_force_and_distance}
     \end{subfigure}
-	\caption{Using the obstacle-aware passive controller, combined with a margin of 0.16m around the obstacle, the roboto arm is succesfully able to avoid the disturbance towards the obstacle. A similar disturbance has been applied to the robot arm over the 10 experimental runs. }  
+	\caption{
+The robot arm, guided by the obstacle-aware passive controller, effectively avoids the disturbance towards the obstacle while maintaining a margin of 0.16m around the obstacle. The experiment was repeated 10 times with a similar disturbance applied to the robot arm in each run.
+ }  
     \label{fig:evaluation_on_robot_arm}
 \end{figure}
 
 \section{Discussion}
-Overall, the simulated robot shows pleasing results. It has good tracking performances, compliance in the direction perpendicular to the motion, and great damping of the disturbances towards obstacles.
-Away from obstacles, the controller presented shows similar behavior as the one in \cite{kronander2015passive}. When approaching one obstacle, the control gets damped more to avoid collisions without losing its tracking properties. This makes the proposed controller a suitable option to cumulate good tracking and safety regarding obstacle penetration.
+The simulated robot demonstrates promising results, exhibiting good tracking performance, compliance in the direction perpendicular to the motion, and effective damping of disturbances towards obstacles. The controller performs similarly to the approach presented in \cite{kronander2015passive} when away from obstacles. However, as the robot approaches an obstacle, the control becomes more damped to avoid collisions without compromising its tracking capabilities. This characteristic renders the proposed controller suitable for achieving both precise tracking and obstacle avoidance safety.
 
-\subsection{Applicability Approach}
-Note, that the theoretical analysis from Theorem~\ref{theorem:passivity}, indicates passivity for any velocity-bounded, uniquely damped system. As a result, work such as the damping-based controller in  \cite{kronander2015passive} does not require an energy tank anymore.
-Conversely, if the impedance controller has a proportional $\mathcal{K}$, the adaptive proportional term might induce instabilities even for stable desired dynamics as pointed out in \cite{ferraguti2013tank, kronander2016stability}.
+In the simulation, the robot was able to repulse disturbances in velocity and in position. This allowed the smooth deployment of the algorithms on the real robot arm. Where the proposed controller has been successful in avoiding collision while still remaining compliant.
+
+\subsection{Applicability and Theoretical Analysis}
+It is worth noting that the theoretical analysis from Theorem~\ref{theorem:passivity} indicates passivity for any velocity-bounded, uniquely damped system. Consequently, controllers like the damping-based approach in \cite{kronander2015passive} no longer require an energy tank. Conversely, if the impedance controller features a proportional term $\mathcal{K}$, the adaptive proportional term may induce instabilities, even for a stable desired velocity, as highlighted in \cite{ferraguti2013tank, kronander2016stability}. Careful consideration of the controller design and stability analysis is necessary to ensure robust and safe performance in practical applications.

@@ -1,17 +1,17 @@
 \section{Collision Avoidance} \label{sec:collision_avoidance}
-
-
 % \subsection{Inertia Drift}
 % Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
 
 \subsection{Disturbance Repulsion}
-Let us assume a disturbance impact at time $t_0$, which results in the robot having an impact velocity of $\vecs{\dot \xi} = \vect v^I$, which is pointing towards the obstacle. The impact velocity is much larger than the robot's initial velocity. Thus the latter is neglected, and the obstacle is approximated as locally flat and the velocity locally constant (see Fig.~\ref{fig:collision_avoidance}). Furthermore, we assume to be close to the robot, i.e., $\Gamma(\vecs \xi) \approx 1$, hence the $w(\vecs \xi) \approx 1$, and the damping in the direction of the obstacle is approximated as $s^{\mathrm{obs}}$.
-No further impact forces are applied after the initial impact is absorbed. The Coriolis effect is neglected in the short time frame.
+While the system is passive, it is important to analyze the behavior with respect to obstacles. For this we want to show what velocities can be absorbed based on the proposed controller design.
+
+Let us assume a disturbance impact at time $t_0$, which results in the robot having a velocity of $\vecs{\dot \xi} = \vect f(\vecs \xi) + \vect v^I$, which is pointing towards the obstacle (see Fig.~\ref{fig:disturbance_with_parallel_velocity}). As we assume a large impact velocity, we consider that the obstacle is locally flat and the initial velocity constant and parallel to the surface. Furthermore, we assume to be close to the robot, i.e., $\Gamma(\vecs \xi) \approx 1$, hence the $w(\vecs \xi) \approx 1$, and the damping in the direction of the obstacle is approximated as $s^{\mathrm{obs}}$.
+We further assume that the Coriolis effect can be neglected due to the small motion of the agent.
 
 \begin{lemma}
-	Let us consider a second order continous time system with postion $\vecs \xi_0 \in \mathbb{R}^N$ and velocity $\dot{\vecs \xi}_0 \in \mathbb{R}^N$, which evolves according to \eqref{eq:robot_dynamics} which is governed by the controller \eqref{eq:control_command}, damping matrix $\matd{D}$ defined in \eqref{eq:damping_summation}, and mass matrix with of smallest eigenvalue $m \in \mathbb{R}_{>0}$.
-	Let as assume the system behavior in a region close to the obstacle $\| \vecs \xi - \vecs \xi^b \| \ll 1$, where we have locally constant dynamics $\vect f(\vecs \xi)$ is parallel or away from the surface, and damping value in the direction of the obstacle $s^{\mathrm{obs}}$.
-	The controller is able to reject an impact velocity, i.e., $\Gamma(\vecs \xi_t) \geq 1, \forall t$, if the impact velocity is limited as follows $\| \vect v^I \| < s^{\mathrm{obs}} \| \vecs \xi - \vecs \xi^b \| / m$.
+	Let us a dynamical system that evolves according to \eqref{eq:robot_dynamics} which is governed by the controller \eqref{eq:control_command}, the damping matrix $\matd{D}$ defined in \eqref{eq:damping_summation}, and mass matrix with of smallest eigenvalue $m \in \mathbb{R}_{>0}$.
+	Let us assume the system behavior in a region close to the obstacle $\| \vecs \xi - \vecs \xi^b \| \ll 1$, where we have locally constant dynamics $\vect f(\vecs \xi)$ is parallel or away from the surface, and damping value in the direction of the obstacle $s^{\mathrm{obs}}$.
+	The controller is able to reject an impact velocity $\vect v^I$, i.e., $\Gamma(\vecs \xi_t) \geq 1, \forall t$, if the impact velocity is limited as follows $\| \vect v^I \| < s^{\mathrm{obs}} \| \vecs \xi - \vecs \xi^b \| / m$.
 \end{lemma}
 
 \begin{figure}[htb]
@@ -23,36 +23,37 @@ No further impact forces are applied after the initial impact is absorbed. The C
 % \end{subfigure}
 \end{figure}
 
-
 \begin{proof}
-The velocity of using the proposed controller evolves as follows:
+The velocity using \eqref{eq:control_command} evolves as follows:
 \begin{equation}
     \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D}  
 	\left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt
 \end{equation}
 
-Due to the proximity of the obstalce, we have from \eqref{eq:damping_summation} the weight being $w(\vecs \xi) = 1$. Hence, for the extreme case where the disturbance is towards the obstacle, the velocity evolves as:
+Due to the proximity to the obstacle, we have from \eqref{eq:damping_summation} the weight being $w(\vecs \xi) = 1$. Hence, for the most extreme case where the disturbance is towards the obstacle, the velocity evolves as:
 \begin{equation}
     \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{\dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} (\vecs{\xi} - \vecs \xi_0)  + \vecs v^I \label{eq:velocity_with_control}
 \end{equation}
+Note, that any velocity which does not point towards the surface, will not get as close to the obstacle.
 
-Hence the velocity along the normal reaches zero at position, i.e., 
+This can be used to compute the distance at which the velocity reaches zero:
 \begin{equation}
     \| \vecs{\dot \xi} \| = 0
     \quad \Rightarrow \quad
     \|\vecs \xi_0 - \vecs{\xi} \| = \| \vecs v^I \| {m} / {s^{\mathrm{obs}}} 
 \end{equation}
 
-Hence, if starting at a position which is further or equal to the above distance, a disturbance velocity of $\vect v^I$ can be rejected, see Figure~\ref{fig:disturbance_with_parallel_velocity}.
+Hence, if starting at a position that is further away or at an equal distance, a disturbance velocity of $\vect v^I$ can be rejected, see Figure~\ref{fig:disturbance_with_parallel_velocity}.
 \end{proof}
 
-The above analysis has been specifically for disturbance velocities, however, in practice a system is disturbed by a force. The corresponding disturbance velocity by integrating the force over time (considering the mass matrix, too). 
-Note, that the proposed controller is not able to actively reject a continuous force. However, this can be achieved by designing the dynamics $\vect f(\vecs \xi)$ to point away from the surface, as is proposed in \cite{huber2023avoidance}.
+The above analysis has been specifically for disturbance velocities, yet, a system is disturbed by a force. The corresponding disturbance velocity is obtained by integrating the force over time (considering the mass matrix, too). 
+Note, that the proposed controller is not able to actively reject a continuous force. 
+However, this could be achieved by designing the dynamics $\vect f(\vecs \xi)$ to point away from the surface, as is proposed in \cite{huber2023avoidance}.
 
 \subsection{Disturbance Repulsion with Force Limit}
-All robotic systems have a maximum force that which they  exerted based on the motors and their geometry, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Note, such a force might be state dependent.
+All robotic systems have a maximum force that they  exerted based on the motors and their geometry, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Note, such a force might be state dependent.
 
-A limiting force increases the impact velocity $\vect v^I$ a controller is able to hande to ensure collision avoidance, see Fig.~\ref{fig:disturbance_with_parallel_velocity}. Nevertheless, a maximum control force can be interpreted as and adapting damping parameter, and hence the passivity from Theorem~\ref{theorem:passivity} still holds.
+A limiting force increases the impact velocity $\vect v^I$ a controller is able to handle to ensure collision avoidance, see Fig.~\ref{fig:disturbance_with_parallel_velocity}. Nevertheless, a maximum control force can be interpreted as an adapting damping parameter, and hence the passivity from Theorem~\ref{theorem:passivity} still holds.
 
 % Such a force, can result in an increase of tmaximum impact velocity 
 % Let  us assume strong damping concerning the maximum force, i.e., $s^{\mathrm{obs}} / \tau_c^{\mathrm{max}} \gg 1$, hence we can assume that the magnitude of the obstacle repulsive force is equal to the maximum force close to the obstacle. Hence, the maximum disturbance.
