@@ -32,7 +32,7 @@ For the discrete-time system, the position and velocity of the agent evolve as f
 
 \begin{lemma}
 	Let us consider a discrete-time system given in \eqref{eq:discrete_time_dynamics}, which is governed by the controller \eqref{eq:control_command} and damping matrix $\matd{D}$ defined in \eqref{eq:damping_summation}.
-	Let us consider the input the desired velocity $\vect f(\xi)$ and as output the agent's velocity $\dot{\vecs \xi}$. 
+	Let us consider the input the desired velocity $\vect f(\vecs \xi)$ and as output the agent's velocity $\dot{\vecs \xi}$. 
 	The system is BIBO (bounded-input, bounded-stable) with respect to the velocity, i.e., $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, if all eigenvalues of $\matd{M}^{-1} \matd{D}$ are less or equal to $2 / \Delta t$.
 \end{lemma}
 
@@ -48,7 +48,7 @@ Hence, for the evaluation in discrete time, the evolution of the velocity is giv
 		\vect \xi_t + \Delta t  \; \dot{\vect \xi}_t \\ \
 		\dot{\vecs \xi}_t + \Delta t \, \matd{M}^{-1} \left( \matd{D}(\vect \xi_t) \left( \vect f(\vecs \xi_t) - \dot{\vecs \xi}_t \right) - \matr C \right)
 	\end{bmatrix} \\
-	&  \approx
+	&  = %\approx
 	\begin{bmatrix}
 		1 & \Delta t \\
 		0 & 1 - \Delta t \matd{M}^{-1} \matd D 
