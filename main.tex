@@ -68,14 +68,6 @@ Our method introduces a compliant behavior away from obstacles while strategical
 
 We additionally observe that the obstacle-aware passive controller exhibits superior tracking and collision avoidance performance in the presence of noise.
 The practicality and effectiveness of our approach are validated through implementation on a 7DoF robot arm. Comparative analysis against a baseline method showcases the algorithm's prowess in achieving superior collision rejection, underscoring its potential for real-world applications. Overall, our proposed obstacle-aware passivity controller represents a significant step towards enhanced robot control and safety in complex and uncertain environments.
-% Position-based dynamical systems have enabled new ways of robot control, making the system more robust to noise or disturbances.
-% The dynamics can be designed to incorporate obstacle avoidance capabilities, and combined with passive torque control to safely react to disturbances.
-% In this work, we propose a novel method to design the passivity controller to improve the handling of external forces. 
-% The method maintains compliant behavior away from obstacles but increases the damping of the control when approaching one of them, allowing the robot to be aware of its environment.
-% The algorithm is shown to remain passive (stable) with respect to disturbances in all scenarios. 
-% Moreover, we obtained improved collision avoidance, and stability in the presence of high damping values. 
-% The obtacle-aware passive controller shows improved tracking and collision avoidance performance in the presence of noise. 
-% Finally, the algorithm was implemented on a 7DoF robot arm. Superior collision rejection was achieved compared to the baseline method.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -84,19 +76,7 @@ Obstacle avoidance, dynamical systems, passivity, human-robot interaction
 
 \input{input/introduction}
 \input{input/preliminaries}
-
-\subsection{Problem Statement}
-Following assumptions are made about the desired velocity $\vecs f(\vecs\xi)$:
-\begin{enumerate}
-    \item $\vecs f(\vecs\xi)$ is continuously  for all reachable states.
-    %% \item $\vecs f(\vecs\xi)$ has a single equilibrium point $\vecs\xi^a$, such that $\{ \vecs \xi : \vecs f(\vecs \xi) = \vecs 0 \} = \{ \vecs\xi^a \}$. 
-    \item $\vecs f(\vecs\xi)$ is bounded, i.e., there exists a constant $v^{\mathrm{max}} \in \mathbb{R}$ such that $\| \vecs f(\vecs\xi) \| \leq v^{\mathrm{max}} \;\; \forall \, \vecs \xi \in \mathbb{R}^N$
-    \item It leads to a collision-free motion $\vecs{n_o}(\vecs\xi)^T \vecs f(\vecs\xi) \geq 0$ as $\Gamma_o \rightarrow 1 
-  \quad \forall o = 1 .. N^{\mathrm{obs}}$
-  with the normal $\vecs n_o (\vecs \xi)$ and distance $d_o$ of the $o$-th obstacle. 
-\end{enumerate}
-
-Note that velocities obtained using DSM, given in \eqref{eq:modulated}, fulfill these conditions if velocity function $\vecs f^I$ is continuous and bounded.
+\input{input/problem_statement}
 
 \input{input/obstacle_aware_passivity}
 \input{input/passivity_proof}
@@ -104,10 +84,6 @@ Note that velocities obtained using DSM, given in \eqref{eq:modulated}, fulfill 
 \input{input/discrete_time}
 
 \input{input/results}
-
-% \appendix
-% \section{Appendix}
-% \label{Appendix}
 
 \renewcommand*{\bibfont}{\footnotesize}
 \printbibliography

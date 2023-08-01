@@ -1,0 +1,89 @@
+% \documentclass[conference]{IEEEtran}
+% %\IEEEoverridecommandlockouts
+% % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+% %% \usepackage{cite}
+% \usepackage{hyperref}
+% \usepackage{svg}
+% 
+% \usepackage{amsmath,amssymb,amsfonts}
+% \usepackage{amsthm} % Allows usage of '\theoremstyle'
+% 
+% \usepackage{algorithmic}
+% \usepackage{graphicx}
+% \usepackage{textcomp}
+% \usepackage{xcolor}
+% \usepackage{subcaption}
+% \usepackage[font=small,labelfont=bf]{caption} % small fontsize in caption
+% 
+% \usepackage{siunitx}
+% 
+% %% \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+% %%     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+% 
+% \usepackage[
+%     backend=biber,
+%     style=ieee,
+%     sorting=none,
+%     %% citestyle=authoryear
+%     ]{biblatex}
+% \addbibresource{bibliography.bib}
+% 
+% \usepackage[normalem]{ulem}
+% 
+% 
+% \begin{document}
+% \newcommand{\vect}[1]{\boldsymbol{#1}}
+% \newcommand{\vecs}[1]{\boldsymbol{#1}}
+% \newcommand{\matr}[1]{\boldsymbol{#1}}
+% \newcommand{\matd}[1]{\mathcal{#1}}
+% 
+% \newcommand{\dotprod}[2]{\left\langle {#1}, \, {#2} \right\rangle}
+% \newcommand{\normdotprod}[2]{\frac{\left\langle #1, \, #2 \right\rangle}{\| #1 \| \, \| #2 \|}}
+% 
+% 
+% \newtheorem{theorem}{Theorem}[section]
+% \newtheorem{corollary}{Corollary}[section]
+% \newtheorem{lemma}{Lemma}[section]
+% % \theoremstyle{definition}
+% \newtheorem{definition}{Definition}[section]
+% 
+
+ 
+\chapter{Obstacle Aware Passive Control}
+% \title{
+% Obstacle Aware Passive Control \\
+% to Follow Desired Velocities
+% }
+% \author{
+%   \IEEEauthorblockN{Lukas Huber, Trinca Thibaud, Jean-Jacques Slotine, Aude Billard}
+% }
+% 
+% \maketitle
+% \thispagestyle{plain}
+% \pagestyle{plain}
+% 
+% \begin{abstract}
+Position-based velocity evaluation has revolutionized robot control methodologies, endowing the systems with enhanced resilience against noise and disturbances. The desired velocities can incorporate obstacle avoidance capabilities, further bolstered by passive torque control to ensure safe responses to external perturbations. 
+In this paper, we propose a novel method for designing passivity controllers that internalizes the presence of obstacles during the handling of external forces.
+
+Our method introduces a compliant behavior away from obstacles while strategically increasing control damping upon approaching obstacles, thereby enabling the robot to maintain heightened environmental awareness. The algorithm's passivity is proven to remain stable across all scenarios, effectively countering disturbances. Additionally, we show superior behavior in collision avoidance and overall stability, particularly in scenarios with high damping values. 
+
+We additionally observe that the obstacle-aware passive controller exhibits superior tracking and collision avoidance performance in the presence of noise.
+The practicality and effectiveness of our approach are validated through implementation on a 7DoF robot arm. Comparative analysis against a baseline method showcases the algorithm's prowess in achieving superior collision rejection, underscoring its potential for real-world applications. Overall, our proposed obstacle-aware passivity controller represents a significant step towards enhanced robot control and safety in complex and uncertain environments.
+
+
+
+\input{input/introduction}
+\input{input/preliminaries}
+\input{input/problem_statement}
+
+\input{input/obstacle_aware_passivity}
+\input{input/passivity_proof}
+\input{input/collision_avoidance}
+\input{input/discrete_time}
+
+\input{input/results}
+
+% \renewcommand*{\bibfont}{\footnotesize}
+% \printbibliography
+

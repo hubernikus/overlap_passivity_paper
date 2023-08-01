@@ -1,0 +1,12 @@
+\subsection{Problem Statement}
+Following assumptions are made about the desired velocity $\vecs f(\vecs\xi)$:
+\begin{enumerate}
+    \item $\vecs f(\vecs\xi)$ is continuously  for all reachable states.
+    %% \item $\vecs f(\vecs\xi)$ has a single equilibrium point $\vecs\xi^a$, such that $\{ \vecs \xi : \vecs f(\vecs \xi) = \vecs 0 \} = \{ \vecs\xi^a \}$. 
+    \item $\vecs f(\vecs\xi)$ is bounded, i.e., there exists a constant $v^{\mathrm{max}} \in \mathbb{R}$ such that $\| \vecs f(\vecs\xi) \| \leq v^{\mathrm{max}} \;\; \forall \, \vecs \xi \in \mathbb{R}^N$
+    \item It leads to a collision-free motion $\vecs{n_o}(\vecs\xi)^T \vecs f(\vecs\xi) \geq 0$ as $\Gamma_o \rightarrow 1 
+  \quad \forall o = 1 .. N^{\mathrm{obs}}$
+  with the normal $\vecs n_o (\vecs \xi)$ and distance $d_o$ of the $o$-th obstacle. 
+\end{enumerate}
+
+Note that velocities obtained using DSM, given in \eqref{eq:modulated}, fulfill these conditions if velocity function $\vecs f^I$ is continuous and bounded.
