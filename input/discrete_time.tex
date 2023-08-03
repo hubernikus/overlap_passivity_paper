@@ -115,15 +115,6 @@ The stability guarantees in the previous section, the stability of the system wa
 Due to the fact that the first eigenvalue is exactly equal to one, asymptotic convergence does not occur. 
 This implies, that if the input goes to zero, i.e., $\vect f(\vecs \xi) = \vect 0$, the system stops and does not converge to a specified point. Since the desired velocity should only reach zero at the attractor, the system is expected to converge in most cases.
 
-% Additionally, convergence could to a specific point could be achieved the controller could be modified by introducing an additional proportional term, as is common in an impedance controller:
-% \begin{equation}
-% 	\vecs{\tau_c} = \vect g (\vecs\xi) 
-% 	% + \matd{D}(\vect \xi, \dot{\vect \xi}) \dot{\vect \xi}  
-% 	+ \matd{D}(\vecs\xi) \left(\vecs f(\vecs\xi) - \vecs{\dot\xi} \right) 
-% 	+ \matd{P}(\vecs \xi) \left(\vecs \xi - \vecs \xi^a \right)
-% \label{eq:control_command}
-% \end{equation}
-% However, this design interferes with the basis passive controller, and the convergence towards the attractor is facilitated by (stable) velocity $\vect f(\vecs \xi)$. 
 Yet, asymptotic stability is not guaranteed for general nonlinear input dynamics. Especially for dynamics with high curvature and low damping value, the final trajectory can end up in limit cycles ((Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
 
 \begin{figure}[htb]

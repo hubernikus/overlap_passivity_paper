@@ -176,5 +176,17 @@ The simulated robot demonstrates promising results, exhibiting good tracking per
 
 In the simulation, the robot was able to repulse disturbances in velocity and in position. This allowed the smooth deployment of the algorithms on the real robot arm. Where the proposed controller has been successful in avoiding collision while still remaining compliant.
 
+\subsection{Discrete Control Convergence}
+Additionally, convergence could to a specific point could be achieved the controller could be modified by introducing an additional proportional term, as is common in an impedance controller:
+\begin{equation}
+	\vecs{\tau_c} = \vect g (\vecs\xi) 
+	% + \matd{D}(\vect \xi, \dot{\vect \xi}) \dot{\vect \xi}  
+	+ \matd{D}(\vecs\xi) \left(\vecs f(\vecs\xi) - \vecs{\dot\xi} \right) 
+	+ \matd{P}(\vecs \xi) \left(\vecs \xi - \vecs \xi^a \right)
+\label{eq:control_command}
+\end{equation}
+However, this design interferes with the basis passive controller, and the convergence towards the attractor is facilitated by (stable) velocity $\vect f(\vecs \xi)$. 
+
+
 \subsection{Applicability and Theoretical Analysis}
 It is worth noting that the theoretical analysis from Theorem~\ref{theorem:passivity} indicates passivity for any velocity-bounded, uniquely damped system. Consequently, controllers like the damping-based approach in \cite{kronander2015passive} no longer require an energy tank. Conversely, if the impedance controller features a proportional term $\mathcal{K}$, the adaptive proportional term may induce instabilities, even for a stable desired velocity, as highlighted in \cite{ferraguti2013tank, kronander2016stability}. Careful consideration of the controller design and stability analysis is necessary to ensure robust and safe performance in practical applications.
