@@ -45,10 +45,10 @@ Alternative methods are combining impedance controllers with admittance controll
 However, these controllers' adaptation focus on improving movement accuracy rather than actively rejecting disturbances.
 
 % Stale interaction controller
-Passive controller with stability based guaranteed using s storage tank function based on the energy of the system allowed to limit contact force when interacting with the environment \cite{kishi2003passive}.
+Passive controller with stability based guaranteed using s storage tank function based on the system's energy allowed to limit contact force when interacting with the environment \cite{kishi2003passive}.
 A general framework can be used to ensure that position-, torque-, and impedance controllers exhibit passive \cite{albu2007unified}. By interpreting the torque feedback as the shaping of the motor inertia, the flexible robot arms can be used in complex interaction tasks, such as insertion or wiping.
 % Telemanipulation
-Teleoperated systems of robot arms come with control delays, and require a closed-loop controller of n robot is able to adapt autonomously ensuring stable and reliable performance. Passive controllers present themselves perfectly for such a task  \cite{stramigioli2005sampled}. This method addresses the intricate dynamics of interactive systems, ensuring stable and reliable performance.
+Teleoperated systems of robot arms come with control delays and require a closed-loop controller of n robot that can adapt autonomously, ensuring stable and reliable performance. Passive controllers present themselves perfectly for such a task  \cite{stramigioli2005sampled}. This method addresses the intricate dynamics of interactive systems, ensuring stable and reliable performance.
 A similar approach involves slowly updating the desired position while incorporating a spring-damper model through an impedance controller, enabling seamless interaction with the system \cite{lee2010passive}.
 However, these models require a human in the loop for collision avoidance.
 
@@ -59,8 +59,8 @@ Alternative approaches limit the impedance controller variables  by setting cons
 % The controller was extended to have variable stiffness to favor task completion \cite{kronander2015passive}. However, both approaches rely on energy tanks for general, desired dynamics and do not give any guarantees in the presence of obstacles.
 
 % Geometric Methods for Obstacle Avoidance / Force Control
-Traditional tracking controllers often require complex linearization or simplification methods. However, a class of geometric, tracking controllers enables exact control of nonlinear mechanical systems with low computational cost \cite{udwadia2003new}. By reformulating control problems as a specific class of optimal controllers, this approach facilitates the derivation of standard control problems in robotics \cite{peters2008unifying}.
-The integration of local Riemannian Motion Policies (RMP) has led to globally stable force-controlled motion \cite{cheng2020rmp}. Moreover, recent advancements in position-dependent Riemannian metrics have improved task design using RMP, allowing for reactive force control under constraints \cite{bylard2021composable}.
+Traditional tracking controllers often require complex linearization or simplification methods. However, a class of geometric tracking controllers enables exact control of nonlinear mechanical systems with low computational cost \cite{udwadia2003new}. By reformulating control problems as a specific class of optimal controllers, this approach facilitates the derivation of standard control problems in robotics \cite{peters2008unifying}.
+Integrating local Riemannian Motion Policies (RMP) has led to globally stable force-controlled motion \cite{cheng2020rmp}. Moreover, recent advancements in position-dependent Riemannian metrics have improved task design using RMP, allowing for reactive force control under constraints \cite{bylard2021composable}.
 Geometric fabrics have emerged as a valuable mathematical tool for shaping a robot's nominal behavior while capturing essential constraints like obstacle avoidance, joint limits, and redundancy resolution \cite{xie2020geometric}. The combination of Finsler geometry and geometric fabrics has further enhanced path consistency \cite{ratliff2021generalized}.
 Integrating geometric fabric methods into classical mechanical systems has unlocked novel physical behaviors, notably exemplified in multi-obstacle avoidance for a 7DoF robot arm \cite{van2022geometric}. Despite these significant achievements, the parameterization of geometric methods remains challenging and can potentially introduce undesired motion artifacts.
 
@@ -75,7 +75,7 @@ Integrating geometric fabric methods into classical mechanical systems has unloc
  % Real-time perception meets reactive motion generation \cite{kappler2018real} -> no real feedback on the collision avoidance level ?!
 
 % AFP / Obstacle avoidance / Motion Control
-In dynamic environments, obstacle avoidance plays a critical role in ensuring safe robot navigation. Early approaches utilized repulsive force fields from robots to avoid collisions of robotic manipulators \cite{khatib1987unified}. However, this method's susceptibility to local minima prompted the introduction of the elastic band method. By interpreting the initial trajectory as an elastic band and stretching the path around obstacles, this technique significantly improved convergence \cite{brock2002elastic}.
+In dynamic environments, obstacle avoidance is critical in ensuring safe robot navigation. Early approaches utilized repulsive force fields from robots to avoid collisions of robotic manipulators \cite{khatib1987unified}. However, this method's susceptibility to local minima prompted the introduction of the elastic band method. By interpreting the initial trajectory as an elastic band and stretching the path around obstacles, this technique significantly improved convergence \cite{brock2002elastic}.
 % \cite{brock2002task}, % Corresponding conference 
 Passive controllers have also been designed to track the curve of the general potential field while compensating for Coriolis and centrifugal forces. Nonetheless, these methods lack the guarantee of disturbance repulsion around obstacles \cite{duindam2004passive}. To address this, the integration of circular fields \cite{singh1996real} has allowed force-controlled navigation in cluttered environments, yielding increased convergence for simple obstacles \cite{haddadin2011dynamic}. This approach has been further combined with force-controlled navigation for manipulators \cite{tulbure2020closing}. 
 However, it is important to note that this method's limitation to convex meshes and does not ensure the absence of local minima in space.
@@ -92,19 +92,27 @@ However, it is important to note that this method's limitation to convex meshes 
 
 % Dynamical system based avoidance + control
 In our prior work \cite{huber2019avoidance, huber2023avoidance}, we introduced a collision avoidance approach inspired by a harmonic potential. By design, this method guarantees the absence of local minima in free space, enabling effective navigation around complex scenarios, even in the presence of star-shaped obstacles.
-During the implementation on a real robot, we utilized a passive controller that closely adheres to the desired velocity \cite{kronander2015passive}. However, one of the limitations of the passive controller is its inability to fully account for the physical surroundings. This makes the robot susceptible to disturbances in close proximity to obstacles, potentially leading to collisions.
+While implementing a real robot, we utilized a passive controller that closely adheres to the desired velocity \cite{kronander2015passive}. However, one of the limitations of the passive controller is its inability to account for the physical surroundings fully. This makes the robot susceptible to disturbances in close proximity to obstacles, potentially leading to collisions.
 
 % Alternatively, in our previous work \cite{huber2019avoidance, huber2023avoidance}, we introduced collision avoidance inspired by a harmonic potential. We ensured the absence of local minima in free space and enabled navigation around complex scenarios with star-shaped obstacles.
 % For implementation on the real robot, a passive controller stays close to the initial dynamics \cite{kronander2015passive}. However, the passive controller does not take into account its physical surrounding, and disturbances in the proximity of obstacles could lead to collisions.
 
-Although DS passive-controlled robots work well in interactive scenarios, they cannot ensure to safely navigate through an obstacle environment. For example, they often give in when being pushed toward an obstacle. This work presents a method to address this problem by modifying the passive control law design, resulting controller is now aware of its environment.
+Although DS passive-controlled robots work well in interactive scenarios, they cannot ensure to navigate through an obstacle environment safely. For example, they often give in when being pushed toward an obstacle. This work presents a method to address this problem by modifying the passive control law design, resulting controller is now aware of its environment.
 
 \subsection{Contribution}
-In this work, we introduce the following contributions:
+In this work, we introduce a passive controller as visualized in Figure~\ref{fig:control_scheme_passive}. We make the following contributions:
+
 \begin{itemize}
 \item The design of a passive controller which ensures obstacle avoidance (Section~\ref{sec:obstacle_aware_passivity})
-\item A passivity guarantee without the need for a storage tank which is applicable to a general damping controller vector fields (Theorem~\ref{theorem:passivity})
+\item A passivity guarantee without the need for a storage tank which applies to general damping controller vector fields (Theorem~\ref{theorem:passivity})
 \item A collision avoidance analysis which provides insight into the path consistency around obstacles (Section~\ref{sec:collision_avoidance})
 \item Discrete-time analysis to ensure stability based on control parameters (Section~\ref{sec:discrete_time_behavior})
 \item Implementation and testing on 7DoF robot arm (Section~\ref{sec:evaluation})
 \end{itemize}
+
+\begin{figure}[thb]
+  \center
+  \includesvg[width=1.0\columnwidth]{figures/control_scheme_passive.svg}
+\caption{The desired velocity $\vect f^b(\vecs \xi)$ can result from a learned velocity field or pointing towards a desired attractor $\vecs \xi^a$. It is used to evaluate the obstacle avoidance velocity $\vect f(\vecs \xi)$, which is fed into the force controller to obtain the control force $\vect \tau_c$.}
+\label{fig:control_scheme_passive}
+\end{figure}
