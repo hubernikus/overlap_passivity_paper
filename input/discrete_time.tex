@@ -105,15 +105,15 @@ The eigenvalues of the above feedback matrix are given as:
 \begin{equation}
 	\vect \lambda_1 = 1 \qquad \vect \lambda_2 = 1 - \Delta t \, \matd{M}^{-1} \matd{D}
 \end{equation}
-The first eigenvalue is stable by design, the second feedback eigenvalue is stable if the maximum eigenvalue of the matrix 
-Hence, if the eigenvalues are smaller or equal to one, the system is stable. This is the case, if the maximum of $\matd{M}^{-1} \matd{D}$ is larger or equal to $\leq 2 / \Delta t$.
+The first eigenvalue is stable by design; the second feedback eigenvalue is stable if the maximum eigenvalue of the matrix. 
+Hence, the system is stable if the eigenvalues are smaller or equal to one \cite{friedland2012control}. This is the case if the maximum of $\matd{M}^{-1} \matd{D}$ is larger or equal to $\leq 2 / \Delta t$.
 \end{proof}
 
 
 \subsection{Asymptotic Stability}
-The stability guarantees in the previous section, the stability of the system was reduced to boundedness. 
-Due to the fact that the first eigenvalue is exactly equal to one, asymptotic convergence does not occur. 
-This implies, that if the input goes to zero, i.e., $\vect f(\vecs \xi) = \vect 0$, the system stops and does not converge to a specified point. Since the desired velocity should only reach zero at the attractor, the system is expected to converge in most cases.
+The stability guarantees in the previous section; the system's stability was reduced to boundedness. 
+Since the first eigenvalue equals one, asymptotic convergence does not occur. 
+This implies that if the input goes to zero, i.e., $\vect f(\vecs \xi) = \vect 0$, the system stops and does not converge to a specified point. Since the desired velocity should only reach zero at the attractor, the system is expected to converge in most cases.
 
 Yet, asymptotic stability is not guaranteed for general nonlinear input dynamics. Especially for dynamics with high curvature and low damping value, the final trajectory can end up in limit cycles ((Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
 

@@ -16,15 +16,11 @@ Incorporating obstacle avoidance into reactive motion controllers remains a cruc
 \begin{figure}
 \centerline{\includegraphics[width=0.5\textwidth]{figures/robot_arm_table_avoidance}}
 \caption{
-% Using the proposed obstacle-aware passivity controller, the robot is able to safely avoid external disturbance and ensure collision avoidance. 
-The novel obstacle-aware passivity controller empowers the robot to gracefully evade external disturbances and maintain collision avoidance. 
-In this dinner table setup, tipping over the closed pasta box might be acceptable, but handling delicate champagne glasses demands care to prevent breakage.
+The proposed obstacle-aware passivity controller empowers the robot to evade external disturbances and maintain collision avoidance gracefully. 
+Tipping over the closed pasta box on this dinner table setup might be acceptable, but handling delicate wine glasses demands care to prevent breakage.
 }
 \label{fig:table_avoidance_with_obstacle}
 \end{figure}
-% Most reactive motion controllers do not specifically consider the task of obstacle avoidance. This is the advantage of impedance controllers; if designed correctly, the motion remains stable for collision avoidance. Additionally, the force applied to an external obstacle remains below a specified threshold.  However, for improved behavior, the robot should avoid collisions proactively before they happen while the impedance control remains in the fail-safe interaction mode.
-
-% In certain scenarios, it is crucial that the robot can reject disturbances. At a dinner table, for example, it might be acceptable to tip over the closed pasta box, however, the fragile champagne glasses need to be handled with care to not break them.
 
 In this paper, we present a novel approach to address these challenges and enhance the adaptability, reactivity, and safety of robotic movements. Our proposed method combines elements of DS control and impedance control, allowing the robot to navigate complex environments while proactively avoiding collisions and adeptly rejecting disturbances. We evaluate the performance of our approach through extensive simulations and practical implementation on a 7DoF robot arm, demonstrating its superiority over traditional methods in achieving robust and safe robot control in real-world scenarios.
 
@@ -37,7 +33,7 @@ Initially, impedance controllers employed constant stiffness, but researchers ha
 
 % Passivity with increased precision
 Passive velocity field controllers have emerged as a compelling technique for encoding desired tasks into velocity fields, combined with damping control laws to regulate robot movements. Stability can be guaranteed by using storage tanks inspired by a virtual flywheel \cite{li1999passive}. 
-Learning and continuously adapting the control parameters have been shown to improve the controller performance in direct human-robot collaboration 
+Learning and continuously adapting the control parameters have been shown to improve the controller performance in direct human-robot collaboration. 
 \cite{gribovskaya2011motion}.
 Increased convergence in passive controllers has achieved higher stiffness along the direction of motion but remains compliant otherwise \cite{kronander2015passive}. 
 Alternative methods are combining impedance controllers with admittance controllers for increased accuracy in cooperative control
@@ -81,7 +77,7 @@ However, this method's susceptibility to local minima prompted the introduction 
 % By interpreting the initial trajectory as an elastic band and stretching the path around obstacles, this technique significantly improved convergence \cite{brock2002elastic}.
 
 % \cite{brock2002task}, % Corresponding conference 
-Passive controllers have also been designed to track the curve of the general potential field while compensating for Coriolis and centrifugal forces. Nonetheless, these methods lack the guarantee of disturbance repulsion around obstacles \cite{duindam2004passive}. To address this, the integration of circular fields \cite{singh1996real} has allowed force-controlled navigation in cluttered environments, yielding increased convergence for simple obstacles \cite{haddadin2011dynamic}. This approach has been further combined with force-controlled navigation for manipulators \cite{tulbure2020closing}. 
+Passive controllers have also been designed to track the curve of the general potential field while compensating for Coriolis and centrifugal forces. Nonetheless, these methods lack the guarantee of disturbance repulsion around obstacles \cite{duindam2004passive}. To address this, the integration of circular fields \cite{singh1996real} has allowed force-controlled navigation in cluttered environments, yielding increased convergence for simple obstacles \cite{haddadin2010real, haddadin2011dynamic}. This approach has been further combined with force-controlled navigation for manipulators \cite{tulbure2020closing}. 
 However, it is important to note that this method's limitation to convex meshes and does not ensure the absence of local minima in space.
 
 % In dynamic environments, obstacle avoidance is crucial for safe navigation. Early approaches used repulsive force fields from robots to avoid collisions of robotic manipulators \cite{khatib1987unified}. 
