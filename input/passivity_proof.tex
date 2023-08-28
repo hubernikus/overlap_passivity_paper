@@ -51,13 +51,13 @@ Moreover, the system is passive as long as the observed velocity $\dot{{\vecs \x
 	% \includesvg[width=0.7\columnwidth]{figures/passivity_analysis.svg}
     \includegraphics[width=0.7\columnwidth]{figures/passivity_analysis}
 	\caption{The system is passive velocities $\dot{\vecs \xi}$ which are larger than the desired velocity $\vect f(\vecs \xi)$, i.e., outside the dashed orange circle.
-    However, the system can be non-passive for small velocities, when  $\dotprod{\dot{\vecs \xi}}{\Delta \vect f} < 0$ (yellow circle). }
+    However, the system can be non-passive for small velocities when  $\dotprod{\dot{\vecs \xi}}{\Delta \vect f} < 0$ (yellow circle). }
 	\label{fig:passivity_analysis}
 \end{figure}
 
 \end{proof}
 
-As in the red region, the system is not passive, the storage function $W$ could increase, and hence the velocity $\dot {\vecs \xi}$ could increase in a non-passive manner. This behavior is not unexpected, as the controller is designed to approach a desired DS $\vect{f}({\vecs \xi})$. Hence, as long as the desired velocity is not reached, the kinetic energy increases even with no force input $\vecs \tau^e$. While the passivity in Lemma~\ref{lemma:passivity}, only holds in a certain region. We can use this property to ensure the stability of the system:
+As in the red region, the system is not passive; the storage function $W$ could increase, and hence the velocity $\dot {\vecs \xi}$ could increase in a non-passive manner. This behavior is not unexpected, as the controller is designed to approach a desired DS $\vect{f}({\vecs \xi})$. Hence, as long as the desired velocity is not reached, the kinetic energy increases even with no force input $\vecs \tau^e$. While the passivity in Lemma~\ref{lemma:passivity}, only holds in a certain region. We can use this property to ensure the stability of the system:
 
 \begin{theorem}  \label{theorem:passivity}
   Let $\vect f(\xi)$ is the desired velocity $\vect f(\vecs\xi)$ with bounded magnitude, i.e., $\| \vect f(\xi) \| < v^{\mathrm{max}}, \forall \xi \in \mathbb{R}^N$.

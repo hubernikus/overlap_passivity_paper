@@ -177,13 +177,13 @@ The simulated robot demonstrates promising results, exhibiting good tracking per
 In the simulation, the robot was able to repulse disturbances in velocity and in position. This allowed the smooth deployment of the algorithms on the real robot arm. Where the proposed controller has been successful in avoiding collision while still remaining compliant.
 
 \subsection{Discrete Control Convergence}
-Additionally, convergence could to a specific point could be achieved the controller could be modified by introducing an additional proportional term, as is common in an impedance controller:
+Additionally, convergence to a specific point can be achieved by modifying the controller by introducing an additional proportional term, as is common in an impedance controller:
 \begin{equation}
 	\vecs{\tau_c} = \vect g (\vecs\xi) 
 	% + \matd{D}(\vect \xi, \dot{\vect \xi}) \dot{\vect \xi}  
 	+ \matd{D}(\vecs\xi) \left(\vecs f(\vecs\xi) - \vecs{\dot\xi} \right) 
 	+ \matd{P}(\vecs \xi) \left(\vecs \xi - \vecs \xi^a \right)
-\label{eq:control_command}
+\label{eq:control_command_proportional}
 \end{equation}
 However, this design interferes with the basis passive controller, and the convergence towards the attractor is facilitated by (stable) velocity $\vect f(\vecs \xi)$. 
 

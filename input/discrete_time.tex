@@ -31,7 +31,7 @@ For the discrete-time system, the position and velocity of the agent evolve as f
 \end{equation}
 
 \begin{lemma}
-	Let us consider a discrete-time system given in \eqref{eq:discrete_time_dynamics}, which is governed by the controller \eqref{eq:control_command} and damping matrix $\matd{D}$ defined in \eqref{eq:damping_summation}.
+	Let us consider a discrete-time system given in Eq.~\eqref{eq:discrete_time_dynamics}, which is governed by the controller from Eq.~\eqref{eq:control_command} and damping matrix $\matd{D}$ defined in Eq.~\eqref{eq:damping_summation}.
 	Let us consider the input the desired velocity $\vect f(\vecs \xi)$ and as output the agent's velocity $\dot{\vecs \xi}$. 
 	The system is BIBO (bounded-input, bounded-stable) with respect to the velocity, i.e., $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, if all eigenvalues of $\matd{M}^{-1} \matd{D}$ are less or equal to $2 / \Delta t$.
 \end{lemma}
