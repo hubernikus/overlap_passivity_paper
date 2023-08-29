@@ -36,10 +36,10 @@ Note that, since ${\matd D^f}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)
 The damping matrix $\matd D^{\mathrm{obs}}(\vecs \xi)$ rejects velocities in the direction of the obstacles. To allow this, we introduce an average normal direction:
 \begin{equation}
   \vecs n(\vecs\xi) = \sum_{o=1}^{N^{\mathrm{obs}}} \vecs{n_o}(\vecs\xi)
-  \frac{1 / (\Gamma_o(\vecs \xi) - 1)}{\sum_{o=1}^{N^\mathrm{obs}} 1 / (\Gamma_o(\vecs \xi) - 1)}
+  \frac{1 / (\Gamma_o(\vecs \xi) - 1)}{\sum_{p=1}^{N^\mathrm{obs}} 1 / (\Gamma_p(\vecs \xi) - 1)}
   \label{eq:averaged_normal}
 \end{equation}
- where the unit normals $\vecs{n_o} (\vecs\xi)$  are pointing away from the obstacle $o \in \{1,  ..,  N^{\mathrm{obs}} \}$, see Figure~\ref{fig:resultant_normal}. 
+ where the unit normals $\vecs{n_o} (\vecs\xi)$  are pointing away from the obstacle $o = 1,  ..,  N^{\mathrm{obs}}$, see Figure~\ref{fig:resultant_normal}. 
 
 The averaged normal $\vecs n(\vecs \xi)$ is a weighted linear combination of the obstacles' normals, giving more importance to closer obstacles.
 Additionally, the averaged normal converges to an obstacle normal as we converge towards it, i.e., $\lim_{\Gamma_o(\vecs \xi) \rightarrow 1} \vecs n(\vecs \xi) = \vecs n_o(\vecs \xi)$.

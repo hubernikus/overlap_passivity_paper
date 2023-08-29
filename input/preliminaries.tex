@@ -1,10 +1,10 @@
 \section{Preliminaries}
 Let $\vecs\xi \in \mathbb{R}^N$ describe the generalized state of the system with $N \geq 2$ dimensions, e.g., the robot's joint positions or the Cartesian space position.
-Now let $\vecs f(\vecs \xi): \mathbb{R}^N \rightarrow \mathbb{R}^N$ be a dynamical system describing the desired velocity at a given state. This DS should be continuous and defined for all states $\vecs \xi$. 
+The function $\vecs f(\vecs \xi): \mathbb{R}^N \rightarrow \mathbb{R}^N$ represents a soothly defined dynamical system (DS) describing the desired velocity at a given state $\vecs \xi$.  
 %Furthermore, all trajectories converge to the unique attractor state $\vecs \xi ^a \in \mathbb{R}^N$. 
 
 \subsection{Obstacle Avoidance}
-Obstacle avoidance based for point masses has been proposed in \cite{huber2022avoiding}. A collision-free path is obtained by modulating the base velocity $\vect f^b(\vecs \xi)$ to obtain the desired velocity:
+Dynamic obstacle avoidance for point-like agents has been proposed in \cite{huber2022avoiding}. A collision-free path is obtained by modulating the base velocity $\vect f^b(\vecs \xi)$ to obtain the desired velocity:
 \begin{equation}
   \vecs f(\vecs \xi) = \textbf{E}(\vecs \xi) \text{diag} \left(\lambda^r, \lambda^e, ..., \lambda^e \right) \textbf{E}(\vecs{\xi})^{-1} \vect f^b(\vecs \xi)
   \label{eq:modulated} 
@@ -51,7 +51,7 @@ A physical system requires an interaction force that moves it around. Hence, gen
 \matd{M}(\vecs\xi)\vecs{\ddot\xi} + \matd{C}(\vecs\xi, \vecs{\dot\xi})\vecs{\dot\xi} + \vect g(\vecs\xi) = \vecs{\tau_c} + \vecs{\tau_e}
  \label{eq:robot_dynamics}
 \end{equation}
-where $\matd M(\vecs\xi) \in \mathbb{R}^{N \times N}$ is the mass matrix of the robot, $\matd C(\vecs\xi,\vecs{\dot\xi}) \in \mathbb{R}^N$ the Coriolis matrix, and  $\vect g(\vecs\xi) \in \mathbb{R}^N)$ the gravity vector, $\vecs{\tau_c} \in \mathbb{R}^N$ the control torque and $\vecs{\tau_e} \in \mathbb{R}^N$ the external torque (also referred as disturbance).
+where we have the mass matrix of the robot $\matd M(\vecs\xi) \in \mathbb{R}^{N \times N}$, the Coriolis matrix $\matd C(\vecs\xi,\vecs{\dot\xi}) \in \mathbb{R}^N$, the gravity vector $\vect g(\vecs\xi) \in \mathbb{R}^N)$, the control torque $\vecs{\tau_c} \in \mathbb{R}^N$, and the external torque, also referred as disturbance, $\vecs{\tau_e} \in \mathbb{R}^N$.
 
 \subsubsection{Passive Control}
 Passive interaction control \cite{kronander2015passive} offers a powerful method for computing control forces from a velocity vector field. This controller provides selective disturbance rejection based on the direction of motion. Typically, the controller is configured with high damping along the direction of motion, ensuring rapid convergence of the robot's velocity to the desired value and thereby achieving excellent tracking performance. In contrast, the controller exhibits high compliance in the direction perpendicular to the motion, enabling flexible behavior and greater resistance to external forces. This versatile approach enables robots to adeptly navigate dynamic environments while maintaining stable and precise control, making it a valuable asset for a wide range of robotic applications.
@@ -66,7 +66,7 @@ The passive control force \cite{kronander2015passive} is given as:
 \end{equation}
 This control law embeds a gravity compensation term and a damping term, which decreases the difference between the desired velocity $\vecs f(\vecs\xi)$ and the actual velocity $\vecs{\dot\xi}$.
 
-The damping matrix $\matd D(\vecs\xi) \in \mathbb{R}^{N \times N}$ is designed to allow for damping in each sub-direction:
+The positive definitie damping matrix $\matd D(\vecs\xi) \in \mathbb{R}^{N \times N}$ is designed to allow for damping in each sub-direction:
 \begin{equation}
    \matd {D}(\vecs \xi) = \matd{Q}(\vecs\xi)\matd{S}(\vecs\xi) \matd{Q} (\vecs \xi)^{-1}
 \label{eq:damping_matrix}
@@ -74,8 +74,8 @@ The damping matrix $\matd D(\vecs\xi) \in \mathbb{R}^{N \times N}$ is designed t
 where $\matd Q(\vecs \xi) \in \mathbb{R}^{N \times N}$ is an othonormal basis matrix. 
 formed by $\vecs{q}_1, \vecs q_2, ..., \vecs q_N$ The first vector is pointing in the desired direction of motion: $\vecs q_1 = \dot{\vecs \xi} / \lVert \dot{\vecs \xi} \rVert$.
 
-The diagonal matrix $\matd{S}(\vecs\xi) \in \mathbb{R}^{N \times N}$ consists of the damping factors in the corresponding direction.
-Increase consistency with the desired velocity s achieved, by setting the first damping factor $s_1$ to a high value. The damping in the remaining directions $s_i$ with $i = 2 .. N$ is set lower to allow compliance perpendicular to the motion. 
+The diagonal matrix $\matd{S}(\vecs\xi) \in \mathbb{R}^{N \times N}$ consists of damping factors in the corresponding direction.
+Increase consistency with the desired velocity s achieved, by setting the first damping factor $s_1 \geq 0$ to a high value. The damping in the remaining directions $s_i \geq 0$ with $i = 2 .. N$ is set lower to allow compliance perpendicular to the motion. 
 
 \subsection{Stability Analysis} \label{sec:trad_passive}
 It is crucial to consider varying control parameters carefully, as they can inject energy into a system, potentially leading to unstable behavior \cite{ferraguti2013tank}. Ensuring stability guarantees is of paramount importance to safeguard both the hardware and the environment in which the control system operates.
@@ -85,7 +85,7 @@ In human-robot interaction, the robot faces external disturbances of unknown nat
 \begin{definition}[Passivity \cite{willems1972dissipative, sepulchre2012constructive}]
   A dynamical system with input $ u \in \mathcal{U}$ and output $y \in \mathcal{Y}$ is passive with respect to the supply rate $s : \mathcal{U} \times \mathcal{Y} \rightarrow{R}$ if, for any $u: \mathbb{R}_{>0} \rightarrow \mathcal{U}$ and any time $t \geq 0$ the following is satisfied
   \begin{equation}
-    \int_0^t s \left( u(\tau),  y (\tau) \right) \geq c^2
+    \int_0^t s \left( u(\tau),  y (\tau) \right) d \tau \geq c^2
   \end{equation}
   where $c \in \mathbb{R}$ depends on the initial conditions.
 \end{definition}
