@@ -1,0 +1,22 @@
+General remark: the paper seems at times meant for people from our group fairly familiar with all techniques used here. 
+
+Intro: The flow of thoughts is not always easy to follow and many concepts (e.g. compliant control, variable stiffness modulation) and not explicitly named as such nor ever explicitly introduced. In a few places, sentences are incomplete or grammatically incorrect.
+
+II.a Description of previous method should be self-contained. Help reader get a sense of what the construct of Eq. 1 and 2 offers geometrically. Restriction on obstacle's type  is not made explicit and only appears in passing at the end. Not all readers may be familiar with notion of star-shaped obstacle. Reference to term "eigenvalues" in Eq. 3 may confuse a reader not used to your work, as there is no explicit reference to an eigendecomposition (or eigencomposition).  
+
+II.b Eq. 6 Add request D(x) positive definite
+
+II.c Consistency of notation. Use of index o is used on and off across sections, and is later replaced by the term Obst.
+
+ Lemma: remove all reference to a publication (31) in Lemma statement. Replace by reference to earlier equation describing control of motion.
+
+Eq. 18, second line, - f(\xhi) is missing in the development
+
+Eq. 21 This is a sufficient but not necessary condition.
+
+Theorem III.1 Proof is imprecise (sketch). Formalize.
+
+Lemma IV.I Statement is too imprecise. Not clear what formal guarantees is offered when stating "the controller is able to reject a velocity". I take it that you mean to say that it can damp the component of this velocity along the obstacle so as to still guarantee no penetration.
+
+proof  Is D(x)=D cst? + Eq. 29 (scalar / matrix) assume diagonal matrix M and D (unless I missed it), not explicitly stated before. 
+

@@ -67,8 +67,10 @@ As in the red region, the system is not passive; the storage function $W$ could 
 \begin{proof}
 From Lemma~\ref{lemma:passivity}, the system is passive when the magnitude of the velocity is larger than the dynamics, i.e. $\| \dot{\vecs \xi} \| > \|\vect f(\vecs \xi) \|$, the orange circle in Figure~\ref{fig:passivity_analysis}.
 Inside this region, the system is not passive, and the velocity $\dot {\vecs \xi}$ can increase. However, the velocity increase is limited to staying below $\| \vect f({\vecs \xi}) \|$ before the system enters the region where it is passive. Hence, the control cannot introduce unexpected energy.
+	$\| \vect f({\vecs \xi}) \|$ before the system enters the region where it is passive. Hence, the control cannot introduce unexpected energy.
 It follows that the system has a bounded output as long as the desired velocity $\mathbf{f}({\vecs \xi})$ is stable and the input $\int_{0}^T \dot{{\vecs \xi}}^T \vecs \tau^e dt$ is bounded. 
 % Since as soon as the observed velocity $\| \dot{{\vecs \xi}} \| $ is larger than the desired velocity, the system behaves passively. Hence, the control cannot introduce unexpected energy.
+
 
 % \subsubsection{Stability with General Damping}
 From \eqref{eq:damping_summation}, a general damping matrix $\matd{S}(\vecs \xi)$ has non-uniform values. Hence, the analysis needs to be extended to general values.
@@ -78,7 +80,8 @@ The damping matrix $\matd{D}({\vecs \xi}) = \matd{Q}({\vecs \xi}) \matd{S}({\vec
 	\quad \text{and} \quad
 	\bar{\Delta \mathbf f} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \Delta \mathbf{f}
 \end{equation}
-where the square root of the diagonal matrix $\Lambda({\vecs \xi})$ is taken element-wise:
+where the square root of the diagonal matrix $\matd{S}({\vecs \xi})$ is taken element-wise:
+		
 \begin{equation}
 \dot{\vecs \xi}^T \matd{D}({\vecs \xi}) \Delta \mathbf{f} = \vecs{\dot \xi}^T \matd{Q}({\vecs \xi}) \matd{S}({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1} \Delta \mathbf{f} = \vecs{\bar v}^T \bar{\Delta \mathbf f}
 \end{equation}
