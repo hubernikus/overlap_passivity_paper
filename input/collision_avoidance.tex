@@ -9,9 +9,8 @@ Let us assume a disturbance impact at time $t_0$, which results in the robot hav
 We further assume that the Coriolis effect can be neglected due to the small motion of the agent.
 
 \begin{lemma}
-	Let us a dynamical system that evolves according to \eqref{eq:robot_dynamics} which is governed by the controller \eqref{eq:control_command}, the damping matrix $\matd{D}$ defined in \eqref{eq:damping_summation}, and mass matrix with of smallest eigenvalue $m \in \mathbb{R}_{>0}$.
-	Let us assume the system behavior in a region close to the obstacle $\| \vecs \xi - \vecs \xi^b \| \ll 1$, where we have locally constant dynamics $\vect f(\vecs \xi)$ is parallel or away from the surface, and damping value in the direction of the obstacle $s^{\mathrm{obs}}$.
-	The controller is able to reject an impact velocity $\vect v^I$, i.e., $\Gamma(\vecs \xi_t) \geq 1, \forall t$, if the impact velocity is limited as follows $\| \vect v^I \| < s^{\mathrm{obs}} \| \vecs \xi - \vecs \xi^b \| / m$.
+	Let us consider a dynamical system that evolves according to the rigid body dynamics given in \eqref{eq:robot_dynamics} and is governed by the obstacle aware, passive controller \eqref{eq:control_command}, using the damping matrix $\matd{D}$ as defined in \eqref{eq:damping_summation}.
+	A motion starting in free space, i.e., $\Gamma( \{\vecs \xi_0 \} ) > 1$ is able to reject disturbance and remain collision free for all times $\Gamma( \{\vecs \xi_t\}) \geq 1$ with $t \geq 0$ if the impact velocity is limited as follows $\| \vect v^I \| < s^{\mathrm{obs}} \| \vecs \xi - \vecs \xi^b \| / m$.
 \end{lemma}
 
 \begin{figure}[htb]
@@ -24,16 +23,19 @@ We further assume that the Coriolis effect can be neglected due to the small mot
 \end{figure}
 
 \begin{proof}
-The velocity using \eqref{eq:control_command} evolves as follows:
+When approaching the obstacle $\| \vecs \xi - \vecs \xi^b \| \ll 1$ with a finite surface curvature, are assumed to be locally constant $\vect f(\vecs \xi)$. Furthermore, they are parallel or point away from the surface normal, i.e., $\dotprod{\vect f(\vecs \xi)}{\vect n(\vecs \xi)} \geq 0$.
+
+Using \eqref{eq:control_command}, the velocity evolves as follows:
 \begin{equation}
     \vecs{\dot \xi} = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D}  
 	\left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt
 \end{equation}
 
-Due to the proximity to the obstacle, we have from \eqref{eq:damping_summation} the weight being $w(\vecs \xi) = 1$. Hence, for the most extreme case where the disturbance is towards the obstacle, the velocity evolves as:
+Due to the proximity to the obstacle, we have from \eqref{eq:damping_summation} the weight being $w(\vecs \xi) = 1$. Hence, for the most critical scenario, where the disturbance is towards the obstacle, the velocity evolves as:
 \begin{equation}
     \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{\dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} (\vecs{\xi} - \vecs \xi_0)  + \vecs v^I \label{eq:velocity_with_control}
 \end{equation}
+where $m = \min \Bigl(\text{eig} \bigl(\mathcal{M} \bigr) \Bigr)$ is the smallest eigenvalue of the mass matrix 
 Note, that any velocity which does not point towards the surface, will not get as close to the obstacle.
 
 This can be used to compute the distance at which the velocity reaches zero:
@@ -45,6 +47,8 @@ This can be used to compute the distance at which the velocity reaches zero:
 
 Hence, if starting at a position that is further away or at an equal distance, a disturbance velocity of $\vect v^I$ can be rejected, see Figure~\ref{fig:disturbance_with_parallel_velocity}.
 \end{proof}
+
+Note as the analysis is done for proximity regions of the obstacle. For a collision to occur, the robot would have to enter this proximity region. Hence, the proposed controller is able to reject a general impact for any region.
 
 The above analysis has been specifically for disturbance velocities, yet, a system is disturbed by a force. The corresponding disturbance velocity is obtained by integrating the force over time (considering the mass matrix, too). 
 Note, that the proposed controller is not able to actively reject a continuous force. 

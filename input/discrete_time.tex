@@ -31,7 +31,7 @@ For the discrete-time system, the position and velocity of the agent evolve as f
 \end{equation}
 
 \begin{lemma}
-	Let us consider a discrete-time system given in Eq.~\eqref{eq:discrete_time_dynamics}, which is governed by the controller from Eq.~\eqref{eq:control_command} and damping matrix $\matd{D}$ defined in Eq.~\eqref{eq:damping_summation}.
+	Let us consider a discrete-time system with state defined in Eq.~\eqref{eq:discrete_time_dynamics}, and is governed by the controller from Eq.~\eqref{eq:control_command} and damping matrix $\matd{D}$ defined in Eq.~\eqref{eq:damping_summation}.
 	Let us consider the input the desired velocity $\vect f(\vecs \xi)$ and as output the agent's velocity $\dot{\vecs \xi}$. 
 	The system is BIBO (bounded-input, bounded-stable) with respect to the velocity, i.e., $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, if all eigenvalues of $\matd{M}^{-1} \matd{D}$ are less or equal to $2 / \Delta t$.
 \end{lemma}
@@ -46,18 +46,18 @@ Hence, for the evaluation in discrete time, the evolution of the velocity is giv
 	=
 	\begin{bmatrix}
 		\vect \xi_t + \Delta t  \; \dot{\vect \xi}_t \\ \
-		\dot{\vecs \xi}_t + \Delta t \, \matd{M}^{-1} \left( \matd{D}(\vect \xi_t) \left( \vect f(\vecs \xi_t) - \dot{\vecs \xi}_t \right) - \matr C \right)
+		\dot{\vecs \xi}_t + \Delta t \, \matd{M}^{-1} \left( \matd{D} \left( \vect f(\vecs \xi_t) - \dot{\vecs \xi}_t \right) - \matr C \right)
 	\end{bmatrix} \\
 	&  = %\approx
 	\begin{bmatrix}
-		1 & \Delta t \\
-		0 & 1 - \Delta t \matd{M}^{-1} \matd D 
+		\mathcal{I} & \mathcal{I} \Delta t \\
+		\vect{0} & \mathcal{I} - \Delta t \matd{M}^{-1} \matd D 
 	\end{bmatrix}
 	\begin{bmatrix}
 		\vect \xi_t \\ \dot{\vect \xi}_t
 	\end{bmatrix}
 	+ \begin{bmatrix}
-		0 \\ 
+		\vect{0} \\ 
 		\Delta t \, \matd{M}^{-1} \matd{D} 
 	\end{bmatrix}
 	\hat{\vect f}(\vecs \xi_t) 
@@ -72,7 +72,7 @@ Hence, for the evaluation in discrete time, the evolution of the velocity is giv
 	\label{eq:discrete_time_proof}
 	\end{split}
 \end{equation}
-where $\hat{\vect f}(\vecs \xi_t) = \vect f(\vecs \xi_t) - \matd{D}^{-1} C$. 
+where $\hat{\vect f}(\vecs \xi_t) = \vect f(\vecs \xi_t) - \matd{D}^{-1} C$.  The state dependency of the matrices $\matd{M}$, $\matd{D}$, and $\matd{C}$ is omitted for brevity, and $\matd{I} \in \mathbb{R}^{N \times N}$ denotes the identity matrix.
 As we look at global stability, the Coriolis acceleration $\matd{C}$ is merged into the dynamical system. Since the Coriolis force is bounded, it follows that if the system is BIBO stable for $\hat{\vect f}(\vect \xi)$ then it is also BIBO stable for $\vect f(\vecs \xi)$ 
 
 % Let us introduce the coordinate transform $\dot{\vect \gamma}_t = \dot{\vect \xi}_t - \vect f(\vecs \xi)$  and hence for the position we have $\vect \gamma_t = \vect \xi_t - \Delta t \vect f(\vecs \xi)$, and hence 
@@ -100,13 +100,27 @@ As we look at global stability, the Coriolis acceleration $\matd{C}$ is merged i
 % \end{equation}
 % The summand $\vect t \vect f(\vecs \xi_t)$ changes the relative position value $\vect \gamma_t$ as long as the desired velocity is not zero. However, this only moves the relative position but does not influence kinetic energy, which has been used as the stability function (Section~\ref{sec:passivity_analysis}).
 
-BIBO stability of a discrete-time system requires that all the eigenvalues of the feedback matrix are smaller or equal to one.
-The eigenvalues of the above feedback matrix are given as:
+BIBO stability of a discrete-time system requires that all the eigenvalues of the feedback matrix are smaller or equal to one \cite{friedland2012control}.
+The eigenvalues of the above feedback system are given as:
 \begin{equation}
-	\vect \lambda_1 = 1 \qquad \vect \lambda_2 = 1 - \Delta t \, \matd{M}^{-1} \matd{D}
+	\vect \lambda_1 = \text{eig}(\mathcal{I}) \qquad \vect \lambda_2 = \text{eig} \left(\mathcal{I} - \Delta t \, \matd{M}^{-1} \matd{D} \right)
 \end{equation}
-The first eigenvalue is stable by design; the second feedback eigenvalue is stable if the maximum eigenvalue of the matrix. 
-Hence, the system is stable if the eigenvalues are smaller or equal to one \cite{friedland2012control}. This is the case if the maximum of $\matd{M}^{-1} \matd{D}$ is larger or equal to $\leq 2 / \Delta t$.
+where both $\vect \lambda_1 \in \mathbb{R}^N$ and $\vect \lambda_2 \in \mathbb{R}^N$ denote a vector containing $N$ eigenvalues.
+All eigenvalues of $\vect \lambda_{1, i} = 1, \; i = 1...N$, and hence are stable by the design of the system. 
+The second set eigenvalues $\vect \lambda_2$  are dependent on the passive control term. 
+However, since $\matd{M}$ and $\matd{D}$ are both positive definite, the eigenvalues are positive:
+\begin{equation}
+	\matd{M} > 0 \; , \;\; \matd{D} > 0 
+	\qquad \Rightarrow \qquad
+	\lambda_{2, i} > 0 \quad i = 1...N
+\end{equation}
+% Furthermore, the system is stable if all eigenvalues are smaller or equal to one \cite{friedland2012control}. 
+Hence, the system is stable if the maximum eigenvalue is limited as:
+\begin{equation}
+	\max \left(\vect \lambda_2 \right) \leq 1 
+	\quad \Rightarrow \quad
+	\max \Bigl( \text{eig}\bigl(\matd{M}^{-1} \matd{D} \bigr)  \Bigr) \leq 2 / \Delta t
+\end{equation}
 \end{proof}
 
 

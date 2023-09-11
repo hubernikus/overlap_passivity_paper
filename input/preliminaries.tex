@@ -82,12 +82,12 @@ It is crucial to consider varying control parameters carefully, as they can inje
 
 In human-robot interaction, the robot faces external disturbances of unknown nature. To achieve stable and bounded behavior in the face of such disturbances, \textit{passivity} analysis proves to be a valuable tool. By employing passivity analysis, the control system can be designed to maintain stable responses (bounded system) in the presence of any external force (bounded input). This property enhances the reliability and safety of the control system, making it more resilient in dynamic and uncertain environments.
 
-\begin{definition}[Passivity \cite{willems1972dissipative, sepulchre2012constructive}]
-  A dynamical system with input $ u \in \mathcal{U}$ and output $y \in \mathcal{Y}$ is passive with respect to the supply rate $s : \mathcal{U} \times \mathcal{Y} \rightarrow{R}$ if, for any $u: \mathbb{R}_{>0} \rightarrow \mathcal{U}$ and any time $t \geq 0$ the following is satisfied
+\begin{definition}[Passivity \cite{willems1972dissipative, sepulchre2012constructive}] \label{def:passivity}
+	A dynamical system with input $ u \in \mathcal{U}$ and output $y \in \mathcal{Y}$ is passive with respect to the supply rate $s : \mathcal{U} \times \mathcal{Y} \rightarrow{R}$ if, for any $u: \mathbb{R}_{>0} \rightarrow \mathcal{U}$ and any time $t^* \geq 0$ the following is satisfied
   \begin{equation}
-    \int_0^t s \left( u(\tau),  y (\tau) \right) d \tau \leq c^2
+	  \int_0^{t^*} s \left( u(t),  y (t) \right) d \tau \geq S(t^*) - S(0) 
   \end{equation}
-  where $c \in \mathbb{R}$ depends on the initial conditions.
+  where $S(t) \in \mathbb{R}_{\geq 0}$ is the storage function.
 \end{definition}
 
 Since two passive systems result in a passive system \cite{sepulchre2012constructive}, by ensuring that a controller is passive it follows that its interaction with its (passive) environment results in a passive system.

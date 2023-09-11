@@ -34,16 +34,17 @@ It follows that the system is passive with respect to the input, the external fo
 	\dot{\boldsymbol {\vecs \xi}}^T \matd{D}({\vecs \xi}) \left(\dot{\boldsymbol {\vecs \xi}} - \boldsymbol{f}(\boldsymbol {\vecs \xi}) \right) = 
     \dot{{\vecs \xi}} ^ T \Delta \vect{f}  \geq 0 
  \; , \quad
- \Delta \mathbf{f} = \dot{{\vecs \xi}} - \mathbf{f}({\vecs \xi})
+ \Delta \vect{f} = \dot{{\vecs \xi}} - \vect{f}({\vecs \xi})
+ \label{eq:passivity_condition}
 \end{equation}
 
-On the border of this region, the two vectors $\Delta \mathbf{f}$ and $\dot{\mathbf {\vecs \xi}}$ are orthogonal.
-Hence using Thale's theorem, this region can be evaluated as a circle with radius $\| \mathbf{f} ({\vecs \xi}) \| / 2$ and center $\mathbf{f}(\mathbf {\vecs \xi}) / 2$, as visualized in Figure~\ref{fig:passivity_analysis}.
+On the border of this region, the two vectors $\Delta \vect{f}$ and $\dot{{\vecs \xi}}$ are orthogonal.
+Hence using Thale's theorem, this region can be evaluated as a circle with radius $\| \vect{f} ({\vecs \xi}) \| / 2$ and center $\vect{f}({\vecs \xi}) / 2$, as visualized in Figure~\ref{fig:passivity_analysis}.
 
-Moreover, the system is passive as long as the observed velocity $\dot{{\vecs \xi}}$ is outside the circular-red region, which is a subset of the region where the magnitude of the observed velocity is smaller than the desired velocity $\mathbf{f}({\vecs \xi})$, i.e.,
+Moreover, the system is passive as long as the observed velocity $\dot{{\vecs \xi}}$ is outside the circular-red region, which is a subset of the region where the magnitude of the observed velocity is smaller than the desired velocity $\vect {f}({\vecs \xi})$, i.e.,
 \begin{equation}
 	\dot W({\vecs \xi}, \dot{{\vecs \xi}}) \leq \dot{{\vecs \xi}}^T \vecs \tau^e
- \quad \forall {\vecs \xi} : \| \dot{{\vecs \xi}} \| \geq\| \mathbf{f}({\vecs \xi}) \| 
+ \quad \forall {\vecs \xi} : \| \dot{{\vecs \xi}} \| \geq\| \vect{f}({\vecs \xi}) \| 
 \end{equation}
 
 \begin{figure}[b]
@@ -68,35 +69,55 @@ As in the red region, the system is not passive; the storage function $W$ could 
 From Lemma~\ref{lemma:passivity}, the system is passive when the magnitude of the velocity is larger than the dynamics, i.e. $\| \dot{\vecs \xi} \| > \|\vect f(\vecs \xi) \|$, the orange circle in Figure~\ref{fig:passivity_analysis}.
 Inside this region, the system is not passive, and the velocity $\dot {\vecs \xi}$ can increase. However, the velocity increase is limited to staying below $\| \vect f({\vecs \xi}) \|$ before the system enters the region where it is passive. Hence, the control cannot introduce unexpected energy.
 	$\| \vect f({\vecs \xi}) \|$ before the system enters the region where it is passive. Hence, the control cannot introduce unexpected energy.
-It follows that the system has a bounded output as long as the desired velocity $\mathbf{f}({\vecs \xi})$ is stable and the input $\int_{0}^T \dot{{\vecs \xi}}^T \vecs \tau^e dt$ is bounded. 
+It follows that the system has a bounded output as long as the desired velocity $\vecs{f}({\vecs \xi})$ is stable and the input $\int_{0}^T \dot{{\vecs \xi}}^T \vecs \tau^e dt$ is bounded. 
 % Since as soon as the observed velocity $\| \dot{{\vecs \xi}} \| $ is larger than the desired velocity, the system behaves passively. Hence, the control cannot introduce unexpected energy.
 
+To ensure passivity, let us the integral of the impulse of the response for the external force $\vecs \tau^e$ starting at $t=0$ is defines as: 
+\begin{equation}
+	\begin{split}
+	  \int_{-\infty}^{\infty} \left| \dot{\vecs \xi} \right| \; dt 
+	  & = \int_{t \notin \mathcal{T}_n} \left| \dot {\vecs \xi} \right|  \, dt + \int_{t \in  \mathcal{T}_n} \left| \dot {\vecs \xi} \right| \;  dt \\ 
+	  % & = \int_{t : \| \dot{\vecs \xi} \| > \| \vect f(\vecs \xi) \|} \dot {\vecs \xi} \, dt + \int_{t : \| \dot{\vecs \xi} \| \leq \| \vect f(\vecs \xi) \|} \dot {\vecs \xi} \;  dt \\ 
+	  % & \leq \int_{t \notin \mathcal{T}_n} \left| \dot {\vecs \xi} \right| dt + v^{\mathrm{max}}  T_n \\ 
+	  & \leq K_p + v^{\mathrm{max}} T_n < \infty
+\end{split}
+\label{eq:bibo_velocity}
+\end{equation}
+where $\mathcal{T}_n$ denotes the set of time instances where the system is not shown to be passive, specifically $\| \dot{\vecs \xi} \| \leq \| \vecs f (\vecs \xi) \|$, and $T_n \in \mathbb{R}_{\geq 0}$ the total duration which the system spends in this region. Additionally, from passivity in the inner region, the system is bounded by a constant $K_p \in \mathbb{R}_{\geq 0}$.
+Hence, the impulse response is bounded, and the system is BIBO stable.
 
 % \subsubsection{Stability with General Damping}
-From \eqref{eq:damping_summation}, a general damping matrix $\matd{S}(\vecs \xi)$ has non-uniform values. Hence, the analysis needs to be extended to general values.
-The damping matrix $\matd{D}({\vecs \xi}) = \matd{Q}({\vecs \xi}) \matd{S}({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1}$, can be interpreted as a coordinate transfer, such that:
+However, from \eqref{eq:damping_summation} we know that a general damping matrix $\matd{S}(\vecs \xi)$ can have non-uniform diagonal values. This can be addressed, by introducing the coordinate transfers:
 \begin{equation}
-	\vecs{\bar v} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \dot{{\vecs \xi}}
+	\vecs{\bar{v}} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \dot{{\vecs \xi}}
 	\quad \text{and} \quad
-	\bar{\Delta \mathbf f} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \Delta \mathbf{f}
+	\bar{\Delta \vect f} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \Delta \vect{f}
 \end{equation}
-where the square root of the diagonal matrix $\matd{S}({\vecs \xi})$ is taken element-wise:
-		
+where the square root of the diagonal matrix $\matd{S}({\vecs \xi})$ is taken element-wise.
+
+The transfer is then used to rewrite \eqref{eq:passivity_condition} as:
 \begin{equation}
-\dot{\vecs \xi}^T \matd{D}({\vecs \xi}) \Delta \mathbf{f} = \vecs{\dot \xi}^T \matd{Q}({\vecs \xi}) \matd{S}({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1} \Delta \mathbf{f} = \vecs{\bar v}^T \bar{\Delta \mathbf f}
+\dot{\vecs \xi}^T \matd{D}({\vecs \xi}) \Delta \vect{f} = \vecs{\dot \xi}^T \matd{Q}({\vecs \xi}) \matd{S}({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1} \Delta \vect{f} = \vecs{\bar v}^T \bar{\Delta \vect f}
 \end{equation}
-The analysis described in Fig.~\ref{fig:passivity_analysis} can hence be applied in the transformed space, too. 
+
+Hence, the BIBO analysis of \eqref{eq:bibo_velocity} applied to the transformed system results as:
+\begin{equation}
+	  \int_{-\infty}^{\infty} \left| \vecs{\bar v} \right| \; dt   
+	  = \int_{t \notin \bar{\mathcal{T}}_n} \left| \vecs{\bar v} \right|  \, dt + \int_{t \in  \bar{\mathcal{T}}_n} \left| \vecs{\bar v} \right| \;  dt  < \infty
+\end{equation}
+where $\bar{\mathcal{T}}_n$ denotes the region where the transformed system $\vecs{\bar v}$ is not passive, i.e. $\| \vecs{\bar v} \| \leq \| \bar{\Delta \vect f} \|$.  
+
+Hence, since the transformed system with velocity $\vect {\bar v}$ is BIBO stable, the original system with velocity $\dot{\vecs \xi}$ is BIBO stable, too, as long as it is a continuous, finite transform. 
+\end{proof}
+
+% The analysis described in Fig.~\ref{fig:passivity_analysis} can hence be applied in the transformed space, too. 
 
 For an orthogonal decomposition matrix $\matd{Q}(\boldsymbol{{\vecs \xi}})$, the region of non-passivity is an ellipse where the direction of the axes points along column vectors of $\matd{Q}({\vecs \xi})$, and the corresponding axes lengths are the diagonal elements of $\| \mathbf{f}({\vecs \xi})^T \sqrt{\matd{S}({\vecs \xi})}\| / 2 \sqrt{\matd{S}({\vecs \xi})}^{(-1)}$. 
-
-If the axes' lengths are large, this can lead to accelerating the velocity even though it is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still bounded by an ellipse, and hence a maximum velocity.
+If the ratio of the first damping value to the other axis $i \geq 2$ is large, i.e., $s_1 / s_i \gg 1$, it can lead to non-passivity even though the velocity $\dot{\vecs \xi}$ is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still bounded.
+This proof holds for any basis $\matd{Q}$ which is not singular. However, the controller must be carefully chosen to ensure that the speed up is limited when the basis is close to singular, for example by limiting the relative difference of the stretching vectors. Furthermore, as stable behavior is ensured for a general shape of a damping matrix $\matd{D}(\vecs \xi)$, the global stability proof extends to the general passive interaction matrices.
 
 While the passivity statement of Lemma~\ref{lemma:passivity} is local only, hence the controller can introduce energy into the system outside of the passive region. However, in such a case the system the velocity of the system increases and the system will enter the passive region system since it is bounded by a velocity limit.
 However, passivity is used to prove that a controller does not \textit{pump} energy In that case, the controller acts passive and is ensured not to increase the system's energy anymore.
-\end{proof}
 
-This proof extends to a basis $\matd{Q}$, which is not orthogonal. However, in such a case, the controller must be carefully chosen to ensure that the speed up is limited when the basis is close to singular, for example by limiting the relative difference of the stretching vectors.
-
-As stable behavior is ensured for a general shape of a damping matrix $\matd{D}$, the global stability proof extends to the general passive interaction control introduced in \cite{kronander2015passive}.
 
 % Note, that in the case of $\langle e_2, e_n \rangle \neq 0$ the choice of $e_2$ does not matter as the corresponding  weight from \eqref{eq:eig2_weight} is $w_2 = 0$, hence it $\lambda_2 = \lambda$, as all eigenvalues.
