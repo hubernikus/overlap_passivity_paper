@@ -49,29 +49,34 @@
 
 
 \title{
-Obstacle Aware Passive Control \\
+Passive Obstacle Aware Control \\
 to Follow Desired Velocities
 }
+
 \author{
-  \IEEEauthorblockN{Lukas Huber, Trinca Thibaud, Jean-Jacques Slotine, Aude Billard}
+  \IEEEauthorblockN{Lukas Huber$^{1}$, Trinca Thibaud, Jean-Jacques Slotine$^{2}$, Aude Billard$^{1}$}
+\thanks{This work was supported by EU ERC grant SAHR.} %Use only for final RAL version
+\thanks{$^{1}$LASA Laboratory, Swiss Federal School of Technology in Lausanne - EPFL, Switzerland. \tt $\{$lukas.huber;aude.billard$\}$@epfl.ch }
+\thanks{$^{2}$Nonlinear Systems Laboratory,  Massachusetts Institute of Technology, USA. \tt jjs@mit.edu}   %\tt \small
+% \thanks{Manuscript received: May 10, 2022; Revised November 7, 2022; December 14, 2022.}%Use only for final RAL version
+% \thanks{This paper was recommended for publication by Editor Aniket Bera.}
+% \thanks{Digital Object Identifier (DOI): see top of this page.}
 }
+
 
 \maketitle
 \thispagestyle{plain}
 \pagestyle{plain}
-
+    
 \begin{abstract}
-Position-based velocity evaluation has revolutionized robot control methodologies, endowing the systems with enhanced resilience against noise and disturbances. The desired velocities can incorporate obstacle avoidance capabilities, further bolstered by passive torque control to ensure safe responses to external perturbations. 
-In this paper, we propose a novel method for designing passivity controllers that internalizes the presence of obstacles during the handling of external forces.
-
-Our method introduces a compliant behavior away from obstacles while strategically increasing control damping upon approaching obstacles, thereby enabling the robot to maintain heightened environmental awareness. The algorithm's passivity is proven to remain stable across all scenarios, effectively countering disturbances. Additionally, we show superior behavior in collision avoidance and overall stability, particularly in scenarios with high damping values. 
-
-We additionally observe that the obstacle-aware passive controller exhibits superior tracking and collision avoidance performance in the presence of noise.
-The practicality and effectiveness of our approach are validated through implementation on a 7DoF robot arm. Comparative analysis against a baseline method showcases the algorithm's prowess in achieving superior collision rejection, underscoring its potential for real-world applications. Overall, our proposed obstacle-aware passivity controller represents a significant step towards enhanced robot control and safety in complex and uncertain environments.
+Real-time velocity evaluation for control of robots increases the system's resilience against noise and disturbances. The desired velocities can be designed to ensure dynamic obstacle avoidance. The desired velocity is often coupled with a passive torque controller to ensure safe responses to external perturbations. 
+We propose a novel method for designing the passive control policy; the proposed approach internalizes obstacles to ensure collision avoidance while handling external forces.
+Our method exhibits compliant behavior away from obstacles but increases damping when approaching obstacles. The algorithm ensures stability across all scenarios, effectively countering disturbances.
+The effectiveness of the approach is validated using a 7DoF robot arm. The algorithm demonstrates superior collision rejection compared to the baseline, underscoring its usefulness for real-world applications. Our proposed obstacle-aware passivity controller represents a significant step towards safe robot control in complex and uncertain environments.
 \end{abstract}
 
 \begin{IEEEkeywords}
-Obstacle avoidance, dynamical systems, passivity, human-robot interaction
+Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot interaction
 \end{IEEEkeywords}
 
 \input{input/introduction}
