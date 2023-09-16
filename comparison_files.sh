@@ -14,9 +14,12 @@ function compare_latex_files {
 	# Get the new file
 	new_file=$main_folder/$local_path/$file_name
 	# Compare the files
-	latexdiff --math-markup=whole $old_file $new_file > $local_path/$file_name
+	latexdiff --math-markup=whole --type=CTRADITIONAL $old_file $new_file > $local_path/$file_name
    # latexdiff "${$1}/${file}" "${old_folder}/${file}" > "${file}"
 }
 
 
 compare_latex_files "main.tex" "."
+for file in $main_folder/input/*.tex; do
+	compare_latex_files "${file##*/}" "input";
+done

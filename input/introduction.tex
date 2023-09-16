@@ -1,21 +1,16 @@
 \section{Introduction}
 % WHERE: application in HRI
-Robots deployed to unstructured environments demand a delicate balance between adaptability and motion consistency. While the robot must efficiently accomplish its designated tasks, it is equally essential to ensure the safety of its movements by avoiding collisions at all times. This becomes especially relevant in physical human-robot collaboration \parencite{ajoudani2018progress}.
+Robots operating in unstructured environments must weigh a delicate balance between adaptability and motion consistency. They are tasked with efficiently completing their designated tasks while ensuring safety in the presence of potential collisions, especially in the context of physical human-robot collaboration \parencite{ajoudani2018progress}.
 
 % Fast control -> closed form DS
-Central to controlling a robot is obtaining the desired velocity that guides it toward the goal. In complex and dynamic environments, velocities must be updated in real time based on incoming information about the surroundings. This necessitates algorithms that are easy to parameterize and fast to evaluate. 
-This can be achieved by a closed-form control law, which eliminates the need for constant replanning. In this context, Dynamical Systems (DS) have been used to represent the desired motion of the system, which is approximated through an appropriate controller. DS can be designed with well-known tools from control theory to provide stability and convergence guarantees for navigation in dynamic environments.
+Central to effective robot control is the computation of desired velocities that guide them towards their goals. In complex and dynamic environments, real-time velocity adjustments based on real-time sensory information are essential. Achieving this necessitates algorithms that are easily configurable and capable of rapid evaluation. As such, closed-form control laws eliminate the need for frequent replanning. Dynamical Systems (DS) have emerged as a valuable framework for representing such desired motion. Where the behavior of the DS is approximated through suitable controllers. DS can be designed using established control theory tools to provide stability and convergence guarantees for navigating dynamic environments.
 
 % Compliance [Stay Reactive]
-Human muscles can quickly adapt to external forces; the flexible design of our bodies allows us to deploy variable stiffness to absorb shock and impacts. 
-Conversely, most robotic systems are made of stiff metallic or plastic material. 
-As a result, physical interaction with the environment leads to abrupt transfer of energy and potentially damage to the system or its environment. However, modern robotic platforms often have force and torque sensing capabilities, which allow for the precise control of the effort exerted by the robot.
-Yet, this results in a control problem with multiple constraints: the robot should reach the specified position while maintaining a desired velocity and remaining compliant with interaction forces. This control problem, of balancing position, velocity, and force constraints can be addressed using \textit{impedance controllers} \parencite{takegaki1981new, hogan1985impedance}.
+In stark contrast to human musculature's remarkable ability to quickly adapt to external forces, most robotic systems consist of rigid metallic or plastic materials. Consequently, when these robotic systems interact with their environment, it often leads to abrupt energy transfers, posing the risk of damage to the robot itself or its surroundings. However, the advent of modern robotic platforms equipped with force and torque sensing capabilities has opened new avenues for precise control over the forces exerted by the robot.
+Nonetheless, this advancement gives rise to a complex control challenge characterized by multiple constraints. The robot must not only achieve its designated position but also maintain a desired velocity while remaining compliant with interaction forces. The control problem of balancing position, velocity, and force constraints, is addressed by \textit{impedance controllers} \parencite{takegaki1981new, hogan1984impedance}.
 
 % Ensure Obstacle Avoidance
-Obstacle avoidance is a fundamental task of motion control, and reactive approaches exist that can handle dynamic and complex environments \parencite{huber2022avoiding}. 
-However, incorporating obstacle avoidance together with co requires careful design. The controller should remain compliant in free space and follow the desired motion. When approximating the obstacle's surface, such as glass on the table, the controller must remain stiff and not accidentally tip over the glass, yet when interacting with an operator it is safer to be compliant (Fig.~\ref{fig:table_avoidance_with_obstacle}). 
-Such a design requires a variable impedance controller, which weights different goals, such as following the desired dynamic versus remaining compliant to external forces \parencite{kronander2015passive}. 
+Effective obstacle avoidance is fundamental to motion control, with reactive approaches capable of handling dynamic and intricate environments \parencite{huber2019avoidance, huber2022avoiding}. However, integrating obstacle avoidance with compliance control requires careful design. The controller should remain compliant in free space while adhering to the desired motion. Furthermore, when encountering surfaces like a fragile glass on a table, the controller must adopt stiffness to prevent collision, yet it should be compliant when interacting with an operator (Fig.~\ref{fig:table_avoidance_with_obstacle}). Achieving this necessitates a variable impedance controller, capable of weighting different objectives, such as dynamic motion and external force compliance \parencite{kronander2015passive}.
 
 \begin{figure}
 \centerline{\includegraphics[width=0.5\textwidth]{figures/robot_arm_table_avoidance}}
@@ -26,7 +21,8 @@ While tipping over the closed pasta box on this dinner table setup might be acce
 \label{fig:table_avoidance_with_obstacle}
 \end{figure}
 
-This work incorporates dynamic obstacle avoidance using DS and variable impedance control, enhancing robotic movements' adaptability, reactivity, and safety. It allows the robot to navigate complex environments while proactively avoiding collisions and adeptly rejecting disturbances. We evaluate the performance of our approach through extensive simulations and practical implementation on a 7DoF robot arm, achieving robust and safe robot control in real-world scenarios.
+This work introduces a novel approach that incorporates dynamic obstacle avoidance using DS and variable impedance control, enhancing adaptability, reactivity, and safety in robotic movements. It empowers robots to navigate complex environments proactively, avoiding collisions and rejecting disturbances. Our approach is evaluated through simulations and practical implementation on a 7-degree-of-freedom (7DoF) robot arm, demonstrating robust and safe control in real-world scenarios.
+
 
 \subsection{Related Work}
 
