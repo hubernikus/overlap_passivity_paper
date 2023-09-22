@@ -59,8 +59,8 @@ A force-controlled system is subject to acceleration effects, inertia, and exter
 \end{equation}
 where we have the mass matrix of the robot $\matd M(\vecs\xi) \in \mathbb{R}^{N \times N}$, the Coriolis matrix $\matd C(\vecs\xi,\vecs{\dot\xi}) \in \mathbb{R}^N$, the gravity vector $\vect g(\vecs\xi) \in \mathbb{R}^N)$, the control torque $\vecs{\tau_c} \in \mathbb{R}^N$, and the external torque, also referred as disturbance, $\vecs{\tau_e} \in \mathbb{R}^N$.
 
-\subsubsection{Passive Control}
-Passive interaction control \cite{kronander2015passive} offers a powerful method for computing control forces from a velocity field. This controller provides selective disturbance rejection based on the direction of the desired motion. Typically, the controller is configured with high damping along the direction of motion, ensuring rapid convergence of the robot's velocity to the desired value and achieving excellent tracking performance. In contrast, the controller exhibits high compliance in the direction perpendicular to the motion, enabling flexible behavior and greater resistance to external forces. The passive control force is evaluated as:
+\subsubsection{Damping Controller}
+Damping control \cite{kronander2015passive} offers a powerful method for computing control forces from a velocity field. This controller provides selective disturbance rejection based on the direction of the desired motion. Typically, the controller is configured with high damping along the direction of motion, ensuring rapid convergence of the robot's velocity to the desired value and achieving excellent tracking performance. In contrast, the controller exhibits high compliance in the direction perpendicular to the motion, enabling flexible behavior and greater resistance to external forces. The passive control force is evaluated as:
 \begin{equation}
 	\vecs{\tau_c} = \vect g (\vecs\xi) 
 	% + \matd{D}(\vect \xi, \dot{\vect \xi}) \dot{\vect \xi}  
