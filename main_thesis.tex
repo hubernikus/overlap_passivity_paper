@@ -63,6 +63,33 @@
 % \pagestyle{plain}
 % 
 % \begin{abstract}
+\begin{publicationbox}
+	The material in this chapter is adapted from: \\
+\fullcite{huber2023passive} \\
+
+\textbf{Authorship Note:}
+ The algorithm presented in this Chapter was first investigated by Thibaud Trinca during a semester project supervised by Lukas Huber.
+ Lukas Huber then iterated on the algorithm, developed the theoretical proofs, and performed the experimental evaluation on the robot arm.
+
+\textbf{Source Code:}
+\begin{itemize}
+	\setlength\itemsep{-0.0em}
+\item Algorithm:
+	\url{https://github.com/epfl-lasa/qolo_modulation.git}
+\item Implementation on robot arm: \\
+	\url{https://github.com/hubernikus/franka_obstacle_avoidance.git} 
+\end{itemize}
+
+% \textbf{Multimedia:}
+% Supplementary video can be found on:
+% \vspace{1em}
+% \vspace{1.0em} \centering
+% \includesvg[width=0.3\columnwidth]{images/qr_video_inverted.svg} \\
+% \url{https://youtu.be/WKso-wu68v8}
+
+\end{publicationbox}
+
+
 Position-based velocity evaluation has revolutionized robot control methodologies, endowing the systems with enhanced resilience against noise and disturbances. The desired velocities can incorporate obstacle avoidance capabilities, further bolstered by passive torque control to ensure safe responses to external perturbations. 
 In this chapter, we propose a novel method for designing passivity controllers that internalizes the presence of obstacles during the handling of external forces.
 
