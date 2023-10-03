@@ -16,7 +16,7 @@ In the bottom trajectory, the repulsive force points away from the obstacle. The
 We observe the selective damping of disturbances towards the obstacle. The top and middle disturbances are highly damped, while the bottom disturbances are not. This feature imparts a natural behavior of moving away from obstacles.
 % Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle. The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \centerline{\includegraphics[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.pdf}}
   \caption{
@@ -42,7 +42,7 @@ The obstacle-aware controller effectively rejects the noise impacting the veloci
 
 Furthermore, the obstacle-aware controller maintains a higher minimal distance along the trajectory without noise. This effect results from the higher damping applied towards the obstacle, enabling more precise tracking of the curvature guiding the velocity around the obstacle.
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\columnwidth}
       \centerline{\includegraphics[width=\textwidth]{figures/trajectory_velocity_noise}}
@@ -66,7 +66,7 @@ This difference is attributed to the buffer mechanism inherent in the obstacle-a
 
 Moreover, the velocity-preserving controller exhibits a higher distance variance, likely stemming from its lower damping, causing it to adapt more slowly to new velocities after being displaced by the noise. Consequently, this behavior leads to more random variations in velocity and trajectory.
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\columnwidth}
       \centerline{\includegraphics[width=\textwidth]{figures/trajectory_position_noise}}
@@ -105,7 +105,7 @@ $s^{\mathrm{c}}=$~\qty{16}{s^{-1}}.
 The robot start position is approximately at $\vecs \xi_0 = [0.3\mathrm{m}, 0.4\mathrm{m}, 0.3\mathrm{m},]^T$ and the attractor is at position $\vecs \xi^a = [0.26 \mathrm{m}, -0.53\mathrm{m}, 0.33\mathrm{m}]^T$.
 The robot encounters a single squared box with axes length \qty{0.16}{m} and a margin of \qty{0.12}{m}, placed in front of the robot base (Fig.~\ref{fig:evaluation_on_robot_arm}). The precise location of the box is tracked in real-time using a marker-based vision system (Optitrack). As the robot passes by the box, it is disturbed by a strong push $\vecs t^e$ towards the box. The experiment is repeated ten times for both controllers, as well as for the undisturbed motion.
 
-The experimental results in Figure~\ref{fig:evaluation_on_robot_arm} demonstrate that the obstacle-aware controller allows the robot to maintain an average distance of \qty{0.15}{m} away from the obstacle surface. In contrast, the velocity-preserving controller results in a mean distance below \qty{0.05}{m}, and numerous trajectories lead to collisions with the box. On average, the robot passes further away from the obstacle using the obstacle-aware controller and exhibits higher forces, Table~\ref{tab:evaluation_on_robot_arm}.
+The experimental results in \ifthesis Figure~\ref{fig:instances_evaluation_on_robot_arm} and \fi Figure~\ref{fig:evaluation_on_robot_arm} demonstrate that the obstacle-aware controller allows the robot to maintain an average distance of \qty{0.15}{m} away from the obstacle surface. In contrast, the velocity-preserving controller results in a mean distance below \qty{0.05}{m}, and numerous trajectories lead to collisions with the box. On average, the robot passes further away from the obstacle using the obstacle-aware controller and exhibits higher forces, Table~\ref{tab:evaluation_on_robot_arm}.
 
 \begin{table}[htb]
 % Distance [NoDist]: 0.1672703839  \pm 0.009033828534378131
@@ -126,7 +126,45 @@ The experimental results in Figure~\ref{fig:evaluation_on_robot_arm} demonstrate
 
 This outcome is attributed to the obstacle-aware controller's stronger control force, with a high peak occurring around \qty{1.45}{s} when the disturbance is encountered. In contrast, the velocity-preserving controller only reacts when the robot is almost colliding, leading to a delayed response. Additionally, the obstacle-aware controller exhibits higher forces even before the disturbance, which contributes to improved tracking of the avoidance trajectory, as observed in Section~\ref{sec:position_noise}. These findings affirm the superior collision avoidance capabilities and tracking performance of the obstacle-aware passivity controller in real-world robot arm scenarios.
 
+\ifthesis
+\begin{figure}[htbp]
+    \centering
+   \begin{subfigure}{\columnwidth}
+    \includegraphics[width=0.4\textwidth]{figures/franka_sequence/franka_obstacle_aware016}\hfill%
+    % \includegraphics[width=0.33\textwidth]{figures/franka_sequence/franka_obstacle_aware018}\hfill%
+    \includegraphics[width=0.4\textwidth]{figures/franka_sequence/franka_obstacle_aware020}
+      \caption{Obstacle-aware controller rejects repulsion and avoids collision}
+      \label{fig:franka_sequence_obstacle_aware}
+    \end{subfigure}
+	\begin{subfigure}{\columnwidth}
+    \includegraphics[width=0.4\textwidth]{figures/franka_sequence/franka_velocity_conserving021}\hfill%
+    % \includegraphics[width=-1.33\textwidth]{figures/franka_sequence/franka_velocity_conserving023}\hfill%
+    \includegraphics[width=0.4\textwidth]{figures/franka_sequence/franka_velocity_conserving025}\hfill%
+      \caption{Velocity preserving controller leads to collision with obstacle}
+      \label{fig:franka_sequence_obstacle_aware}
+    \end{subfigure}
+	\caption{The robot arm, guided by the obstacle-aware passive controller, effectively avoids the disturbance towards the obstacle while maintaining a margin of \qty{0.16}{m} around the obstacle.}
+	\label{fig:instances_evaluation_on_robot_arm}
+\end{figure}
 
+\begin{figure}[htbp]
+    \begin{subfigure}{\columnwidth}
+      \centerline{\includegraphics[width=\textwidth]{figures/robot_arm_trajectory_xyz}}
+      \caption{The two control methods compared with the undisturbed trajectory. The wider line indicates a higher x-value. The darker arrow is the actual, and the desired velocity is brighter arrow.}
+      \label{fig:robot_arm_trajectory_xyz}
+    \end{subfigure}
+    \begin{subfigure}{\columnwidth}
+		\includegraphics[width=\textwidth]{figures/trajectory_comparison_force_and_distance}
+      \caption{The specific trajectory is represented by a full line, while the average (dashed line) and variance (shaded area) are evaluated over ten epochs. The control force's mean and variance are evaluated in the logarithmic space.}
+      \label{fig:trajectory_comparison_force_and_distance}
+    \end{subfigure}
+	\caption{
+ The experiment was repeated ten times with a similar disturbance applied to the robot arm in each run.
+ }  
+    \label{fig:evaluation_on_robot_arm}
+\end{figure}
+\
+\else
 \begin{figure}
     \centering
    \begin{subfigure}{\columnwidth}
@@ -163,6 +201,7 @@ The robot arm, guided by the obstacle-aware passive controller, effectively avoi
  }  
     \label{fig:evaluation_on_robot_arm}
 \end{figure}
+\fi
 
 \section{Discussion}
 We introduced a novel passive obstacle-aware controller that takes as an input the desired, collision-free velocity and outputs a control torque. 

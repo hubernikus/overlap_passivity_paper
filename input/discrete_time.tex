@@ -4,7 +4,7 @@ This is a reasonable assumption, if we have a high sampling time $\Delta t$, com
 However, any digital controller sends a discrete control signal. To reject the disturbances in the presence of obstacles, a high control force is exerted (while remaining within the control robot's limits), hence $\| \Delta t \, \vecs \tau^c \| \gg 1$. 
 In this case, it is crucial to analyze the discrete-time system to guarantee stability, as high damping can lead to unstable behavior, see Figure~\ref{fig:discrete_controller_parameters_comparison}).
 
-\begin{figure}[htb]
+\begin{figure}[htbp]
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison}
   \caption{A point-like agent with an initial velocity (blue arrow) of $\{ \dot{\vecs \xi} \}_0 = [1 \; -1]^T$ is guided by the desired velocity $\vect f(\vecs \xi) = [1, 0]^T$ (gray arrow), and a control matrix $\matd{D}$ with damping values $s_i$ equal in all directions, where $m = m^{\mathrm{min}}$ is the smallest eigenvalue of the inertia matrix. 
@@ -103,7 +103,7 @@ However, in most cases, the desired system should only reach zero at the attract
 
 Yet, asymptotic stability is not guaranteed for general nonlinear input dynamics. Especially for dynamics with high curvature and low damping value, the final trajectory can end up in limit cycles ((Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
 
-\begin{figure}[htb]
+\begin{figure}[htbp]
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison_stable}
 \caption{A point-like agent which is following the desired dynamics of
