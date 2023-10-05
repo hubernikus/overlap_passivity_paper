@@ -228,7 +228,8 @@ The theoretical analysis from Theorem~\ref{theorem:passivity} indicates BIBO sta
 Careful consideration of the controller design and stability analysis is necessary to ensure robust and safe performance in practical applications. 
 Nevertheless, the passivity proof enables a broad range of time-varying damping controllers to be safely applied to robotic systems.
 
-\subsection{Future Work}
+\subsection{Point Mass Agents}
 While the controller is limited to a point mass representation of the robot, its computational efficiency would allow multiple evaluations along the robot arm. This could be used to ensure full body control of the robot, hence improving the system's safety.
 
+\subsection{Caution in Obstacle's Proximity}
 In this work, we assume the obstacles' position to be precisely known. However, in many scenarios, the robot might have limited perception as it approaches an obstacle. Hence, the robot should be more compliant to enable safe workspace exploration rather than increasing the damping. Future work should explore how to combine these two opposing paradigms: safe control for avoidance, yet cautious exploration.
