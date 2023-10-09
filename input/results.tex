@@ -7,15 +7,6 @@ $s^{\mathrm{obs}}=~$\qty{200}{s^{-1}},
 $s^{\mathrm{f}}=$~\qty{100}{s^{-1}}, and
 $s^{\mathrm{c}}=$~\qty{20}{s^{-1}}.
 
-In the top trajectory, the robot encounters a stand-alone obstacle and experiences a disturbance that pushes it toward the obstacle. With the obstacle-aware controller, the robot avoids collision and continues moving towards the attractor. In contrast, the baseline controller, which prioritizes velocity conservation, fails to respond effectively and is pushed into the obstacle, resulting in a colliding trajectory.
-
-During the middle trajectory, a disturbance occurs when the agent is positioned between two obstacles. The obstacle-aware controller utilizes the normal vector $\vect n(\vecs \xi)$, as described in Section~\ref{sec:obstacle_repulsion}. However, due to its construction, the magnitude of $\vect n(\vecs \xi)$ diminishes in narrow passages (as seen in \eqref{eq:averaged_normal}), leading to increased damping in all directions, as described in \eqref{eq:leaving_compliance}. As a result, the agent successfully avoids the disturbance using the obstacle-aware controller, while the baseline controller follows a colliding trajectory.
-
-In the bottom trajectory, the repulsive force points away from the obstacle. The obstacle-aware and the velocity-preserving controllers produce nearly identical trajectories due to equal compliance when moving away from an obstacle as defined in \eqref{eq:leaving_compliance}.
-
-We observe the selective damping of disturbances towards the obstacle. The top and middle disturbances are highly damped, while the bottom disturbances are not. This feature imparts a natural behavior of moving away from obstacles.
-% Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle. The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
-
 \begin{figure}[htbp]
   \centering
   \centerline{\includegraphics[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.pdf}}
@@ -25,22 +16,17 @@ We observe the selective damping of disturbances towards the obstacle. The top a
   \label{fig:obstacle_aware_damping_comparison}
 \end{figure}
 
+In the top trajectory, the robot encounters a stand-alone obstacle and experiences a disturbance that pushes it toward the obstacle. With the obstacle-aware controller, the robot avoids collision and continues moving towards the attractor. In contrast, the baseline controller, which prioritizes velocity conservation, fails to respond effectively and is pushed into the obstacle, resulting in a colliding trajectory.
+
+During the middle trajectory, a disturbance occurs when the agent is positioned between two obstacles. The obstacle-aware controller utilizes the normal vector $\vect n(\vecs \xi)$, as described in Section~\ref{sec:obstacle_repulsion}. However, due to its construction, the magnitude of $\vect n(\vecs \xi)$ diminishes in narrow passages (as seen in \eqref{eq:averaged_normal}), leading to increased damping in all directions, as described in \eqref{eq:leaving_compliance}. As a result, the agent successfully avoids the disturbance using the obstacle-aware controller, while the baseline controller follows a colliding trajectory.
+
+In the bottom trajectory, the repulsive force points away from the obstacle. The obstacle-aware and the velocity-preserving controllers produce nearly identical trajectories due to equal compliance when moving away from an obstacle as defined in \eqref{eq:leaving_compliance}.
+
+We observe the selective damping of disturbances towards the obstacle. The top and middle disturbances are highly damped, while the bottom disturbances are not. This feature imparts a natural behavior of moving away from obstacles.
+% Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle. The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
+
 \subsection{Noise Analysis}
 In practical robotic applications, controllers are inevitably exposed to noise and unexpected disturbances, arising from sensor inaccuracies, environmental factors, or other external perturbations. A high-quality controller can effectively reject such disturbances while simultaneously achieving the control objectives, such as collision avoidance and trajectory tracking.
-
-This section investigates the impact of noise disturbances on a simulated agent with an identity mass matrix $\matd M = \matr I kg$. The discrete time step is set to $\Delta t = $~\qty{0.2}{s}. Additionally, the damping values are configured as follows: 
-$s^{\mathrm{obs}}=$~\qty{50}{s^{-1}},
-$s^{\mathrm{f}}=$~\qty{40}{s^{-1]}}, and
-$s^{\mathrm{c}}=$~\qty{5}{s^{-1}}.
-The robot's objective is to follow a linear velocity field of the form $\vect f(\vecs \xi) = (\vecs \xi^a - \vecs \xi)$ with a velocity cap of \qty{1}{m/s}.
-To evaluate the controller's performance, a comparative analysis is conducted by assessing the minimal distance to the surface along the trajectory, denoted as $ \min_t \| \vecs \xi_t - \vecs \xi^b \| $, with the boundary point $\vecs \xi_b$ described in \eqref{eq:distance_function}. 
-
-\subsubsection{Velocity Noise Resistance}
-We first added a normally distributed noise with a zero mean to the agent's velocity $\dot{\vecs{ \xi}}$ at each time step before computing the control force. The agent has to navigate between two obstacles from the starting position to the attractor with different noise levels, as visualized in Figure~\ref{fig:velocity_noise})
-
-The obstacle-aware controller effectively rejects the noise impacting the velocity, even as the noise variance increases. However, the closest distance during the trajectory diminishes with higher noise variance. On the contrary, the velocity-following controller's mean distance falls below zero already at a velocity noise variance of $\qty{0.5}{m/s}$, indicating that many trajectories collide with at least one obstacle.
-
-Furthermore, the obstacle-aware controller maintains a higher minimal distance along the trajectory without noise. This effect results from the higher damping applied towards the obstacle, enabling more precise tracking of the curvature guiding the velocity around the obstacle.
 
 \begin{figure}[htbp]
     \centering
@@ -57,6 +43,20 @@ Furthermore, the obstacle-aware controller maintains a higher minimal distance a
 	\caption{The agent navigates between two elongated obstacles (a) towards the attractor (black star). The agent's velocity is subjected to white noise, with a mean of zero, and noise variances between \qty{0.0}{m/s} and \qty{1.0}{m/s}. The robot initiates its trajectory from the starting position $\vecs \xi_0 = [-2.5, 1.0]^T$, with an initial velocity of zero. It aims to reach the attractor located at $\vecs \xi^a = [2.5, \, -1.0]^T$.}
 \label{fig:velocity_noise}
 \end{figure}
+
+This section investigates the impact of noise disturbances on a simulated agent with an identity mass matrix $\matd M = \matr I kg$. The discrete time step is set to $\Delta t = $~\qty{0.2}{s}. Additionally, the damping values are configured as follows: 
+$s^{\mathrm{obs}}=$~\qty{50}{s^{-1}},
+$s^{\mathrm{f}}=$~\qty{40}{s^{-1]}}, and
+$s^{\mathrm{c}}=$~\qty{5}{s^{-1}}.
+The robot's objective is to follow a linear velocity field of the form $\vect f(\vecs \xi) = (\vecs \xi^a - \vecs \xi)$ with a velocity cap of \qty{1}{m/s}.
+To evaluate the controller's performance, a comparative analysis is conducted by assessing the minimal distance to the surface along the trajectory, denoted as $ \min_t \| \vecs \xi_t - \vecs \xi^b \| $, with the boundary point $\vecs \xi_b$ described in \eqref{eq:distance_function}. 
+
+\subsubsection{Velocity Noise Resistance}
+We first added a normally distributed noise with a zero mean to the agent's velocity $\dot{\vecs{ \xi}}$ at each time step before computing the control force. The agent has to navigate between two obstacles from the starting position to the attractor with different noise levels, as visualized in Figure~\ref{fig:velocity_noise})
+
+The obstacle-aware controller effectively rejects the noise impacting the velocity, even as the noise variance increases. However, the closest distance during the trajectory diminishes with higher noise variance. On the contrary, the velocity-following controller's mean distance falls below zero already at a velocity noise variance of $\qty{0.5}{m/s}$, indicating that many trajectories collide with at least one obstacle.
+
+Furthermore, the obstacle-aware controller maintains a higher minimal distance along the trajectory without noise. This effect results from the higher damping applied towards the obstacle, enabling more precise tracking of the curvature guiding the velocity around the obstacle.
 
 \subsubsection{Position Noise Resistance} \label{sec:position_noise}
 In the second experiment, normally distributed noise with a mean of zero is added to the position $\vecs{ \xi}$ (Fig.~\ref{fig:position_noise}). The agent has to navigate around two star-shaped obstacles to reach the attractor with various noise levels being applied.
