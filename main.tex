@@ -72,10 +72,10 @@ to Follow Desired Velocities
 \pagestyle{plain}
     
 \begin{abstract}
-Real-time velocity assessment in robot control enhances resilience against noise and disturbances. The velocity controller can be designed to ensure dynamic obstacle avoidance. Coupled with a passive torque controller, a safe response to external perturbations can be ensured.
-We propose a novel approach for designing the passive control policy, which remains compliant when possible but ensures collision avoidance in cluttered environments.
-Our algorithm showcases compliant behavior in obstacle-free zones while swiftly transitioning to increased damping near obstacles. This versatile approach ensures stability across diverse scenarios, effectively mitigating disturbances.
-Validation on a 7DoF robot arm demonstrates superior collision rejection capabilities compared to the baseline, underlining its practicality for real-world applications. Our obstacle-aware passivity controller represents a substantial advancement in secure robot control within complex and uncertain environments.
+Evaluating and updating the obstacle avoidance velocity for an autonomous robot in real-time ensures robustness against noise and disturbances. To obtain the approximated the desired motion with a torque controlled robot, a passive damping controller can be used which remains compliant and ensure a safe response to external perturbations.
+Here, we propose a novel approach for designing the passive control policy. Our algorithm has compliant behavior in obstacle-free zones while transitioning to increased damping near obstacles to ensure collision avoidance. This approach ensures stability across diverse scenarios, effectively mitigating disturbances.
+Validation on a 7DoF robot arm demonstrates superior collision rejection capabilities compared to the baseline, underlining its practicality for real-world applications. 
+Our obstacle-aware damping controller represents a substantial advancement in secure robot control within complex and uncertain environments.
 \end{abstract}
 
 \begin{IEEEkeywords}

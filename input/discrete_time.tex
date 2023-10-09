@@ -73,7 +73,7 @@ The evolution of the discrete-time feedback system is given as:
 where $\hat{\vect f}(\vecs \xi_t) = \vect f(\vecs \xi_t) - \matd{D}^{-1} C$.  The dependency on the state $\vecs \xi$ of the matrices $\matd{M}$, $\matd{D}$, and $\matd{C}$ are omitted for brevity. $\matr{I} \in \mathbb{R}^{N \times N}$ denotes the identity matrix.
 As we look at global stability, we look at the updated velocity $\hat{\vect f}(\vecs \xi_t) = \vect f(\vecs \xi_t) - \matd{D}^{-1} \matd{C}$. Since the Coriolis force is bounded, it follows that if the system is BIBO stable for $\hat{\vect f}(\vect \xi_t)$, then it is also BIBO stable for $\vect f(\vecs \xi_t)$ 
 
-BIBO stability of a discrete-time system requires that all the eigenvalues of the feedback matrix are smaller or equal to one \cite{friedland2012control}.
+BIBO stability of a discrete-time system requires that all the eigenvalues of the feedback matrix are smaller or equal to one \parencite{friedland2012control}.
 The eigenvalues of the above feedback system are given as:
 \begin{equation}
 	\vect \lambda_1 = \text{eig}(\matr{I}) \qquad \vect \lambda_2 = \text{eig} \left(\matr{I} - \Delta t \, \matd{M}^{-1} \matd{D} \right)
@@ -87,7 +87,7 @@ However, since $\matd{M}$ and $\matd{D}$ are both positive definite, the eigenva
 	\qquad \Rightarrow \qquad
 	\vect \lambda_{2, i} > 0 \quad i = 1...N
 \end{equation}
-% Furthermore, the system is stable if all eigenvalues are smaller or equal to one \cite{friedland2012control}. 
+
 Hence, we only have to consider the upper limit, and the system is stable if the maximum eigenvalue is limited to:
 \begin{equation}
 	\max \left(\vect \lambda_2 \right) \leq 1 

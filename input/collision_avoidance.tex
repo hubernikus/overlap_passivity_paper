@@ -58,8 +58,6 @@ with respect to the closes surface point $\vecs \xi^b \in \mathbb{R}^N$ and smal
 Note that the analysis is done for proximity regions of the obstacle. In any case, the robot enters this proximity region before a collision can occur. Hence, the proposed analysis holds as a general collision avoidance insurance.
 
 So far the disturbance has been in the form of a velocity, yet a system is disturbed by force. The corresponding disturbance velocity is obtained by integrating the force over time (considering the mass matrix). 
-% Note, however, that the proposed controller cannot actively reject an external force. 
-% However, this could be achieved by designing the dynamics $\vect f(\vecs \xi)$ to point away from the surface, as is proposed in \cite{huber2023avoidance}.
 
 \subsection{Disturbance Repulsion with Force Limit}
 All robotic systems have a maximum force that they  exert based on the motors and their geometry, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Note that such a force might be state-dependent.

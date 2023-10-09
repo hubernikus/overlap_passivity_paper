@@ -13,7 +13,7 @@ The velocity $\vect f(\vecs \xi)$ (gray) avoids collision with the obstacles and
 \fi
 
 
-Hence, the damping matrix $\matd D(\vecs\xi) \in \mathbb{R}^{N \times N}$ smoothly changes from being aligned with the direction of the velocity, as used in \cite{kronander2015passive}, to be aligned with the averaged normal of the obstacles. The desired damping matrix transitions between velocity preserving and collision avoidance using a smoothly defined linear combination:
+Hence, the damping matrix $\matd D(\vecs\xi) \in \mathbb{R}^{N \times N}$ smoothly changes from being aligned with the direction of the velocity, as used in \parencite{kronander2015passive}, to be aligned with the averaged normal of the obstacles. The desired damping matrix transitions between velocity preserving and collision avoidance using a smoothly defined linear combination:
 \begin{equation}
     \matd D(\vecs\xi) = \left(1 - w(\vecs\xi) \right) {\matd D^{f}}(\vecs\xi) + w(\vecs\xi)  {\matd D^{\mathrm{obs}}}(\vecs\xi) \label{eq:damping_summation}
 \end{equation}

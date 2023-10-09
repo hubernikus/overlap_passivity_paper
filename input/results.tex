@@ -1,5 +1,5 @@
 \section{Evaluation}  \label{sec:evaluation} 
-The proposed obstacle aware controller\footnote{Source code: \url{https://github.com/hubernikus/obstacle_aware_damping}} is compared to a baseline, the velocity preserving, passive controller \cite{kronander2015passive}.
+The proposed obstacle aware controller\footnote{Source code: \url{https://github.com/hubernikus/obstacle_aware_damping}} is compared to a baseline, the velocity preserving, passive controller \parencite{kronander2015passive}.
 
 \subsection{Qualitative Comparison} \label{sec:qual_comp}
 A qualitative analysis of the proposed controller's behavior in three scenarios, as depicted in Figure~\ref{fig:obstacle_aware_damping_comparison}. In each scenario, the agent approaches multiple obstacles from distinct starting positions, a disturbance (indicated by an arrow) is applied. The simulation time step is $\Delta t = 0.01 s$ seconds, and the agent's mass matrix is $\matd{M} = \matr{I} kg$. The controller is implemented using the following damping values:
@@ -224,7 +224,7 @@ Moreover, introducing a variable damping matrix will result in a potentially uns
 Future work should further analyze how to include dynamics properties in the design of the damping parameters for improved system performance.
 
 \subsection{Applicability and Theoretical Analysis}
-The theoretical analysis from Theorem~\ref{theorem:passivity} indicates BIBO stability for a system with bounded desired velocity. Consequently, controllers like the damping-based approach in \cite{kronander2015passive} do not require an energy tank. Yet, introducing an adaptive proportional term $\mathcal{K}$ can lead to instabilities \cite{ferraguti2013tank, kronander2016stability}. 
+The theoretical analysis from Theorem~\ref{theorem:passivity} indicates BIBO stability for a system with bounded desired velocity. Consequently, controllers like the damping-based approach in \parencite{kronander2015passive} do not require an energy tank. Yet, introducing an adaptive proportional term $\mathcal{K}$ can lead to instabilities \parencite{ferraguti2013tank, kronander2016stability}. 
 Careful consideration of the controller design and stability analysis is necessary to ensure robust and safe performance in practical applications. 
 Nevertheless, the passivity proof enables a broad range of time-varying damping controllers to be safely applied to robotic systems.
 
