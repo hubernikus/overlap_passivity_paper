@@ -72,8 +72,10 @@ to Follow Desired Velocities
 \pagestyle{plain}
     
 \begin{abstract}
-Evaluating and updating the obstacle avoidance velocity for an autonomous robot in real-time ensures robustness against noise and disturbances. A passive damping controller can be used to obtain the desired motion with a torque-controlled robot, which remains compliant and ensures a safe response to external perturbations.
-Here, we propose a novel approach for designing the passive control policy. Our algorithm complies with obstacle-free zones while transitioning to increased damping near obstacles to ensure collision avoidance. This approach ensures stability across diverse scenarios, effectively mitigating disturbances.
+Evaluating and updating the obstacle avoidance velocity for an autonomous robot in real-time ensures robustness against noise and disturbances. A passive damping controller can obtain the desired motion with a torque-controlled robot, which remains compliant and ensures a safe response to external perturbations.
+Here, we propose a novel approach for designing the passive control policy. 
+Our algorithm complies with obstacle-free zones while transitioning to increased damping near obstacles to ensure collision avoidance. 
+This approach ensures stability across diverse scenarios, effectively mitigating disturbances.
 Validation on a 7DoF robot arm demonstrates superior collision rejection capabilities compared to the baseline, underlining its practicality for real-world applications. 
 Our obstacle-aware damping controller represents a substantial advancement in secure robot control within complex and uncertain environments.
 \end{abstract}
@@ -94,6 +96,9 @@ Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot
 \input{input/discrete_time}
 
 \input{input/results}
+
+\appendix
+%\input{input/discrete_time}
 
 \renewcommand*{\bibfont}{\footnotesize}
 \printbibliography

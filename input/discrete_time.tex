@@ -103,6 +103,9 @@ However, in most cases, the desired system should only reach zero at the attract
 
 Yet, asymptotic stability is not guaranteed for general nonlinear input dynamics. Especially for dynamics with high curvature and low damping value, the final trajectory can end up in limit cycles ((Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
 
+In practice, it is useful to use a large value for $s^{o}$ as it rejects disturbances towards the obstacles, and lower values for the dynamics following $s^{f}$ and damping in general direction $s^{c}$.
+
+
 \begin{figure}[htbp]
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison_stable}

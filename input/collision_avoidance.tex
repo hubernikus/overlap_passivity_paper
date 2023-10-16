@@ -8,7 +8,7 @@ Note that, the Coriolis effect is neglected due to the small motion of the agent
 \begin{lemma}
 	Let us consider a dynamical system that evolves according to the rigid body dynamics given in \eqref{eq:robot_dynamics} and is governed by the obstacle aware, passive controller \eqref{eq:control_command}, using the damping matrix $\matd{D}$ as defined in \eqref{eq:damping_summation}, and neglectable Coriolis effect.
     An agent moving close to the surface, i.e., $\Gamma(\vecs \xi) \approx 1$ is disturbed by a large disturbance velocity $v^I$ compared to the initial velocity, i.e., $\| \vect f(\vecs \xi) \| / \|\vect v^I \| \ll 1 $.
-	The motion starting in free space, i.e., $\Gamma( \{\vecs \xi_0 \} ) > 1$ is able to reject the disturbance and remain collision-free for all times $\Gamma( \{\vecs \xi_t\}) \geq 1$ with $t \geq 0$ if the impact velocity is limited as follows $\| \vect v^I \| < s^{\mathrm{obs}} \| \vecs \xi - \vecs \xi^b \| / m^{\mathrm{min}}$, with respect to the closes surface point $\vecs \xi^b \in \mathbb{R}^N$ and smallest eigenvalue of the mass matrix $m^{\mathrm{min}} \in \mathbb{R}_{>0}$.
+	The motion starting in free space, i.e., $\Gamma( \{\vecs \xi_0 \} ) > 1$ is able to reject the disturbance and remain collision-free for all times $\Gamma( \{\vecs \xi_t\}) \geq 1$ with $t \geq 0$ if the impact velocity is limited as follows $\| \vect v^I \| < s^{\mathrm{o}} \| \vecs \xi - \vecs \xi^b \| / m^{\mathrm{min}}$, with respect to the closes surface point $\vecs \xi^b \in \mathbb{R}^N$ and smallest eigenvalue of the mass matrix $m^{\mathrm{min}} \in \mathbb{R}_{>0}$.
 \end{lemma}
 
 
@@ -36,7 +36,7 @@ Due to the proximity to the obstacle, the danger weight in \eqref{eq:weight_func
 Hence, the most critical scenario is when the disturbance is directly toward the obstacle. A general velocity evolution towards the obstacle is smaller than this.
 Hence, we focus on this extreme case:
 \begin{equation}
-    \vecs{\dot \xi} = \int \frac{s^{\mathrm{obs}}}{m} \vecs{ \dot \xi} \, dt = \frac{s^{\mathrm{obs}}}{m} (\vecs{\xi} - \vecs \xi_0)  + \vecs v^I \label{eq:velocity_with_control}
+    \vecs{\dot \xi} = \int \frac{s^{\mathrm{o}}}{m} \vecs{ \dot \xi} \, dt = \frac{s^{\mathrm{o}}}{m} (\vecs{\xi} - \vecs \xi_0)  + \vecs v^I \label{eq:velocity_with_control}
 \end{equation}
 where $m = \min \Bigl(\text{eig} \bigl(\mathcal{M} \bigr) \Bigr)$ is the smallest eigenvalue of the mass matrix. Note, that any velocity which does not point towards the surface, will not get as close to the obstacle.
 
@@ -44,13 +44,13 @@ This can be used to compute the distance at which the velocity reaches zero:
 \begin{equation}
     \| \vecs{\dot \xi} \| = 0
     \quad \Rightarrow \quad
-    \|\vecs \xi_0 - \vecs{\xi} \| = \| \vecs v^I \| {m^{\mathrm{min}}} / {s^{\mathrm{obs}}} 
+    \|\vecs \xi_0 - \vecs{\xi} \| = \| \vecs v^I \| {m^{\mathrm{min}}} / {s^{\mathrm{o}}} 
 \end{equation}
 where $\vecs \xi_0 \in \mathbb{R}^N $ is the starting position. 
 
 Hence, if the disturbance velocity is limited by 
 \begin{equation}
-    \| \vect v^I \| < s^{\mathrm{obs}} \| \vecs \xi - \vecs \xi^b \| / m^{\mathrm{min}}
+    \| \vect v^I \| < s^{\mathrm{o}} \| \vecs \xi - \vecs \xi^b \| / m^{\mathrm{min}}
 \end{equation}
 with respect to the closes surface point $\vecs \xi^b \in \mathbb{R}^N$ and smallest eigenvalue of the mass matrix $m^{\mathrm{min}} \in \mathbb{R}_{>0}$.
 \end{proof}

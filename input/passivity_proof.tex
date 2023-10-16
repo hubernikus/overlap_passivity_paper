@@ -6,7 +6,7 @@ The stability analysis of the system gives information about the region of stabi
 
 \begin{lemma} \label{lemma:passivity}
   % Let $\vect f(\vecs \xi)$ be the desired velocity with bounded magnitude, i.e., $\| \vect f(\xi) \| < \infty, \forall \xi \in \mathbb{R}^N$.
-   Let us assume a robotic system as described in \eqref{eq:robot_dynamics} is controlled using \eqref{eq:control_command} using the damping matrix $\matd D(\vecs \xi)$ given in \eqref{eq:damping_summation} with damping values $s_i = 1$.
+   Let us assume a robotic system as described in \eqref{eq:robot_dynamics} is controlled using \eqref{eq:control_command} using the damping matrix $\matd D(\vecs \xi)$ given in \eqref{eq:damping_summation} with damping values $s_d = 1, d = 1 .. N$.
    The system is passive with respect to the input-output pair $\vecs \xi_e$, $\vecs{\dot \xi}$ when exceeding the desired velocity $\vect f(\vecs \xi)$ , i.e., $\dot{W} \leq \vecs{\dot \xi}^T \vecs \tau^e, \; \forall \vecs \xi \in \mathbb{R}^N: \| \vecs{\dot \xi} \| \geq \| \vect f(\vecs \xi) \|$ and the storage function being the kinetic energy $W \in \mathbb{R}_{>0}$ given in \eqref{eq:energy_system}
 \end{lemma}
 
@@ -23,7 +23,7 @@ The time derivative of storage function $W$ can be evaluated as:
 where the second order dynamics $\vecs{\ddot \xi}$ are evaluated according to the rigid body dynamics defined in \eqref{eq:robot_dynamics}. Furthermore, $\dot{\matd M} - 2 \matd C$ is skew-symmetric for any physical system; hence, the corresponding summand is zero.
 
 % \subsubsection{Stability with Uniform Damping}
-Let us investigate the region where the passivity holds. In this Lemma, it is assumed that all damping values are equal to one, hence we have:
+Let us investigate the region where the passivity holds. Since in the Lemma, we assumed all damping values being equal to one, we have:
 \begin{equation}
 	\matd{D}({\vecs \xi}) = \matd{Q}({\vecs \xi}) \matd{S} ({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1}= \matd{Q}({\vecs \xi}) \matd{I} \matd{Q}({\vecs \xi})^{-1} = \matd{I}
 \end{equation}
@@ -61,8 +61,8 @@ Moreover, the system is passive as long as the observed velocity $\dot{{\vecs \x
 As in the orange region, the system is not passive; the storage function $W$ could increase, and hence, the velocity $\dot {\vecs \xi}$ increases non-passively. This behavior is not unexpected, as the controller is designed to approach a desired DS $\vect{f}({\vecs \xi})$. Hence, as long as the desired velocity is not reached, the kinetic energy increases even with no force input $\vecs \tau^e$. However, as soon as the system velocity $\dot{\vecs \xi}$ exceeds the desired velocity $\vect f(\vecs \xi)$, the system behaves passively. We can use this to ensure the stability of the system:
 
 \begin{theorem}  \label{theorem:passivity}
-  Let $\vect f(\vecs \xi)$ is the desired velocity $\vect f(\vecs\xi)$ with bounded magnitude, i.e., $\| \vect f(\vecs \xi) \| < v^{\mathrm{max}}, \forall \vecs \xi \in \mathbb{R}^N$.
-   The closed loop system \eqref{eq:robot_dynamics} using the controller from \eqref{eq:control_command} and the damping matrix $\matd D(\vecs \xi)$ given in \eqref{eq:damping_summation} is bounded-input, bounded-output (BIBO) stable with respect to the input disturbance force $\vect \tau^e$, and output the velocity $\dot{\vecs \xi}$.
+  Let $\vect f(\vecs \xi)$ is the desired velocity with bounded magnitude, i.e., $\| \vect f(\vecs \xi) \| < v^{\mathrm{max}}, \forall \vecs \xi \in \mathbb{R}^N$.
+   The closed loop system \eqref{eq:robot_dynamics} using the controller from \eqref{eq:control_command} and the damping matrix $\matd D(\vecs \xi)$ given in \eqref{eq:damping_summation} is bounded-input, bounded-output (BIBO) stable with respect to the input disturbance force $\vect \tau^e$, and output the velocity $\dot{\vecs \xi}$ for all times $T = 0, \, .., \, \infty$.
 \end{theorem}
  
 \begin{proof}
@@ -73,11 +73,11 @@ As in the orange region, the system is not passive; the storage function $W$ cou
 To ensure BIBO stability, let us analyze the integral of the impulse of the response for the external force $\vecs \tau^e$: 
 \begin{equation}
 	\begin{split}
-	  \int_{-\infty}^{\infty} \left| \dot{\vecs \xi} \right| \; dt 
-	  & = \int_{t \notin \mathcal{T}_n} \left| \dot {\vecs \xi} \right|  \, dt + \int_{t \in  \mathcal{T}_n} \left| \dot {\vecs \xi} \right| \;  dt \\ 
+	  \int_{0}^{T} \left\| \dot{\vecs \xi} \right\| \; dt 
+	  & = \int_{t \notin \mathcal{T}_n} \left\| \dot {\vecs \xi} \right\|  \, dt + \int_{t \in  \mathcal{T}_n} \left\| \dot {\vecs \xi} \right\| \;  dt \\ 
 	  % & = \int_{t : \| \dot{\vecs \xi} \| > \| \vect f(\vecs \xi) \|} \dot {\vecs \xi} \, dt + \int_{t : \| \dot{\vecs \xi} \| \leq \| \vect f(\vecs \xi) \|} \dot {\vecs \xi} \;  dt \\ 
 	  % & \leq \int_{t \notin \mathcal{T}_n} \left| \dot {\vecs \xi} \right| dt + v^{\mathrm{max}}  T_n \\ 
-	  & \leq K_p + v^{\mathrm{max}} T_n < \infty
+	  & \leq K_p + v^{\mathrm{max}} T_n
 \end{split}
 \label{eq:bibo_velocity}
 \end{equation}
@@ -100,10 +100,15 @@ The transfer is then used to rewrite \eqref{eq:passivity_condition} as:
 
 Hence, the BIBO analysis of \eqref{eq:bibo_velocity} applied to the transformed system results as:
 \begin{equation}
-	  \int_{-\infty}^{\infty} \left| \vecs{\bar v} \right| \; dt   
-	  = \int_{t \notin \bar{\mathcal{T}}_n} \left| \vecs{\bar v} \right|  \, dt + \int_{t \in  \bar{\mathcal{T}}_n} \left| \vecs{\bar v} \right| \;  dt  < \infty
+\begin{split}
+	  & \int_{0}^{T} \left\| \vecs{\bar v} \right\| \; dt   
+	   = \int_{t \notin \bar{\mathcal{T}}_n} \left\| \vecs{\bar v} \right\|  \, dt + \int_{t \in  \bar{\mathcal{T}}_n} \left\| \vecs{\bar v} \right\| \;  dt  \\ 
+   & < K_p + v^{\mathrm{max}} \bar T_n 
+   {\max{\Bigl(\text{eig}\bigl(\mathcal{D} \bigr) \Bigr)}} 
+   / {\min{\Bigl(\text{eig}\bigl(\mathcal{D} \bigr) \Bigr)}}
+\end{split}
 \end{equation}
-where $\bar{\mathcal{T}}_n$ denotes the region where the transformed system $\vecs{\bar v}$ is not passive, i.e. $\| \vecs{\bar v} \| \leq \| \bar{\Delta \vect f} \|$.  
+where $\bar{\mathcal{T}}_n$ denotes the region where the transformed system $\vecs{\bar v}$ is not shown to be passive, i.e. $\| \vecs{\bar v} \| \leq \| \bar{\Delta \vect f} \|$, and $\bar T_n \in \mathbb{R}_{\geq 0}$ the corresponding time. Additionally, $\min{(\text{eig}(\mathcal{D}))}$ and $\max{(\text{eig}(\mathcal{D}))}$ are the smallest and largest eigenvalue of the damping matrix $\matd{D}$ respectively.
 
 Hence, since the transformed system with velocity $\vect {\bar v}$ is BIBO stable, the original system with velocity $\dot{\vecs \xi}$ is BIBO stable, too, as long as it is a continuous, finite transform. 
 \end{proof}

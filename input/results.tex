@@ -45,7 +45,7 @@ In practical robotic applications, controllers are inevitably exposed to noise a
 \end{figure}
 
 This section investigates the impact of noise disturbances on a simulated agent with an identity mass matrix $\matd M = \matr I kg$. The discrete time step is set to $\Delta t = $~\qty{0.2}{s}. Additionally, the damping values are configured as follows: 
-$s^{\mathrm{obs}}=$~\qty{50}{s^{-1}},
+$s^{\mathrm{o}}=$~\qty{50}{s^{-1}},
 $s^{\mathrm{f}}=$~\qty{40}{s^{-1]}}, and
 $s^{\mathrm{c}}=$~\qty{5}{s^{-1}}.
 The robot's objective is to follow a linear velocity field of the form $\vect f(\vecs \xi) = (\vecs \xi^a - \vecs \xi)$ with a velocity cap of \qty{1}{m/s}.
@@ -61,7 +61,7 @@ Furthermore, the obstacle-aware controller maintains a higher minimal distance a
 \subsubsection{Position Noise Resistance} \label{sec:position_noise}
 In the second experiment, normally distributed noise with a mean of zero is added to the position $\vecs{ \xi}$ (Fig.~\ref{fig:position_noise}). The agent has to navigate around two star-shaped obstacles to reach the attractor with various noise levels being applied.
 
-The obstacle-aware controller maintains a greater distance to the surface even when no noise is present, while the velocity-preserving controller already exhibits collisions. As a result, the obstacle-aware creates trajectories with the mean of the distance above zero for standard deviations of the position noise smaller than \qty{0.023}{m}. Conversely, the velocity-preserving controller's mean distance to the surface is below zero for all experiment runs, indicating collisions.
+The obstacle-aware controller maintains a greater distance to the surface even when no noise is present, while the velocity-preserving controller already exhibits collisions. As a result, the obstacle-aware creates trajectories with the mean distance above zero for standard deviations of the position noise smaller than \qty{0.023}{m}. Conversely, the velocity-preserving controller's mean distance to the surface is below zero for all experiment runs, indicating collisions.
 This difference is attributed to the buffer mechanism inherent in the obstacle-aware controller. Despite a similar decrease in distance for both controllers, the obstacle-aware controller effectively prevents collisions due to its higher damping of velocities toward the obstacles.
 
 Moreover, the velocity-preserving controller exhibits a higher distance variance, likely stemming from its lower damping, causing it to adapt more slowly to new velocities after being displaced by the noise. Consequently, this behavior leads to more random variations in velocity and trajectory.
@@ -79,7 +79,7 @@ Moreover, the velocity-preserving controller exhibits a higher distance variance
       \label{fig:comparison_position_noise}
     \end{subfigure}
 	\caption{
- The agent is navigating towards the attractor (black star) between two concave obstacles (a) while being subjected to white noise in its position. The position noise has a mean of zero, and various noise variances ranging between \qty{0.0}{m} and \qty{0.03}{m}. The robot starts at position $\vecs \xi_0 = [-2.5, -1.0]^T$, and the attractor is set to $\vecs \xi^a = [2.5, 1.0]^T$.
+ The agent is navigating towards the attractor (black star) between two concave obstacles (a) while being subjected to white noise in its position. The position noise has a mean of zero and various noise variances ranging between \qty{0.0}{m} and \qty{0.03}{m}. The robot starts at position $\vecs \xi_0 = [-2.5, -1.0]^T$, and the attractor is set to $\vecs \xi^a = [2.5, 1.0]^T$.
  }
 \label{fig:position_noise}
 \end{figure}
@@ -98,7 +98,7 @@ The desired orientation $\vecs \alpha^a$ is pointing downward with a quaternion 
 
 The angular damping is chosen as $p^\alpha = 5.5$.
 The damping values are set as
-$s^{\mathrm{obs}}=$~\qty{160}{s^{-1}},
+$s^{\mathrm{o}}=$~\qty{160}{s^{-1}},
 $s^{\mathrm{f}}=$~\qty{64}{s^{-1]}}, and
 $s^{\mathrm{c}}=$~\qty{16}{s^{-1}}.
 
@@ -115,12 +115,14 @@ The experimental results in \ifthesis Figure~\ref{fig:instances_evaluation_on_ro
 % No-Damping Force: 3.5782840941712544 \pm 0.23762587158014598 
 % Obstacle-Aware Force: 4.1208857008362125 \pm 0.25191997294727264 
     \centering
-    \begin{tabular}{|l|c|c|c|} \hline
+    \begin{tabular}{|l|c|c||c|} \hline
         & Obstacle & Velocity & Undisturbed \\ \hline
-         Closest Distance [mm] &  105 $\pm$ 21 & 18 $\pm$ 21 & 167 $\pm$ 9 \\ \hline
-         Maximum Force [N] & 4.12 $\pm$ 0.25 & 3.58 $\pm$ 0.24 & 2.86 $\pm$ 0.37  \\ \hline 
+         Closest Distance [mm] &  {105 $\pm$ 21} & 18 $\pm$ 21 & 167 $\pm$ 9 \\ \hline
+         Maximum Force [N] & {4.12 $\pm$ 0.25} & 3.58 $\pm$ 0.24 & 2.86 $\pm$ 0.37  \\ \hline 
     \end{tabular}
-    \caption{The mean and standard deviation of the closest distance and maximum force over the ten epochs.}
+    \caption{The mean and standard deviation of the closest distance and maximum force over the ten epochs.
+    The undisturbed trajectory is provided as reference values.
+    During the experiments, the obstacle-aware damping avoids collision with an increased minimal distance from the obstacle and, hence, a safer trajectory. This is achieved through momentarily higher forces.}
     \label{tab:evaluation_on_robot_arm}
 \end{table}
 
@@ -188,7 +190,7 @@ This outcome is attributed to the obstacle-aware controller's stronger control f
 %     \centering
     \begin{subfigure}{\columnwidth}
       \centerline{\includegraphics[width=\textwidth]{figures/robot_arm_trajectory_xyz}}
-      \caption{The two control methods compared with the undisturbed trajectory. The wider line indicates a higher x-value. The darker arrow is the actual, and the desired velocity is brighter arrow.}
+      \caption{The two control methods compared with the undisturbed trajectory. The wider line indicates a higher x-value. The darker arrow is the actual, and the desired velocity is the brighter arrow.}
       \label{fig:robot_arm_trajectory_xyz}
     \end{subfigure}
     \begin{subfigure}{\columnwidth}
