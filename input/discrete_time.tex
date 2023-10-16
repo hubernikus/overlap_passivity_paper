@@ -7,8 +7,9 @@ In this case, it is crucial to analyze the discrete-time system to guarantee sta
 \begin{figure}[htbp]
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison}
-  \caption{A point-like agent with an initial velocity (blue arrow) of $\{ \dot{\vecs \xi} \}_0 = [1 \; -1]^T$ is guided by the desired velocity $\vect f(\vecs \xi) = [1, 0]^T$ (gray arrow), and a control matrix $\matd{D}$ with damping values $s_i$ equal in all directions, where $m = m^{\mathrm{min}}$ is the smallest eigenvalue of the inertia matrix. 
-  Damping values above $s_i = 2.0 m / \Delta t$ lead to unstable behavior where the higher value leads to higher oscillations. Conversely, the lowest value leads to more deviation from the straight trajectory resulting from the higher impedance. The critical value of $s_i = 2.0 m / \Delta t$ results in stable behavior with immediate correction to the desired velocity.}
+  \caption{An agent has the desired velocity $\vect f(\vecs \xi) = [1, 0]^T$ (gray arrow), and a control matrix $\matd{D}$ with damping values equal in all directions and the smallest eigenvalue of the inertia matrix $m$. 
+	  The agent is disturbed (purple arrow) position $\vecs \xi_0 = [0, 0]^T$ and has a velocity of  $\vecs \xi_1 = [1, 1]^T$ after the impact (blue arrow). \\
+  High damping leads to unstable behavior with increasingly high oscillations. Conversely, the lowest value leads to more deviation from the initial straight line resulting from the higher impedance. The critical value of $s_i = 2.0 m / \Delta t$ results in stable behavior with immediate correction to the desired velocity.}
   \label{fig:discrete_controller_parameters_comparison}
 \end{figure}
 
@@ -31,7 +32,7 @@ For the discrete-time system, the position and velocity of the agent evolve as f
 
 \begin{lemma}
 	Let us consider a discrete-time system with the state as given in Eq.~\eqref{eq:discrete_time_dynamics}, and is governed by the controller from Eq.~\eqref{eq:control_command} and damping matrix $\matd{D}$ defined in Eq.~\eqref{eq:damping_summation}.
-	The system is BIBO (bounded-input, bounded-stable) with respect input the desired velocity $\vect f(\vecs \xi)$ the velocity, and as output the agent's velocity $\dot{\vecs \xi}$ such that $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, if all damping values are limited as $s_{i} \leq 2 \min \left( \text{eig}\left(\matd{M}\right)  \right) / \Delta t$.
+	The system is BIBO (bounded-input, bounded-stable) with respect input the desired velocity $\vect f(\vecs \xi)$ the velocity, and as output the agent's velocity $\dot{\vecs \xi}$ such that $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, if all damping values are limited as $s_{d} \leq 2 \min \left( \text{eig}\left(\matd{M}\right)  \right) / \Delta t$ with $d=1.. N$.
 \end{lemma}
 
 \begin{proof}
@@ -44,7 +45,7 @@ The evolution of the discrete-time feedback system is given as:
 	=
 	\begin{bmatrix}
 		\vect \xi_t + \Delta t  \; \dot{\vect \xi}_t \\ \
-		\dot{\vecs \xi}_t + \Delta t \, \matd{M}^{-1} \left( \matd{D} \left( \vect f(\vecs \xi_t) - \dot{\vecs \xi}_t \right) - \matr C \right)
+		\dot{\vecs \xi}_t + \Delta t \, \matd{M}^{-1} \left( \matd{D} \left( \vect f(\vecs \xi_t) - \dot{\vecs \xi}_t \right) - \matd{C} \right)
 	\end{bmatrix} \\
 	&  = %\approx
 	\begin{bmatrix}
@@ -103,13 +104,13 @@ However, in most cases, the desired system should only reach zero at the attract
 
 Yet, asymptotic stability is not guaranteed for general nonlinear input dynamics. Especially for dynamics with high curvature and low damping value, the final trajectory can end up in limit cycles ((Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
 
-In practice, it is useful to use a large value for $s^{o}$ as it rejects disturbances towards the obstacles, and lower values for the dynamics following $s^{f}$ and damping in general direction $s^{c}$.
+In practice, it is useful to use a large value for $s^{o}$ as it rejects disturbances towards the obstacles, and lower values for the dynamics following $s^{f}$ and damping in general direction $s^{c}$. Hence, we propose $s^{o} = 2.0 m / \Delta t$, $s^{f} = 1.0 / \Delta t$, and $s^c = 0.1 / \Delta t$.
 
 
 \begin{figure}[htbp]
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison_stable}
-\caption{A point-like agent which is following the desired dynamics of
+\caption{An agent with the desired dynamics of
 $\vect f(\vecs \xi) = \matr R(\pi / 6) (\vect \xi  - \vect \xi^a)$ where $\matr R(\cdot) \in \mathbb{R}^{N \times N}$ is the rotation matrix, and $m$ is the mass of the agent. We assume equal damping values $s_i$.
 The controller with a critical stiffness of $2.0 m / \Delta t$ leads to fast convergence and a stable system. With lower damping (top left), there is a large drift of the system, which converges to a limit cycle. 
 The high damping of $2.3 m / \Delta t$ leads to an unstable system. 
@@ -117,9 +118,3 @@ Interestingly, with damping of $2.1 m / \Delta t$ in combination with the nonlin
   \label{fig:discrete_controller_parameters_comparison_stable}
 \end{figure}
 
-% For a general nonlinear system no asymptotic convergence evaluation can be made. This is due to the fact, that for any system there is a slight drift due to the damping values.
-% And hence, if there are high nonlinearities in the system it could happen that even with a stable system, the dynamics get caught in a limit cycle. However, for most common globally asymptotic systems (for velocity-position), the force controller as proposed leads to globally asymptotically stable behavior, too (Figure~\ref{fig:discrete_controller_parameters_comparison_stable}).
-
-% \subsection{Intertial Drift}
-% Let us assume that have strong damping in the direction of the obstacle, i.e., $s^{\mathrm{obs}} / m_i \gg 1$, where $m_i$ with $i = 1, .., N$ represent the eigenvalues of the mass matrix $\matd{M}$. 
-% 

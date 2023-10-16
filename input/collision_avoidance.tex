@@ -44,15 +44,15 @@ This can be used to compute the distance at which the velocity reaches zero:
 \begin{equation}
     \| \vecs{\dot \xi} \| = 0
     \quad \Rightarrow \quad
-    \|\vecs \xi_0 - \vecs{\xi} \| = \| \vecs v^I \| {m^{\mathrm{min}}} / {s^{\mathrm{o}}} 
+    \|\vecs \xi_0 - \vecs{\xi} \| = \| \vecs v^I \| {m} / {s^{\mathrm{o}}} 
 \end{equation}
 where $\vecs \xi_0 \in \mathbb{R}^N $ is the starting position. 
 
 Hence, if the disturbance velocity is limited by 
 \begin{equation}
-    \| \vect v^I \| < s^{\mathrm{o}} \| \vecs \xi - \vecs \xi^b \| / m^{\mathrm{min}}
+    \| \vect v^I \| < s^{\mathrm{o}} \| \vecs \xi - \vecs \xi^b \| / m
 \end{equation}
-with respect to the closes surface point $\vecs \xi^b \in \mathbb{R}^N$ and smallest eigenvalue of the mass matrix $m^{\mathrm{min}} \in \mathbb{R}_{>0}$.
+with respect to the closes surface point $\vecs \xi^b \in \mathbb{R}^N$ and smallest eigenvalue of the mass matrix $m$.
 \end{proof}
 
 Note that the analysis is done for proximity regions of the obstacle. In any case, the robot enters this proximity region before a collision can occur. Hence, the proposed analysis holds as a general collision avoidance insurance.
