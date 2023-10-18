@@ -8,7 +8,7 @@ In this case, it is crucial to analyze the discrete-time system to guarantee sta
 \centering
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison}
   \caption{An agent has the desired velocity $\vect f(\vecs \xi) = [1, 0]^T$ (gray arrow), and a control matrix $\matd{D}$ with damping values equal in all directions and the smallest eigenvalue of the inertia matrix $m$. 
-	  The agent is disturbed (purple arrow) position $\vecs \xi_0 = [0, 0]^T$ and has a velocity of  $\vecs \xi_1 = [1, 1]^T$ after the impact (blue arrow). \\
+ The agent is disturbed (purple arrow) position $\vecs \xi_0 = [0, 0]^T$ and has a velocity of  $\vecs \xi_1 = [1, 1]^T$ after the impact. \\
   High damping leads to unstable behavior with increasingly high oscillations. Conversely, the lowest value leads to more deviation from the initial straight line resulting from the higher impedance. The critical value of $s_i = 2.0 m / \Delta t$ results in stable behavior with immediate correction to the desired velocity.}
   \label{fig:discrete_controller_parameters_comparison}
 \end{figure}

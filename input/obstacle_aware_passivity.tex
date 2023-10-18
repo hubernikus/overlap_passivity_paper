@@ -24,8 +24,8 @@ w(\vecs\xi) =
 \max \left(0,  \frac{\Gamma^{\mathrm{crit}} - \Gamma(\vecs\xi)}{\Gamma^{\mathrm{crit}} - 1} \right) \| \vecs n(\vecs \xi) \| \\
 \text{with} \quad
 \Gamma(\vecs\xi) = \min_{o = 1..N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
-\label{eq:weight_function}
 \end{split}
+\label{eq:weight_function}
 \end{equation}
 The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}_{>0}$ defines the distance where the system has higher damping towards the obstacle.
 ${\matd D^f}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ follow design given in \eqref{eq:damping_matrix} and are positive definite matrices, thus $\matd {D}(\vecs\xi)$ is positive definite, too.
@@ -86,6 +86,7 @@ Hence, we define the values of the diagonal matrix $\matd{S}^{\mathrm{o}}(\vecs 
     | p | s^c + (1 - | p |) s^{f} & d = 2 \\
     s^c & d = 3 .. N
   \end{cases}
+  \label{eq:obstacle_damping_values}
 \end{equation}
 where the damping along the nominal direction $s^{f} \in \mathbb{R}_{>0}$, obstacle-damping $s^{\mathrm{o}} \in \mathbb{R}_{>0}$, and the compliant-damping $s^c \in \mathbb{R}_{>0}$ are user-defined parameters which determine the behavior of the passive-controller. The first entry of $\matr{S}^{\mathrm{o}}$ dictates the damping towards the obstacle, and the second entry the desired velocity following. Note how the second value approaches the compliant damping, as normal and velocity become parallel.
 
@@ -126,11 +127,11 @@ Moreover, the damping is set to ensure that when passing a narrow passage betwee
 \subsection{Cluttered Environments}
 Note that the design velocity damping matrix ensures safe passage through cluttered environments. In such environments, the normals can be opposing in the proximity of obstacles, and from \eqref{eq:averaged_normal} and \eqref{eq:weight_function}, we get: 
 \begin{equation}
-    \| \vecs n(\vecs \xi) \| \rightarrow 1
+    \| \vecs n(\vecs \xi) \| \rightarrow 0
     \quad \text{and} \quad
     \lim_{\Gamma (\vecs \xi) \rightarrow 1} w (\vecs \xi) = 0
 \end{equation}
-Additionally using \eqref{eq:damping_summation} and \eqref{eq:velocity_damping}
+Additionally using \eqref{eq:damping_summation} and \eqref{eq:velocity_damping} we obtain:
 \begin{equation}
     \lim_{\Gamma \rightarrow 1, \| n \| \rightarrow 0} \matd{D}(\vecs \xi) 
     = \matd{D}^S(\vecs \xi) + 0 

@@ -1,7 +1,7 @@
 \section{Evaluation}  \label{sec:evaluation} 
 The proposed obstacle aware controller\footnote{Source code: \url{https://github.com/hubernikus/obstacle_aware_damping}} is compared to a baseline, the velocity preserving, passive controller \parencite{kronander2015passive}.
 
-\subsection{Qualitative Comparison} \label{sec:qual_comp}
+\subsection{Qualitative Repulse Rejection} \label{sec:qual_comp}
 A qualitative analysis of the proposed controller's behavior in three scenarios, as depicted in Figure~\ref{fig:obstacle_aware_damping_comparison}. In each scenario, the agent approaches multiple obstacles from distinct starting positions, a disturbance (indicated by an arrow) is applied. The simulation time step is $\Delta t = 0.01 s$ seconds, and the agent's mass matrix is $\matd{M} = \matr{I} kg$. The controller is implemented using the following damping values:
 $s^{\mathrm{obs}}=~$\qty{200}{s^{-1}},
 $s^{\mathrm{f}}=$~\qty{100}{s^{-1}}, and
