@@ -21,7 +21,7 @@ The orthonormal basis matrix $\textbf{E} \in \mathbb{R}^{N \times N}$, defined a
 where the tangent directions $\textbf{e}_{(\cdot)} \in \mathbb{R}^N$ are perpendicular to the surface normal $\vect n(\vecs \xi) \in \mathbb{R}^N$, see Fig.~\ref{fig:resultant_normal}. The reference vector $\textbf{r}(\vect{\xi}) =  \left( \vecs{\xi}-\vecs{\xi}^r \right) / \| \vecs \xi-\vecs \xi ^r \|$ is pointing towards the the reference point $\vecs \xi^r \in \mathbb{R}^N$. 
 This construction of the basis matrix is valid for starshaped obstacles, i.e., shapes for which a reference point exists, from which a line in any direction only crosses the surface once \cite{huber2023avoidance}.
 
-The  diagonal values $\lambda_{(\cdot)}$  in \eqref{eq:modulated} are often referred to as eigenvalues since they modify the length of the input velocity in specific directions. 
+The  diagonal values $\lambda_{(\cdot)}$  in \eqref{eq:modulated_ds} are often referred to as eigenvalues since they modify the length of the input velocity in specific directions. 
 The eigenvalue in reference direction $\lambda^r(\vecs \xi) \leq 1$, is designed to reduce the velocity towards the obstacle, i.e., towards the reference point.  
 Conversely, the velocity increases along the tangent direction using $\lambda^e(\vecs \xi) \geq 1$. This eigenvalues in reference direction $\lambda^r$ and tangent direction $\lambda^e$ are defined as:
 \begin{equation}
