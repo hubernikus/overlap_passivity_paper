@@ -1,5 +1,5 @@
 main_folder="../obstacle_aware_passivity"
-old_folder="../obstacle_aware_passivity_v1"
+old_folder="../obstacle_aware_passivity_v2"
 
 file="main.tex"
 # local_path = ""
@@ -23,3 +23,5 @@ compare_latex_files "main.tex" "."
 for file in $main_folder/input/*.tex; do
 	compare_latex_files "${file##*/}" "input";
 done
+
+
