@@ -14,13 +14,9 @@ In this work, we make the following contributions:
 \item Implementation and testing on 7DoF robot arm (Section~\ref{sec:evaluation})
 \end{itemize}
 
-\ifthesis
-\,
-\else
 \begin{figure}[thb]
   \center
   \includesvg[width=1.0\columnwidth]{figures/control_scheme_passive.svg}
 \caption{The desired velocity $\vect f^b(\vecs \xi)$ can result from a learned velocity field or pointing towards a desired attractor $\vecs \xi^a$. The desired velocity is used to evaluate the obstacle avoidance velocity $\vect f(\vecs \xi)$, fed into the force controller to obtain the control force $\vect \tau_c$. In order to achieve collision avoidance, the distance function $\Gamma_o(\vecs \xi)$, the normal direction $\vect n_o(\vecs \xi)$, and the reference direction $\vect r_o(\vecs \xi)$ are evaluated for each obstacle $o = 1 .. N^\mathrm{{obs}}$.}
 \label{fig:control_scheme_passive}
 \end{figure}
-\fi
