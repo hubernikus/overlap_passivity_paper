@@ -83,6 +83,7 @@ The diagonal matrix $\matd{S}(\vecs\xi) \in \mathbb{R}^{N \times N}$ consists of
 This design allows the separate design of the damping in the direction of motion and perpendicular to the motion.
 Increased consistency with the desired velocity is achieved by setting the first damping factor to a relatively high value. Conversely, the damping in the remaining directions is set lower to allow compliance perpendicular to the motion, i.e., $s_i / s_1 \ll 1, \; i = 2 .. N$.
 
+\iflong
 \subsection{Stability Analysis} \label{sec:trad_passive}
 Considering varying control parameters carefully is crucial, as such a design can inject energy into a system, potentially leading to unstable behavior and damaging the system \cite{ferraguti2013tank}.
 In human-robot interaction, the robot faces external disturbances of unknown nature. To achieve stable and bounded behavior in the face of such disturbances, \textit{passivity} analysis is a valuable tool. By employing passivity analysis, the control system can be designed to maintain stable responses (bounded system) in the presence of any external force (bounded input). 
@@ -96,3 +97,4 @@ In human-robot interaction, the robot faces external disturbances of unknown nat
 \end{definition}
 
 The feedback loop combining two passive systems results in a passive system \cite{sepulchre2012constructive}. Hence, if the controller is passive, its application to a (passive) environment-hardware system results in a passive system.
+\fi

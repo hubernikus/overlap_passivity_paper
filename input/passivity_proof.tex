@@ -58,7 +58,7 @@ Moreover, the system is passive as long as the observed velocity $\dot{{\vecs \x
 
 \end{proof}
 
-As in the orange region, the system is not passive; the storage function $W$ could increase, and hence, the velocity $\dot {\vecs \xi}$ increases non-passively. This behavior is not unexpected, as the controller is designed to approach a desired DS $\vect{f}({\vecs \xi})$. Hence, as long as the desired velocity is not reached, the kinetic energy increases even with no force input $\vecs \tau^e$. However, as soon as the system velocity $\dot{\vecs \xi}$ exceeds the desired velocity $\vect f(\vecs \xi)$, the system behaves passively. We can use this to ensure the stability of the system:
+As in the orange region, the system is not passive; the storage function $W$ could increase, and hence, the velocity $\dot {\vecs \xi}$ increases non-passively. This behavior is not unexpected, as the controller is designed to approach the desired dynamics $\vect{f}({\vecs \xi})$. Hence, as long as the desired velocity is not reached, the kinetic energy increases even with no force input $\vecs \tau^e$. However, as soon as the system velocity $\dot{\vecs \xi}$ exceeds the desired velocity $\vect f(\vecs \xi)$, the system behaves passively. We can use this to ensure the stability of the system:
 
 \begin{theorem}  \label{theorem:passivity}
   Let $\vect f(\vecs \xi)$ is the desired velocity with bounded magnitude, i.e., $\| \vect f(\vecs \xi) \| < v^{\mathrm{max}}, \forall \vecs \xi \in \mathbb{R}^N$.
@@ -118,7 +118,8 @@ For an orthogonal decomposition matrix $\matd{Q}(\boldsymbol{{\vecs \xi}})$, the
 If the ratio of the first damping value to the other axis $i \geq 2$ is large, i.e., $s_1 / s_i \gg 1$, it can lead to non-passivity even though the velocity $\dot{\vecs \xi}$ is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still bounded.
 This proof holds for any basis $\matd{Q}$ which is not singular. However, the controller must be carefully chosen to ensure that the speed up is limited when the basis is close to singular, for example, by limiting the relative difference of the stretching vectors. Furthermore, as stable behavior is ensured for a general shape of a damping matrix $\matd{D}(\vecs \xi)$, the global stability proof extends to any positive definite damping matrix matrices.
 
-Since the damping matrix $\matd D(\vecs \xi)$ changes dynamically, a change in the environment can move the system outside of the passive region. However, there exists always a finite maximum velocity, at which the system is ensured to be passive.
+\editcolor{Since the damping matrix $\matd D(\vecs \xi)$ changes dynamically, a change in the environment can move the system outside of the passive region. However, there exists always a finite maximum velocity, at which the system is ensured to be passive.
+}
 
 \begin{figure}[htbp]
     \centering
@@ -133,9 +134,11 @@ Since the damping matrix $\matd D(\vecs \xi)$ changes dynamically, a change in t
       \label{fig:passivity_analysis_skew}
     \end{subfigure}
 	\caption{
+ \editcolor{
 		The stability is ensured even if the controller can temporarily accelerate the system  to reach a velocity $\dot{\vecs \xi}$, which is faster than the desired velocity $\vect f(\vecs \xi)$ (white region).
 		This happens when the eigenvalues of the damping matrix $\matd{D}(\vecs \xi)$ are not uniform (a) or the stretching vectors $\vect q_1$ and $\vect q_2$ are not orthogonal (b). 
 	In both cases, the region of non-passivity is elliptical (black circle).}
+ }
 	\label{fig:passivity_analysis_varied}
 \end{figure}
 
