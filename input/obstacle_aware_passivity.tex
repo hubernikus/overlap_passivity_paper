@@ -27,12 +27,13 @@ w(\vecs\xi) =
 \end{split}
 \label{eq:weight_function}
 \end{equation}
-The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}_{>0}$ defines the distance where the system has higher damping towards the obstacle.
+The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}_{>0}$ defines the distance where the system has starts to increase the damping towards the obstacle.
 ${\matd D^f}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ follow design given in \eqref{eq:damping_matrix} and are positive definite matrices, thus $\matd {D}(\vecs\xi)$ is positive definite, too.
 
 \begin{figure}
   \center
-  \includesvg[width=0.7\columnwidth]{figures/damping_basis_construction.svg}
+  % \includesvg[width=0.7\columnwidth]{figures/damping_basis_construction.svg}
+  \includegraphics[width=0.7\columnwidth]{figures/damping_basis_construction.pdf}
 \caption{The damping matrix enforcing desired velocity following $\matd{D}^{f}$ has the first basis vector $\vect q_1^{f}$ which points along the avoidance velocity $\vect f(\vecs \xi)$. The damping matrix to enforce collision avoidance $\matd{D}^{\mathrm{obs}}$ uses the normal $\vect n(\vecs \xi)$ to construct the first direction of the decomposition basis $\vect q^{\mathrm{obs}}_1$.}
 \label{fig:damping_basis_construction}
 %% \label{fig_basis_3D_DS_obs}
@@ -130,7 +131,6 @@ Moreover, the damping is set to ensure that when passing a narrow passage betwee
   \label{eq:velocity_damping}
 \end{equation}
 
-\editcolor{
 \subsection{Cluttered Environments}
 In a cluttered environment, the normal vectors of the individual obstacles can be opposing. And hence using \eqref{eq:averaged_normal} and \eqref{eq:weight_function}, we get: 
 \begin{equation}
@@ -146,7 +146,6 @@ Additionally using \eqref{eq:damping_summation} and \eqref{eq:velocity_damping} 
 \end{equation}
 
 Hence, there is high damping in all directions to reject disturbances towards potential obstacles and ensure a collision-free motion even in cluttered environments.
-}
 
 \subsection{Damping Parameter Design}
 Higher values for the damping parameters $s^{(\cdot})$ generally result in improved velocity following and disturbance repulsion, whereas lower values allow more compliant behavior.

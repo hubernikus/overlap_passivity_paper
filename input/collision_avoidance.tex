@@ -3,6 +3,39 @@
 % \subsection{Disturbance Repulsion}
 A crucial property of the proposed controller is its ability to ensure collision avoidance in the presence of external disturbances.
 
+The poposed controller in \eqref{eq:control_command} does not explicitely consider external velocities. Rather, it is designed to approach the desired velocity, hence it rejects 
+
+Note, that due to that the control force can only be rejected with a delay.
+
+However, an exact estimate or an instantaneous measurement of the external force would be required to actively compensate for the collision.
+However, many collision happen during a short period of time $\Delta t \rightarrow 0$ during which the force is applied, hence we assume the velocity after impact:
+\begin{align}
+	 % \begin{split}
+	\vect v^I 
+	 & = \int_{t^I}^{t^I + \delta t} \ddot{\vecs \xi} dt - \{ \vecs \xi \}_{t^I} \\
+	 & = \int_{t^I}^{t^I + \Delta t} \matd{M}^{-1}(\vecs \xi)  \left( \vecs \tau_e \matd{C}(\vecs \xi, \dot{\vecs \xi} \dot{\vecs \xi}) + \vect g(\vecs \xi) \right) dt - \{\vecs \xi \}_{t^I} \nonumber
+	 % \end{split}
+\end{align}
+using \eqref{eq:robot_dynamics} the absence of the control force $\vecs \tau_c$ during this short timeframe, where $\{\vect \xi \}_{t^I}$ is the velocity before the impact.
+ 
+Since the magnitude of the normal is limited to $1$, the control weight is limited as: 
+\begin{equation}
+w(\vecs \xi) \geq \frac{\Gamma^{\mathrm{crit}} - \Gamma(\vecs \xi)}{\Gamma^{\mathrm{crit}} - 1}
+\end{equation}
+under the assumption that $\Gamma^{\mathrm{crit}} \geq ??$.
+
+We want to find the position, where there is no motion towards the wall left.
+
+Using the controller design from \eqref{eq:control_command} the velocity can be computed as:
+\begin{equation}
+\begin{split}
+	\{ \vecs{\dot \xi} \}_\infty & = \int_0^\infty \vecs{\ddot \xi} \, dt 
+    = \int_0^\infty \matd{M}^{-1} \matd{D}  \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt \\
+    % & \approx \int \matd{M}^{-1} \matd{D} \vect f(\vecs \xi) \, dt
+\end{split}
+\label{eq:velocity_evolution}
+\end{equation}
+
 
 
 \begin{lemma}
@@ -71,7 +104,7 @@ From \eqref{eq:first_obstacle_basis}, we know that the first decomposition vecto
 
 The velocity in the tangent plane does not lead to any impact. Hence, we can analyse the evolution of the velocity in the direction of the normal of the obstacle $\vecs{\dot \xi}_1$:
 \begin{equation}
-    \vecs{\dot \xi}_1 = \int \frac{s^{\mathrm{o}}}{m} \vecs{ \dot \xi}_1 \, dt = \frac{s^{\mathrm{o}}}{m} \left(\vecs{\xi}_1 - \vect p_1 \right)  + \vecs v^I_1 \label{eq:velocity_with_control}
+    \vecs{\dot \xi}1 = \int \frac{s^{\mathrm{o}}}{m} \vecs{ \dot \xi}_1 \, dt = \frac{s^{\mathrm{o}}}{m} \left(\vecs{\xi}_1 - \vect p_1 \right)  + \vecs v^I_1 \label{eq:velocity_with_control}
 \end{equation}
 % where $m = \min \Bigl(\text{eig} \bigl(\mathcal{M} \bigr) \Bigr)$ is the smallest eigenvalue of the mass matrix. Note, that any velocity which does not point towards the surface, will not get as close to the obstacle.
 
