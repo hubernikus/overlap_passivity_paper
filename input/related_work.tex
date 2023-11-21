@@ -13,14 +13,19 @@ Combining impedance controllers with admittance controllers can be used to incre
 \parencite{fujiki2022series}.
 However, these controllers' adaptations focus on improving movement accuracy rather than actively rejecting disturbances.
 
+\iflong
 % Stable interaction controller
 Impedance controllers play an important role in interaction tasks, as in these situations, the robot is subjected to forces that are hard to predict precisely. However, they must be actively managed to ensure stable contact without damage occurring. In these situations, passive controllers using storage tanks based on the system's energy allow to limit contact force \parencite{kishi2003passive}.
 A general framework can be used to ensure that position-, torque-, and impedance controllers exhibit passivity during interaction tasks. This is achieved by interpreting the torque feedback as the shaping of the motor inertia. It allows the use of flexible robot arms for complex interaction tasks, such as insertion or wiping \parencite{albu2007unified}. 
 By sensing the interaction force and actively adapting the trajectory based on the physical interaction force and the virtual repulsive force from the obstacle. This can be used for obstacle-aware motion generation \parencite{haddadin2010real}.
+\fi
+
+\iflong
 % Telemanipulation
 Teleoperated systems of robot arms come with control delays and require a closed-loop controller of the robot that can adapt autonomously, ensuring stable and reliable performance. Passive controllers present themselves perfectly for such a task  \parencite{stramigioli2005sampled}. This method addresses the intricate dynamics of interactive systems, ensuring stable and reliable performance.
 A similar approach involves slowly updating the desired position while incorporating a spring-damper model through an impedance controller, enabling seamless interaction with the teleoperated robotic system \parencite{lee2010passive}.
 However, these models require human input for active collision avoidance.
+\fi
 
 % Energy tanks 
 Many impedance controllers with time-varying control rely on energy tanks to ensure stability. This is a virtual state of the system, which is filled or emptied depending on the controller command. Limiting the energy tank to a maximum value ensures the system's stability  \parencite{ferraguti2013tank}. However, when this limit is reached, the controller is constrained and interferes with the controller's optimal functioning. This can result in the controller not achieving a main functionality, such as collision avoidance.
@@ -39,11 +44,13 @@ This allows force-controlled navigation in cluttered environments, yielding conv
 Conversely, repulsive fields can be combined with elastic, global planning \parencite{brock2002elastic} for improved convergence. This allowed adding a repulsive force from the obstacle, ensuring collision avoidance \parencite{tulbure2020closing}. 
 However, methods based on artificial potential fields are prone to local minima in space around cluttered environments.
 
+\iflong
 % Geometric Methods for Obstacle Avoidance / Force Control
 Traditional tracking controllers often require complex linearization or simplification methods. However, a class of geometric tracking controllers enables exact control of nonlinear mechanical systems with low computational cost \parencite{udwadia2003new}. By reformulating control problems as a specific class of optimal controllers, this approach facilitates the derivation of standard control problems in robotics \parencite{peters2008unifying}. As a result, many geometric controllers directly output a control force, and hence do not rely on an additional (impedance) controller.
 Integrating local Riemannian Motion Policies (RMP) has led to globally stable force-controlled motion \parencite{cheng2020rmp}. Moreover, advancements in position-dependent Riemannian metrics allow for improved task design using RMP and reactive force control under constraints \parencite{bylard2021composable}.
 Geometric fabrics have emerged as a valuable mathematical tool for shaping a robot's nominal behavior while capturing essential constraints like obstacle avoidance, joint limits, and redundancy resolution \parencite{xie2020geometric}. Combining Finsler geometry and geometric fabrics has further enhanced path consistency \parencite{ratliff2021generalized}.
 Integrating geometric fabric methods into classical mechanical systems has enabled various physical behaviors, notably exemplified in multi-obstacle avoidance for a 7DoF robot arm \parencite{van2022geometric}. Despite these significant achievements, the parametrization of geometric methods and their application to general systems remains challenging and hinders their wide acceptance.
+\fi
 
 % Dynamical system based avoidance + control
 Harmonic potential functions can ensure the absence of local minima in free space \parencite{connolly1997harmonic}. In previous work, we combined harmonic potential functions with the dynamical system framework to obtain reactive, local minima-free motion \parencite{huber2019avoidance, huber2023avoidance}. It allows for generating a desired velocity based on the robot's position in real-time.

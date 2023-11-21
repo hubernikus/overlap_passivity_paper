@@ -25,6 +25,7 @@ In the bottom trajectory, the repulsive force points away from the obstacle. The
 We observe the selective damping of disturbances towards the obstacle. The top and middle disturbances are highly damped, while the bottom disturbances are not. This feature imparts a natural behavior of moving away from obstacles.
 % Furthermore, in Fig.~\ref{fig_run_damped_towards}, one can observe the feature described in Section~\ref{sec:damping_only_toward}, that only damps the disturbance towards the obstacle. The first disturbance is highly damped, while the second is much less. This feature provides a natural behavior of moving away from obstacles, improving the margin of impenetrability. 
 
+\iflong
 \subsection{Noise Analysis}
 In practical robotic applications, controllers are inevitably exposed to noise and unexpected disturbances, arising from sensor inaccuracies, environmental factors, or other external perturbations. A high-quality controller can effectively reject such disturbances while simultaneously achieving the control objectives, such as collision avoidance and trajectory tracking.
 
@@ -83,7 +84,7 @@ Moreover, the velocity-preserving controller exhibits a higher distance variance
  }
 \label{fig:position_noise}
 \end{figure}
-
+\fi
 
 \subsection{Obstacle Aware Passivity Using a Robot Arm}
 The obstacle-aware passivity controller was implemented to guide a 7-degree-of-freedom robot arm (Panda from Franka Emika) while moving around a cubic obstacle. 
@@ -102,7 +103,7 @@ $s^{\mathrm{o}}=$~\qty{160}{s^{-1}},
 $s^{\mathrm{f}}=$~\qty{64}{s^{-1]}}, and
 $s^{\mathrm{c}}=$~\qty{16}{s^{-1}}.
 
-The robot start position is approximately at $\vecs \xi_0 = [0.3\mathrm{m}, 0.4\mathrm{m}, 0.3\mathrm{m},]^T$ and the attractor is at position $\vecs \xi^a = [0.26 \mathrm{m}, -0.53\mathrm{m}, 0.33\mathrm{m}]^T$.
+The robot start position is approximately at $\vecs \xi_0 = [0.3\mathrm{m}, 0.4\mathrm{m}, 0.3\mathrm{m},]^T$ and the attractor is at position $\vecs \xi^a = [0.26 \mathrm{m}, -0.53\mathrm{m}, 0.33\mathrm{m}]^T$. The controller operates at a frequency of \qty{500}{Hz}.
 The robot encounters a single squared box with axes length \qty{0.16}{m} and a margin of \qty{0.12}{m}, placed in front of the robot base (Fig.~\ref{fig:evaluation_on_robot_arm}). The precise location of the box is tracked in real-time using a marker-based vision system (Optitrack). As the robot passes by the box, it is disturbed by a strong push $\vecs t^e$ towards the box. The experiment is repeated ten times for both controllers, as well as for the undisturbed motion.
 
 The experimental results in \ifthesis Figure~\ref{fig:instances_evaluation_on_robot_arm} and \fi Figure~\ref{fig:evaluation_on_robot_arm} demonstrate that the obstacle-aware controller allows the robot to maintain an average distance of \qty{0.15}{m} away from the obstacle surface. In contrast, the velocity-preserving controller results in a mean distance below \qty{0.05}{m}, and numerous trajectories lead to collisions with the box. On average, the robot passes further away from the obstacle using the obstacle-aware controller and exhibits higher forces, Table~\ref{tab:evaluation_on_robot_arm}.
@@ -212,6 +213,7 @@ Furthermore, the controller is shown to reject disturbances, and the parameter-t
 
 The controller was experimentally evaluated and compared to a baseline passive controller. The proposed approach shows increased resistance to noise, both in position and velocity and improved tracking. Finally, disturbance force on a real robot arm could be successfully rejected to ensure collision avoidance while following a simple trajectory.
 
+\iflong
 \subsection{Discrete Control Convergence}
 The proposed controller is only stable but does not ensure convergence. However, convergence could be achieved by modifying the controller by introducing an additional proportional term, as is common in impedance controllers:
 \begin{equation}
@@ -224,14 +226,17 @@ The proposed controller is only stable but does not ensure convergence. However,
 However, this design interferes with the basis passive controller, and the convergence towards the attractor is facilitated by (stable) velocity $\vect f(\vecs \xi)$. 
 Moreover, introducing a variable damping matrix will result in a potentially unstable system, as the passivity proof no longer holds.
 Future work should further analyze how to include dynamics properties in the design of the damping parameters for improved system performance.
+\fi
 
 \subsection{Applicability and Theoretical Analysis}
 The theoretical analysis from Theorem~\ref{theorem:passivity} indicates BIBO stability for a system with bounded desired velocity. Consequently, controllers like the damping-based approach in \parencite{kronander2015passive} do not require an energy tank. Yet, introducing an adaptive proportional term $\mathcal{K}$ can lead to instabilities \parencite{ferraguti2013tank, kronander2016stability}. 
 Careful consideration of the controller design and stability analysis is necessary to ensure robust and safe performance in practical applications. 
 Nevertheless, the passivity proof enables a broad range of time-varying damping controllers to be safely applied to robotic systems.
 
+\iflong
 \subsection{Point Mass Agents}
 While the controller is limited to a point mass representation of the robot, its computational efficiency would allow multiple evaluations along the robot arm. This could be used to ensure full body control of the robot, hence improving the system's safety.
+\fi
 
 \subsection{Caution in Obstacle's Proximity}
 In this work, we assume the obstacles' position to be precisely known. However, in many scenarios, the robot might have limited perception as it approaches an obstacle. Hence, the robot should be more compliant to enable safe workspace exploration rather than increasing the damping. Future work should explore how to combine these two opposing paradigms: safe control for avoidance, yet cautious exploration.

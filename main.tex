@@ -41,6 +41,7 @@
 \newcommand{\dotprod}[2]{\left\langle {#1}, \, {#2} \right\rangle}
 \newcommand{\normdotprod}[2]{\frac{\left\langle #1, \, #2 \right\rangle}{\| #1 \| \, \| #2 \|}}
 
+\newcommand{\editcolor}[1]{\textcolor{blue}{#1}}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[section]
@@ -50,6 +51,9 @@
 
 \newif\ifthesis
 \thesisfalse
+\newif\iflong
+% \longfalse
+\longtrue
 
 \title{
 Passive Obstacle Aware Control \\
@@ -90,21 +94,25 @@ Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot
 % \end{equation}
 
 \input{input/introduction}
-\input{input/related_work}
+\input{input/related_work}  
 \input{input/contributions}
 \input{input/preliminaries}
 \input{input/problem_statement}
 
 \input{input/obstacle_aware_passivity}
 \input{input/passivity_proof}
+\editcolor{
 \input{input/collision_avoidance}
+}
 % \input{input/discrete_time}
 
 \input{input/results}
 
+\iflong
 \appendix
 %\input{input/discrete_time}
 \input{input/discrete_time}
+\fi
 
 \renewcommand*{\bibfont}{\footnotesize}
 \printbibliography

@@ -30,14 +30,14 @@ Conversely, the velocity increases along the tangent direction using $\lambda^e(
     \label{eq:eigenvalues}
     \end{split}
 \end{equation}
-with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}_{\geq 0}$, which has a value of $\Gamma(\vecs \xi) = 1$ on the boundary of an obstacle, and $\Gamma(\vecs \xi) > 1$ away from the surface (Fig.~\ref{fig:resultant_normal}). In this work, we use the following distance function
+with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}_{\geq 0}$, which has a value of $\Gamma(\vecs \xi) = 1$ on the boundary of an obstacle, and monotonically increases along the normal to the surface of the obstacle (Fig.~\ref{fig:resultant_normal}). In this work, we use the following distance function
 \begin{equation}
-  \Gamma(\vecs \xi) = 1 + \| \vecs \xi - \vecs \xi^b \|  
+  \Gamma(\vecs \xi) = 1 + \| \vecs \xi - \vecs \xi^b \|  / R^0
   \quad \text{with} \quad
   \vecs \xi^b = b (\vecs \xi - \vecs \xi^r) + \vecs \xi^r
   \label{eq:distance_function}
 \end{equation}
-with $b \in \mathbb{R}_{>0}$, such that $\vect \xi^b \in \mathbb{R}^N$ lies on the surface of the obstacle.
+with $b \in \mathbb{R}_{>0}$, such that $\vect \xi^b \in \mathbb{R}^N$ lies on the surface of the obstacle, and $R^0 \in \mathbb{R})_{>0}$ is the distance scaling, with default value $R^0 = 1$.
 
 \begin{figure}
 \centerline{\includegraphics[width=1.0\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
@@ -83,6 +83,7 @@ The diagonal matrix $\matd{S}(\vecs\xi) \in \mathbb{R}^{N \times N}$ consists of
 This design allows the separate design of the damping in the direction of motion and perpendicular to the motion.
 Increased consistency with the desired velocity is achieved by setting the first damping factor to a relatively high value. Conversely, the damping in the remaining directions is set lower to allow compliance perpendicular to the motion, i.e., $s_i / s_1 \ll 1, \; i = 2 .. N$.
 
+\iflong
 \subsection{Stability Analysis} \label{sec:trad_passive}
 Considering varying control parameters carefully is crucial, as such a design can inject energy into a system, potentially leading to unstable behavior and damaging the system \cite{ferraguti2013tank}.
 In human-robot interaction, the robot faces external disturbances of unknown nature. To achieve stable and bounded behavior in the face of such disturbances, \textit{passivity} analysis is a valuable tool. By employing passivity analysis, the control system can be designed to maintain stable responses (bounded system) in the presence of any external force (bounded input). 
@@ -96,3 +97,4 @@ In human-robot interaction, the robot faces external disturbances of unknown nat
 \end{definition}
 
 The feedback loop combining two passive systems results in a passive system \cite{sepulchre2012constructive}. Hence, if the controller is passive, its application to a (passive) environment-hardware system results in a passive system.
+\fi
