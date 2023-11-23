@@ -13,7 +13,7 @@ However, many collision happen during a short period of time $\Delta t \rightarr
 	 % \begin{split}
 	\vect v^I 
 	 & = \int_{t^I}^{t^I + \delta t} \ddot{\vecs \xi} dt - \{ \vecs \xi \}_{t^I} \\
-	 & = \int_{t^I}^{t^I + \Delta t} \matd{M}^{-1}(\vecs \xi)  \left( \vecs \tau_e \matd{C}(\vecs \xi, \dot{\vecs \xi} \dot{\vecs \xi}) + \vect g(\vecs \xi) \right) dt - \{\vecs \xi \}_{t^I} \nonumber
+	 & = \int_{t^I}^{t^I + \Delta t} \matd{M}^{-1}(\vecs \xi)  \left( \vecs \tau_e \matd{C}(\vecs \xi, \dot{\vecs \xi}) + \vect g(\vecs \xi) \right) dt - \{\vecs \xi \}_{t^I} \nonumber
 	 % \end{split}
 \end{align}
 using \eqref{eq:robot_dynamics} the absence of the control force $\vecs \tau_c$ during this short timeframe, where $\{\vect \xi \}_{t^I}$ is the velocity before the impact.
@@ -22,19 +22,29 @@ Since the magnitude of the normal is limited to $1$, the control weight is limit
 \begin{equation}
 w(\vecs \xi) \geq \frac{\Gamma^{\mathrm{crit}} - \Gamma(\vecs \xi)}{\Gamma^{\mathrm{crit}} - 1}
 \end{equation}
-under the assumption that $\Gamma^{\mathrm{crit}} \geq ??$.
+under the assumption that $\Gamma^{\mathrm{crit}} \geq 1$.
 
 We want to find the position, where there is no motion towards the wall left.
 
 Using the controller design from \eqref{eq:control_command} the velocity can be computed as:
 \begin{equation}
 \begin{split}
-	\{ \vecs{\dot \xi} \}_\infty & = \int_0^\infty \vecs{\ddot \xi} \, dt 
-    = \int_0^\infty \matd{M}^{-1} \matd{D}  \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt \\
+	\{ \vecs{\dot \xi} \}_{T} 
+	& = \int_0^T\vecs{\ddot \xi} \, dt 
+    = \int_0^T \matd{M}^{-1} \matd{D}  \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt \\
     % & \approx \int \matd{M}^{-1} \matd{D} \vect f(\vecs \xi) \, dt
 \end{split}
 \label{eq:velocity_evolution}
 \end{equation}
+
+To see when the differences reaches zero, we can compute
+\begin{equation}
+ \|	\{ \vecs{\dot \xi} \}_T - \vect f(\vecs \xi) \| = 0
+ \quad \Rightarrow \quad
+    \| \vecs{\xi}_1 -  \vect p_1 \| = \| \vecs v^I_1 \| {m} / {s^{\mathrm{o}}} 
+ \end{equation}
+
+Hence, the time it  
 
 
 

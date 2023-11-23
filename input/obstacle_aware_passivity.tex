@@ -56,13 +56,12 @@ Note that the averaged normal is a zero-vector when two obstacles oppose each ot
 
 \subsubsection{Decomposition Matrix}
 The decomposition matrix $\matd Q^{\mathrm{o}}(\vecs \xi)$ has its first vector aligned with the normal to the obstacle: 
-\editcolor{
 \begin{equation}
     \vecs q_1^{\mathrm{o}}(\vecs\xi) =  \vecs n(\vecs\xi) / \lVert\vecs n(\vecs\xi)\rVert 
     \quad \forall \, \vecs \xi : \lVert\vecs n(\vecs\xi)\rVert  > 0
     \label{eq:first_obstacle_basis}
 \end{equation}
-}
+
 In the case that $\lVert\vecs n(\vecs\xi)\rVert = 0$, the danger weight $w(\vecs \xi)$ from \eqref{eq:weight_function} reaches 0. Hence, the obstacle-aware damping in \eqref{eq:damping_summation} has no effect and is not evaluated.
 
 The second vector is set to be aligned with the desired velocity as much as possible, allowing increased velocity following (Fig.~\ref{fig:damping_basis_construction}). However, it has to remain orthonormal to $\vect q_1^{\mathrm{o}}$
@@ -86,14 +85,13 @@ We define the values of the diagonal matrix $\matd{S}^{\mathrm{o}}(\vecs \xi)$ a
 \end{equation}
 where the damping along the nominal direction $s^{f} \in \mathbb{R}_{>0}$, obstacle-damping $s^{\mathrm{o}} \in \mathbb{R}_{>0}$, and the compliant-damping $s^c \in \mathbb{R}_{>0}$ are user-defined parameters which determine the behavior of the passive-controller. The first entry of $\matr{S}^{\mathrm{o}}$ dictates the damping towards the obstacle, and the second entry the desired velocity following. Note how the second value approaches the compliant damping, as normal and velocity become parallel.
 
-\editcolor{
 To ensure continuity across time of the control force as defined in \eqref{eq:control_command}, the values of the diagonal damping matrix  $\matd{S}^{\mathrm{o}}(\vecs \xi)$ in the tangent directions are equal when the normal aligns with the velocity, i.e.:
 \begin{equation}
     \lim_{| p | \rightarrow 1} \matd{S}_d = \matd{S}_e, 
     \quad d > 2 .. N, \, e > 2 .. N
 \end{equation}
 Hence, the choice of orthonormal vectors $\vecs q_d^{\mathrm{o}}, d > 2 .. N$ does not influence the control force as long as the matrix $Q^{\mathrm{d}}$ has full rank.
-}
+
 
 \subsubsection{Damping Only Towards Obstacle} \label{sec:damping_only_toward}
 In the presence of an obstacle, the disturbances should be damped strongly when the agent is pushed against the obstacle. Conversely, the system can remain compliant if the motion is away from the obstacle. This is achieved by setting updating the first damping value $\matd{S}^{\mathrm{o}}_1$ if the robot is moving away from the surface:
@@ -106,10 +104,9 @@ In the presence of an obstacle, the disturbances should be damped strongly when 
   \label{eq:leaving_compliance}
 \end{equation}
 
-\editcolor{
 Due to the fact that $\vect q_1^o(\vecs \xi)$ given in \eqref{eq:first_obstacle_basis} is pointing along the obstacle normal $\vect n(\vecs \xi)$, the first obstacle damping value $\matd{S}_1^{\mathrm{o}} (\vecs \xi)$ does not have any effect on the control force $\vect \tau^c$ given in \eqref{eq:control_command} when $\left(\vect f(\vecs \xi) -  \vecs{\dot \xi} \right)^T \vecs n(\vect \xi) = 0$.
 Hence, the damping value can be discontinuous across time, but the resulting control force remains continuous.
-}
+
 
 \subsection{Damping for Velocity Preservation}
 The decomposition matrix $\matd{Q}^{f}$ is an orthonormal basis with the first vector being parallel to the desired velocity $\vect f(\vecs\xi)$, as proposed in Section~\ref{sec:trad_passive}. Hence, the values of the diagonal matrix $\matd S^{f}$ are high in the direction of the desired velocity (first component), but more compliant in the remaining directions. 
