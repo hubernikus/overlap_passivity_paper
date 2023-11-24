@@ -29,12 +29,30 @@ We want to find the position, where there is no motion towards the wall left.
 Using the controller design from \eqref{eq:control_command} the velocity can be computed as:
 \begin{equation}
 \begin{split}
-	\{ \vecs{\dot \xi} \}_{T} 
-	& = \int_0^T\vecs{\ddot \xi} \, dt 
-    = \int_0^T \matd{M}^{-1} \matd{D}  \left( \vecs{\dot \xi} - \vecs f(\vecs \xi) \right) \, dt \\
+	\{ \vecs{\dot \xi} \}_{t} 
+	& = \int \vecs{\ddot \xi} \, dt 
+    = \int \matd{M}^{-1} \matd{D}  \bigl( \vecs{\dot \xi} - \vecs f(\vecs \xi) \bigr) \, dt \\
+	&  = \matd{M}^{-1} \matd{D}  \bigl( \vecs \xi - t \vecs f(\vecs \xi) \bigr) + C_t \\
+	% &  \underset{}\{ {\vecs \xi} \}_0 = \vecs f(\vecs \xi) + \vecs v^I{=} \matd{M}^{-1} \matd{D}  \left( \xi - t \vecs f(\vecs \xi) \right) + C_t \\
+	  &  = \matd{M}^{-1} \matd{D}  \bigl( \vecs \xi - \{\vecs \xi\}_0  - t \vecs f(\vecs \xi) \bigr) + \vecs f(\vecs \xi) + \vecs v^I \\
     % & \approx \int \matd{M}^{-1} \matd{D} \vect f(\vecs \xi) \, dt
 \end{split}
 \label{eq:velocity_evolution}
+\end{equation}
+using $\{ {\vecs \xi} \}_0 = \vecs f(\vecs \xi) + \vecs v^I$ to find the integration constant $C_t$.
+
+We want to find the position where the agents stops moving towards the obstacle:
+\begin{equation}
+| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} | = 0
+\quad \Rightarrow \quad
+\vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} = 0
+\end{equation}
+
+
+\begin{equation}
+\begin{split}
+\vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} = 0
+\end{split}
 \end{equation}
 
 To see when the differences reaches zero, we can compute
@@ -43,6 +61,10 @@ To see when the differences reaches zero, we can compute
  \quad \Rightarrow \quad
     \| \vecs{\xi}_1 -  \vect p_1 \| = \| \vecs v^I_1 \| {m} / {s^{\mathrm{o}}} 
  \end{equation}
+
+\begin{equation}
+	\leq \frac{\max({\text{eig}(\matd{D})})}{\max{(\text{eig}(\matd{M})}) }
+\end{equation}
 
 Hence, the time it  
 
