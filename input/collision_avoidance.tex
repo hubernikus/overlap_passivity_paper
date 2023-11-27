@@ -13,7 +13,7 @@ However, many collision happen during a short period of time $\Delta t \rightarr
 	 % \begin{split}
 	\vect v^I 
 	 & = \int_{t^I}^{t^I + \delta t} \ddot{\vecs \xi} dt - \{ \vecs \xi \}_{t^I} \\
-	 & = \int_{t^I}^{t^I + \Delta t} \matd{M}^{-1}(\vecs \xi)  \left( \vecs \tau_e \matd{C}(\vecs \xi, \dot{\vecs \xi}) + \vect g(\vecs \xi) \right) dt - \{\vecs \xi \}_{t^I} \nonumber
+	 & = \int_{t^I}^{t^I + \Delta t} \matd{M}^{-1}(\vecs \xi)  \left( \vecs \tau_e (\vecs \xi, \dot{\vecs \xi}) + \vect g(\vecs \xi) \right) dt - \{\vecs \xi \}_{t^I} \nonumber
 	 % \end{split}
 \end{align}
 using \eqref{eq:robot_dynamics} the absence of the control force $\vecs \tau_c$ during this short timeframe, where $\{\vect \xi \}_{t^I}$ is the velocity before the impact.
@@ -24,28 +24,43 @@ w(\vecs \xi) \geq \frac{\Gamma^{\mathrm{crit}} - \Gamma(\vecs \xi)}{\Gamma^{\mat
 \end{equation}
 under the assumption that $\Gamma^{\mathrm{crit}} \geq 1$.
 
-We want to find the position, where there is no motion towards the wall left.
-
 Using the controller design from \eqref{eq:control_command} the velocity can be computed as:
 \begin{equation}
 \begin{split}
 	\{ \vecs{\dot \xi} \}_{t} 
-	& = \int \vecs{\ddot \xi} \, dt 
-    = \int \matd{M}^{-1} \matd{D}  \bigl( \vecs{\dot \xi} - \vecs f(\vecs \xi) \bigr) \, dt \\
-	&  = \matd{M}^{-1} \matd{D}  \bigl( \vecs \xi - t \vecs f(\vecs \xi) \bigr) + C_t \\
+	& = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D}  \bigl( \vecs{\dot \xi} - \vecs f(\vecs \xi) \bigr) \, dt \\
+	& = \int \matd{M}^{-1} \matd{D} \bigl( \vecs{\dot \xi} - \vecs f(\vecs \xi) \bigr) \, dt \\
+	& = \matd{M}^{-1} \int \left( (1 - w) \matd{D}^f + w \matd{D}^{o} \right)  \bigl( \dot{\vecs \xi} - \vecs f(\vecs \xi) \bigr) dt\\
+	& = \matd{M}^{-1} \int  \matd{D}\bigl( \vecs \xi - t \vecs f(\vecs \xi) \bigr) + C_t \\
 	% &  \underset{}\{ {\vecs \xi} \}_0 = \vecs f(\vecs \xi) + \vecs v^I{=} \matd{M}^{-1} \matd{D}  \left( \xi - t \vecs f(\vecs \xi) \right) + C_t \\
-	  &  = \matd{M}^{-1} \matd{D}  \bigl( \vecs \xi - \{\vecs \xi\}_0  - t \vecs f(\vecs \xi) \bigr) + \vecs f(\vecs \xi) + \vecs v^I \\
+	&  = \matd{M}^{-1} \matd{D}  \bigl( \vecs \xi - \{\vecs \xi\}_0  - t \vecs f(\vecs \xi) \bigr) + \vecs f(\vecs \xi) + \vecs v^I \\
     % & \approx \int \matd{M}^{-1} \matd{D} \vect f(\vecs \xi) \, dt
 \end{split}
 \label{eq:velocity_evolution}
 \end{equation}
 using $\{ {\vecs \xi} \}_0 = \vecs f(\vecs \xi) + \vecs v^I$ to find the integration constant $C_t$.
 
+% Let us analyse the system in the moving frame with constant velocity, and zero acceleration, in the presence of a constant vectorfield $f(\vecs \xi) = const.$ which is parallel to the surface. 
+% In this equation, the variable $\vecs \xi$ is with respect to the moving frame. And hence 
+Let us assume the velocity in an environment where the robot should just rest, hence the desired velocity field is $\vect f(\vecs \xi) = 0$:
+\begin{equation}
+\begin{split}
+	\{ \vecs{\dot \xi} \}_{t} 
+	& = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D} \vecs{\dot \xi} \, dt \\
+	& = \matd{M}^{-1} \int \left( (1 - w) \matd{D}^f + w \matd{D}^{o} \right)  \vecs{\dot \xi} dt\\
+	& = \matd{M}^{-1} \int \left( (1 - w) \matd{D}^f + w \matd{D}^{o} \right)  \vecs{\dot \xi} dt\\
+	& = \matd{M}^{-1} \int  \matd{D}\bigl( \vecs \xi - t \vecs f(\vecs \xi) \bigr) + C_t \\
+	\end{split}
+\label{eq:velocity_evolution}
+\end{equation}
+
 We want to find the position where the agents stops moving towards the obstacle:
 \begin{equation}
-| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} | = 0
-\quad \Rightarrow \quad
-\vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} = 0
+0 = \left| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} \right| 
+= \vect n(\vecs \xi)^T 
+=    
+% \quad \Rightarrow \quad
+% \left| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} \right = 0
 \end{equation}
 
 
