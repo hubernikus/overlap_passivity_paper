@@ -9,7 +9,11 @@ $s^{\mathrm{c}}=$~\qty{20}{s^{-1}}.
 
 \begin{figure}[htbp]
   \centering
+  \ifthesis
+  \centerline{\includegraphics[width=0.8\columnwidth]{figures/multi_obstacle_with_damping.pdf}}
+  \else
   \centerline{\includegraphics[width=0.95\columnwidth]{figures/multi_obstacle_with_damping.pdf}}
+  \fi
   \caption{
   The desired velocity $\vect f(\vecs \xi)$ is represented in gray and serves as the input for the force controller. The mobile robot, initially positioned at three different locations, navigates safely towards the attractor (black star) even when confronted with external disturbances (purple arrows) while employing the obstacle-aware controller (blue trajectories). In contrast, the baseline controller (red) results in collisions when disturbances occur close to the robot.
   }
@@ -33,22 +37,24 @@ In practical robotic applications, controllers are inevitably exposed to noise a
     \centering
 	\ifthesis
     \begin{subfigure}{\columnwidth}
+	\centering
 	\ifthesis
-      \centerline{\includegraphics[width=0.7\textwidth]{figures/trajectory_velocity_noise}}
-	  \else
-      \centerline{\includegraphics[width=\textwidth]{figures/trajectory_velocity_noise}}
-	  \fi
-      \caption{Trajectories with a standard deviation of the velocity-noise of 1.0 m/s.}
-      \label{fig:trajectory_velocity_noise}
+    \includegraphics[width=0.7\textwidth]{figures/trajectory_velocity_noise}
+	\else
+    \includegraphics[width=\textwidth]{figures/trajectory_velocity_noise}
+	\fi
+    \caption{Trajectories with a standard deviation of the velocity-noise of 1.0 m/s.}
+    \label{fig:trajectory_velocity_noise}
     \end{subfigure}
     \begin{subfigure}{\columnwidth}
-		\ifthesis
+	\centering
+	\ifthesis
     \includegraphics[width=0.7\textwidth]{figures/comparison_velocity_noise}
 	\else
     \includegraphics[width=\textwidth]{figures/comparison_velocity_noise}
 	\fi
-      \caption{The mean and variance (shaded) of the closest distances over 10 epochs.}
-      \label{fig:comparison_velocity_noise}
+    \caption{The mean and variance (shaded) of the closest distances over 10 epochs.}
+    \label{fig:comparison_velocity_noise}
     \end{subfigure}
 	\caption{The agent navigates between two elongated obstacles (a) towards the attractor (black star). The agent's velocity is subjected to white noise, with a mean of zero, and noise variances between \qty{0.0}{m/s} and \qty{1.0}{m/s}. The robot initiates its trajectory from the starting position $\vecs \xi_0 = [-2.5, 1.0]^T$, with an initial velocity of zero. It aims to reach the attractor located at $\vecs \xi^a = [2.5, \, -1.0]^T$.}
 \label{fig:velocity_noise}
@@ -79,22 +85,24 @@ Moreover, the velocity-preserving controller exhibits a higher distance variance
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}{\columnwidth}
+	\centering
 	\ifthesis
-      \centerline{\includegraphics[width=0.7\textwidth]{figures/trajectory_position_noise}}
-	  \else
-      \centerline{\includegraphics[width=\textwidth]{figures/trajectory_position_noise}}
-	  \fi
-      \caption{Trajectories with a standard deviation of the position-noise of 0.0 m.}
-      \label{fig:trajectory_position_noise}
+    \centerline{\includegraphics[width=0.7\textwidth]{figures/trajectory_position_noise}}
+	\else
+    \centerline{\includegraphics[width=\textwidth]{figures/trajectory_position_noise}}
+	\fi
+    \caption{Trajectories with a standard deviation of the position-noise of 0.0 m.}
+    \label{fig:trajectory_position_noise}
     \end{subfigure}
     \begin{subfigure}{\columnwidth}
-		\ifthesis
-    \includegraphics[width=\textwidth]{figures/comparison_position_noise}
-	\else
+	\centering
+	\ifthesis
     \includegraphics[width=0.7\textwidth]{figures/comparison_position_noise}
+	\else
+    \includegraphics[width=\textwidth]{figures/comparison_position_noise}
 	\fi
-      \caption{Closest distances concerning different noise levels over ten epochs.}
-      \label{fig:comparison_position_noise}
+    \caption{Closest distances concerning different noise levels over ten epochs.}
+    \label{fig:comparison_position_noise}
     \end{subfigure}
 	\caption{
  The agent is navigating towards the attractor (black star) between two concave obstacles (a) while being subjected to white noise in its position. The position noise has a mean of zero and various noise variances ranging between \qty{0.0}{m} and \qty{0.03}{m}. The robot starts at position $\vecs \xi_0 = [-2.5, -1.0]^T$, and the attractor is set to $\vecs \xi^a = [2.5, 1.0]^T$.
