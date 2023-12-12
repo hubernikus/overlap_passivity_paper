@@ -31,13 +31,22 @@ In practical robotic applications, controllers are inevitably exposed to noise a
 
 \begin{figure}[htbp]
     \centering
+	\ifthesis
     \begin{subfigure}{\columnwidth}
+	\ifthesis
+      \centerline{\includegraphics[width=0.7\textwidth]{figures/trajectory_velocity_noise}}
+	  \else
       \centerline{\includegraphics[width=\textwidth]{figures/trajectory_velocity_noise}}
+	  \fi
       \caption{Trajectories with a standard deviation of the velocity-noise of 1.0 m/s.}
       \label{fig:trajectory_velocity_noise}
     \end{subfigure}
     \begin{subfigure}{\columnwidth}
+		\ifthesis
+    \includegraphics[width=0.7\textwidth]{figures/comparison_velocity_noise}
+	\else
     \includegraphics[width=\textwidth]{figures/comparison_velocity_noise}
+	\fi
       \caption{The mean and variance (shaded) of the closest distances over 10 epochs.}
       \label{fig:comparison_velocity_noise}
     \end{subfigure}
@@ -70,12 +79,20 @@ Moreover, the velocity-preserving controller exhibits a higher distance variance
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}{\columnwidth}
+	\ifthesis
+      \centerline{\includegraphics[width=0.7\textwidth]{figures/trajectory_position_noise}}
+	  \else
       \centerline{\includegraphics[width=\textwidth]{figures/trajectory_position_noise}}
+	  \fi
       \caption{Trajectories with a standard deviation of the position-noise of 0.0 m.}
       \label{fig:trajectory_position_noise}
     \end{subfigure}
     \begin{subfigure}{\columnwidth}
+		\ifthesis
     \includegraphics[width=\textwidth]{figures/comparison_position_noise}
+	\else
+    \includegraphics[width=0.7\textwidth]{figures/comparison_position_noise}
+	\fi
       \caption{Closest distances concerning different noise levels over ten epochs.}
       \label{fig:comparison_position_noise}
     \end{subfigure}

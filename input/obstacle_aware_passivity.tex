@@ -4,7 +4,11 @@ Far away from obstacles, the system is designed to follow the initial velocity, 
 
 \ifthesis
 \begin{figure}
+	\ifthesis
 \centerline{\includegraphics[width=0.7\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
+\else
+\centerline{\includegraphics[width=1.0\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
+\fi
 \caption{
 The $\Gamma$-field is defined individually for each of the obstacles. At each position $\vecs \xi$, we can evaluate the surface normal $\vect n(\vecs \xi)$. 
 The velocity $\vect f(\vecs \xi)$ (gray) avoids collision with the obstacles and converges towards the attractor (star).}
@@ -33,7 +37,11 @@ ${\matd D^f}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ follow design g
 \begin{figure}
   \center
   % \includesvg[width=0.7\columnwidth]{figures/damping_basis_construction.svg}
-  \includegraphics[width=0.7\columnwidth]{figures/damping_basis_construction.pdf}
+  \ifthesis
+  \includegraphics[width=0.5\columnwidth]{figures/damping_basis_construction.pdf}
+  \else
+  \includegraphics[width=1\columnwidth]{figures/damping_basis_construction.pdf}
+  \fi
 \caption{The damping matrix enforcing desired velocity following $\matd{D}^{f}$ has the first basis vector $\vect q_1^{f}$ which points along the avoidance velocity $\vect f(\vecs \xi)$. The damping matrix to enforce collision avoidance $\matd{D}^{\mathrm{obs}}$ uses the normal $\vect n(\vecs \xi)$ to construct the first direction of the decomposition basis $\vect q^{\mathrm{obs}}_1$.}
 \label{fig:damping_basis_construction}
 %% \label{fig_basis_3D_DS_obs}

@@ -11,7 +11,11 @@ In this case, it is crucial to analyze the discrete-time system to guarantee sta
 
 \begin{figure}[htbp]
 \centering
+\ifthesis
+  \includegraphics[width=0.7\columnwidth]{figures/discrete_controller_parameters_comparison}
+  \else
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison}
+  \fi
   \caption{An agent has the desired velocity $\vect f(\vecs \xi) = [1, 0]^T$ (gray arrow), and a control matrix $\matd{D}$ with damping values equal in all directions and the smallest eigenvalue of the inertia matrix $m$. 
  The agent is disturbed (purple arrow) position $\vecs \xi_0 = [0, 0]^T$ and has a velocity of  $\vecs \xi_1 = [1, 1]^T$ after the impact. \\
   High damping leads to unstable behavior with increasingly high oscillations. Conversely, the lowest value leads to more deviation from the initial straight line resulting from the higher impedance. The critical value of $s_i = 2.0 m / \Delta t$ results in stable behavior with immediate correction to the desired velocity.}
@@ -117,7 +121,11 @@ In practice, it is useful to use a large value for $s^{o}$ as it rejects disturb
 
 \begin{figure}[htbp]
 \centering
+\ifthesis
+  \includegraphics[width=.7\columnwidth]{figures/discrete_controller_parameters_comparison_stable}
+  \else
   \includegraphics[width=\columnwidth]{figures/discrete_controller_parameters_comparison_stable}
+  \fi
 \caption{An agent with the desired dynamics of
 $\vect f(\vecs \xi) = \matr R(\pi / 6) (\vect \xi  - \vect \xi^a)$ where $\matr R(\cdot) \in \mathbb{R}^{N \times N}$ is the rotation matrix, and $m$ is the mass of the agent. We assume equal damping values $s_i$.
 The controller with a critical stiffness of $2.0 m / \Delta t$ leads to fast convergence and a stable system. With lower damping (top left), there is a large drift of the system, which converges to a limit cycle. 

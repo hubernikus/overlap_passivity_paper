@@ -48,10 +48,9 @@ Let us assume the desired velocity $\vect f(\vecs \xi)$ is a constant, collision
 \end{equation}
 where $\vecs n(\vecs \xi)$ is the normal vector of the surface. 
 
-\begin{lemma}
-	A dynamical system evolves with the rigid body dynamics given in \eqref{eq:robot_dynamics} controlled by \eqref{eq:control_command}, with damping matrix $\matd{D}$ from \eqref{eq:damping_summation}, and a negligible Coriolis effect.
-	A point-like agent starting close to the surface, i.e., $\Gamma( \vect p) \leq \Gamma^{\matrhm{crit.}}$ is guided by a velocity field $\vecs n(\vecs \xi)$.
-	A motion starting in free space remains collision-free for all times, i.e., $\Gamma( \{\vecs \xi_t\}) \geq 1$ with $t \geq 0$ if the impact velocity $v^I$ as given in \eqref{eq:impact_velocity} at time $t=0$ is limited by $\| \vect v^I\| < s^{\mathrm{f}} \| \vecs \xi - \vecs \xi^b \| / m^{\mathrm{min}}$, with respect to the closest surface point $\vecs \xi^b \in \mathbb{R}^N$ and mass $m \in \mathbb{R}_{>0}$.
+\begin{lemma} \label{lemma:damping_collision_avoidance}
+	A point like agent evolves according to the dynamical system evolves with the rigid body dynamics given in \eqref{eq:robot_dynamics} controlled by \eqref{eq:control_command}, with damping matrix $\matd{D}$ from \eqref{eq:damping_summation}, and a negligible Coriolis effect.
+	A motion starting in free space remains collision-free for all times, i.e., $\Gamma( \{\vecs \xi_t\}) \geq 1$ with $t \geq 0$ if the impact velocity $v^I$ as given in \eqref{eq:impact_velocity} at time $t=0$ is limited by $\| \vect v^I\| < s^{\mathrm{f}} \| \vecs \xi - \vecs \xi^b \| / m$, with respect to the closest surface point $\vecs \xi^b \in \mathbb{R}^N$ and mass $m \in \mathbb{R}_{>0}$.
 \end{lemma}
 
 % \begin{lemma}
@@ -66,41 +65,31 @@ where $\vecs n(\vecs \xi)$ is the normal vector of the surface.
 an environment where the robot should just rest, hence the desired velocity field is :
 \begin{equation}
 \begin{split}
-	\{ \vecs{\dot \xi} \}_{t} 
-	& = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D} \vecs{\dot \xi} \, dt \\
-	& = \matd{M}^{-1} \int \left( (1 - w) \matd{D}^f + w \matd{D}^{o} \right)  \vecs{\dot \xi} dt\\
-	% & = \frac{\matd{M}^{-1}}{\Gamma^{\mathrm{crit}} - 1} \int \left( (\Gamma - 1) \matd{D}^f + (\Gamma^{\mathrm{crit}} - \Gamma) \matd{D}^{o} \right)  \vecs{\dot \xi} dt \\
-	% & = \frac{\matd{M}^{-1}}{\Gamma^{\mathrm{crit}} - 1} \int ( (\| \vecs \xi - \vecs \xi^b \| - 1) \matd{D}^f   \\
-	% & \hspace{2cm} + (\Gamma^{\mathrm{crit}} - 1 - \| \vecs \xi - \vecs \xi^b \| \matd{D}^{o} )  \vecs{\dot \xi} dt
-	% & = 
+	\{ \vecs{\dot \xi} \}_{T} 
+	& = \int \vecs{\ddot \xi} \, dt = \int \matd{M}^{-1} \matd{D} \left( \vecs{\dot \xi} - \vect f(\vecs \xi ) \right) \, dt \\
+	& = \matd{M}^{-1} \int \left( (1 - w) \matd{D}^f + w \matd{D}^{o} \right) \left( \vecs{\dot \xi} - \vect f (\vecs \xi ) \right) dt \\
 	\end{split}
 \label{eq:velocity_evolution}
 \end{equation}
 
-\end{proof}
-Due to the fact vector field is constant, and the surface does not have any curvature, the damping matrices $\matd{D}^o$ and $\matd{D}^f$ are constant. 
-
-We want to find the position where the agents stops moving towards the obstacle. Hence, we need to observe the behavior along the normal direction towards the obstacle $\vect n(\vecs \xi)$, and see when the velocity along the normal reaches zero.  
+From \eqref{eq:parallel_velocity}, the vector field is constant, and the surface does not have any curvature, it follows from \eqref{eq:damping_summation} that the damping matrices $\matd{D}^o$ and $\matd{D}^f$ are constant. 
+Hence, we perform the integration to find the time $T$ at which the agent stop moving towards the obstacle, which will then enable us to evaluate the distance travelled as a function of the velocity after disturbance $\vect v^I$. According to the Bony-Bezis theorem \parencite{bony1969principe}, the velocity is collision-avoiding when it is zero along the normal direction:
 \begin{equation}
 	\left| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} \right| = 0
 \end{equation}
 
-Since both the velocity aware damping matrix $\matd{D}^f(\vecs \xi)$ and the obstacle aware damping matrix point towards the obstacle it is sufficient to consider the behavior uniquely along the normal, which in the following equation is denoted with the scalar value 
-$\xi = \dotprod{\vecs \xi}{\vecs n(\vecs \xi)} \vecs n(\vecs \xi)$:
-\begin{equation}
-	\begin{split}
-	0 & = \left| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} \right| \\
-	  & = \frac 1 m \int ( (1-w) \vect n^T \matd{D}^f \vect n + w s^{o} ) \, {\dot \xi} \, dt \\
-	   & < \frac 1 m \int  s^{f}  \, {\dot \xi} \, dt \\
-	   & = \frac{s^f}{m} (\xi - \{ \xi \}_0 ) + v^I \, dt \\
-	  % & = \frac{\matd{M}}{\hat{\Gamma}^{\mathrm{crit}}} \int ( ( \xi - \xi^b  - 1) \vect n^T \matd{D}^f \vect n \\
-	  % & \hspace{2cm} + (\hat{\Gamma}^{\mathrm{crit}} - \xi - \xi^b s^{o} )  {\dot \xi} dt \\
-	  % & < \frac{\matd{M}}{\hat{\Gamma}^{\mathrm{crit}}} ((- \xi^b - 1) s^f + (\hat \Gamma^{\mathrm{crit}} - \xi^b) s^o) \xi + 1/2(s^f - s^o) \xi^2 + v^I  \\
-  \end{split} 
-\end{equation}
-where $m = \max{\text{eig}(\matd{M})}$, we additionally assume that the damping matrices are positive definite. 
+Thus in the following analysis, we focus on the normal component of the vectors only. Thus, in the rest of this paragraph, the component along the normal will simply be denoted by scalar values, e.g. $\xi = \dotprod{\vecs \xi}{\vecs n(\vecs \xi)} \vecs n(\vecs \xi)$.
+	Furthermore, by design of the damping matrixes, we know from \eqref{eq:obstacle_damping_values} 
+	that $\matd{D}^o(\vecs \xi) \vect n(\vecs \xi) = s^o \vect n(\vecs \xi)$, and from \eqref{eq:velocity_damping} we know that $\matd{D}^f(\vecs \xi) \vect n(\vecs \xi) = s^f \vect n(\vecs \xi)$. Hence, we get:
+\begin{align}
+	0 & = \left| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} \right| 
+	  = \frac 1 m \int ( (1-w) \vect n^T \matd{D}^f \vect n + w s^{o} ) \, {\dot \xi} \, dt \nonumber \\
+	   & < \frac 1 m \int  s^{f}  \, {\dot \xi} \, dt 
+	   = \frac{s^f}{m} (\xi - \{ \xi \}_0 ) + v^I \, dt 
+\end{align}
+where $m = \max{\left(\text{eig}(\matd{M})\right)}$, we additionally assume that the damping matrices are positive definite. 
 
-Hence, this leaves us with a maximum displacement as follows:
+The maximum displacement follows as:
 \begin{equation}
 	\| {\xi} - \{\xi \}_0 \| \geq \| v^I \| {m} / {s^{\mathrm{f}}} 
 \end{equation}
@@ -111,13 +100,9 @@ To see when the differences reaches zero, we can compute
  \quad \Rightarrow \quad
     \| \vecs{\xi}_1 -  \vect p_1 \| = \| \vecs v^I_1 \| {m} / {s^{\mathrm{o}}} 
  \end{equation}
+\end{proof}
 
-\begin{equation}
-	\leq \frac{\max({\text{eig}(\matd{D})})}{\max{(\text{eig}(\matd{M})}) }
-\end{equation}
-
-Hence, the time it  
-
+Note, that while Lemma~\ref{lemma:damping_collision_avoidance} is under the assumption of constant desired velocity and flat surface. While most desired velocity are a function of the position, and morover obstacles are finite and hence have sume surface curvature. However, since the algorithm explores the limit, hence large disturbance forces and velocities after disturbance $\| \vect v^I \| \gg 1 \|$. As a result, the distance travelled along the surface is small, and it can be considered locally flat. Additionally, in the extreme case, the disturbance happens close to the surface, and hence the desired velocity is almost constant.  
 
 \begin{figure}[htb]
 \centering
