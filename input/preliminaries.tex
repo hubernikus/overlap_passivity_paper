@@ -9,14 +9,18 @@ In general, superscripts are used for variable names, whereas subscripts are use
 Let us assume the base velocity $\vect f^b(\vecs \xi): \mathbb{R}^N \rightarrow \mathbb{R}^N$, which describes the desired, state-dependent motion of the robot. 
 As proposed by \cite{huber2019avoidance, huber2022avoiding}, an obstacle avoiding velocity $\vect f(\vecs \xi): \mathbb{R}^N \rightarrow \mathbb{R}^N$ can be achieved by a simple matrix multiplication (or modulation) as follows:
 \begin{equation}
-  \vecs f(\vecs \xi) = \textbf{E}(\vecs \xi) \text{diag} \left(\lambda^r, \lambda^e, ..., \lambda^e \right) \textbf{E}(\vecs{\xi})^{-1} \vect f^b(\vecs \xi)
-  \label{eq:modulated_ds}
-\end{equation}
-
-The orthonormal basis matrix $\textbf{E} \in \mathbb{R}^{N \times N}$, defined as:
-\begin{equation}
+\begin{split}
+  & \vecs f(\vecs \xi) = \textbf{E}(\vecs \xi) \text{diag} \left(\lambda^r, \lambda^e, ..., \lambda^e \right) \textbf{E}(\vecs{\xi})^{-1} \vect f^b(\vecs \xi) \\
+  % \label{eq:modulated_ds}
+% \end{equation}
+%
+%The orthonormal basis matrix $\textbf{E} \in \mathbb{R}^{N \times N}$, defined as:
+%\begin{equation}
+& \text{with} \quad
 \textbf{E}(\vecs \xi) = \left[ \textbf{r}(\vecs \xi) \ \textbf{e}_1(\vecs \xi) \ ... \ \textbf{e}_{d-1}(\vecs \xi) \right]
-\label{eq:matrix_E}
+%\label{eq:matrix_E}
+\end{split}
+  \label{eq:modulated_ds}
 \end{equation}
 where the tangent directions $\textbf{e}_{(\cdot)} \in \mathbb{R}^N$ are perpendicular to the surface normal $\vect n(\vecs \xi) \in \mathbb{R}^N$, see Fig.~\ref{fig:resultant_normal}. The reference vector $\textbf{r}(\vect{\xi}) =  \left( \vecs{\xi}-\vecs{\xi}^r \right) / \| \vecs \xi-\vecs \xi ^r \|$ is pointing towards the the reference point $\vecs \xi^r \in \mathbb{R}^N$. 
 This construction of the basis matrix is valid for starshaped obstacles, i.e., shapes for which a reference point exists, from which a line in any direction only crosses the surface once \cite{huber2023avoidance}.
@@ -40,7 +44,7 @@ with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}_{\geq 0}
 with $b \in \mathbb{R}_{>0}$, such that $\vect \xi^b \in \mathbb{R}^N$ lies on the surface of the obstacle, and $R^0 \in \mathbb{R})_{>0}$ is the distance scaling, with default value $R^0 = 1$.
 
 \begin{figure}
-\centerline{\includegraphics[width=1.0\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
+\centerline{\includegraphics[width=0.7\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
 \caption{
 The $\Gamma$-field is defined individually for each of the obstacles. At each position $\vecs \xi$, we can evaluate the surface normal $\vect n(\vecs \xi)$. 
 The velocity $\vect f(\vecs \xi)$ (gray) avoids collision with the obstacles and converges towards the attractor (star).}
@@ -68,7 +72,6 @@ Damping control \cite{kronander2015passive} offers a powerful method for computi
 \label{eq:control_command}
 \end{equation}
 This control law embeds a gravity compensation term $\vect g (\vecs\xi) \in \mathbb{R}^N$ and a positive-definite damping term, which dampens the difference between the desired velocity $\vecs f(\vecs\xi)$ and the actual velocity $\vecs{\dot\xi}$.
-
 The positive definite damping matrix $\matd D(\vecs\xi) \in \mathbb{R}^{N \times N}$ is given as:
 \begin{equation}
    \matd {D}(\vecs \xi) = \matd{Q}(\vecs\xi)\matd{S}(\vecs\xi) \matd{Q} (\vecs \xi)^{-1}

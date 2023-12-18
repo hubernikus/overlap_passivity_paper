@@ -4,11 +4,7 @@ Far away from obstacles, the system is designed to follow the initial velocity, 
 
 \ifthesis
 \begin{figure}
-	\ifthesis
 \centerline{\includegraphics[width=0.7\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
-\else
-\centerline{\includegraphics[width=1.0\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
-\fi
 \caption{
 The $\Gamma$-field is defined individually for each of the obstacles. At each position $\vecs \xi$, we can evaluate the surface normal $\vect n(\vecs \xi)$. 
 The velocity $\vect f(\vecs \xi)$ (gray) avoids collision with the obstacles and converges towards the attractor (star).}
@@ -34,6 +30,7 @@ w(\vecs\xi) =
 The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}_{>0}$ defines the distance where the system has starts to increase the damping towards the obstacle.
 ${\matd D^f}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ follow design given in \eqref{eq:damping_matrix} and are positive definite matrices, thus $\matd {D}(\vecs\xi)$ is positive definite, too.
 
+\iflong
 \begin{figure}
   \center
   % \includesvg[width=0.7\columnwidth]{figures/damping_basis_construction.svg}
@@ -44,8 +41,8 @@ ${\matd D^f}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ follow design g
   \fi
 \caption{The damping matrix enforcing desired velocity following $\matd{D}^{f}$ has the first basis vector $\vect q_1^{f}$ which points along the avoidance velocity $\vect f(\vecs \xi)$. The damping matrix to enforce collision avoidance $\matd{D}^{\mathrm{obs}}$ uses the normal $\vect n(\vecs \xi)$ to construct the first direction of the decomposition basis $\vect q^{\mathrm{obs}}_1$.}
 \label{fig:damping_basis_construction}
-%% \label{fig_basis_3D_DS_obs}
 \end{figure}
+\fi
 
 \subsection{Damping for Collision Repulsion} \label{sec:obstacle_repulsion}
 
@@ -72,7 +69,7 @@ The decomposition matrix $\matd Q^{\mathrm{o}}(\vecs \xi)$ has its first vector 
 
 In the case that $\lVert\vecs n(\vecs\xi)\rVert = 0$, the danger weight $w(\vecs \xi)$ from \eqref{eq:weight_function} reaches 0. Hence, the obstacle-aware damping in \eqref{eq:damping_summation} has no effect and is not evaluated.
 
-The second vector is set to be aligned with the desired velocity as much as possible, allowing increased velocity following (Fig.~\ref{fig:damping_basis_construction}). However, it has to remain orthonormal to $\vect q_1^{\mathrm{o}}$
+The second vector is set to be aligned with the desired velocity as much as possible, allowing increased velocity following (\iflong Fig.~\ref{fig:damping_basis_construction} \else Fig.~\ref{fig:resultant_normal}). However, it has to remain orthonormal to $\vect q_1^{\mathrm{o}}$
 \begin{equation}
   \vecs q_2^{\mathrm{o}} = \frac{\hat{\vecs q}_2^{\mathrm{o}}}{\| \hat{\vecs q}_2^{\mathrm{o}} \|}
   \quad
@@ -117,7 +114,7 @@ Hence, the damping value can be discontinuous across time, but the resulting con
 
 
 \subsection{Damping for Velocity Preservation}
-The decomposition matrix $\matd{Q}^{f}$ is an orthonormal basis with the first vector being parallel to the desired velocity $\vect f(\vecs\xi)$, as proposed in Section~\ref{sec:trad_passive}. Hence, the values of the diagonal matrix $\matd S^{f}$ are high in the direction of the desired velocity (first component), but more compliant in the remaining directions. 
+The decomposition matrix $\matd{Q}^{f}$ is an orthonormal basis with the first vector being parallel to the desired velocity $\vect f(\vecs\xi)$\iflong, as proposed in Section~\ref{sec:trad_passive}\fi. Hence, the values of the diagonal matrix $\matd S^{f}$ are high in the direction of the desired velocity (first component), but more compliant in the remaining directions. 
 Moreover, the damping is set to ensure that when passing a narrow passage between two obstacles, where the normal vector cancels $\vect n(\vecs \xi) \approx \vect 0$, with additionally a low distance value $\Gamma(\vecs \xi) \approx 1$, the damping perpendicular to the velocity direction is high. Hence, we set:
 \begin{equation}
   \begin{split}

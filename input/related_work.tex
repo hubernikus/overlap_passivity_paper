@@ -1,7 +1,7 @@
 \subsection{Related Work}
 
 \subsubsection{Force Control}
-Impedance control, a powerful feedback algorithm, effectively applies Cartesian impedance to nonlinear manipulators' end-points \parencite{takegaki1981new, hogan1985impedance}. The controller replaces the computationally intensive \textit{inverse kinematics} with the more straightforward \textit{forward kinematics}. Impedance control establishes a dynamic relationship between desired position, velocity, and force, offering a holistic control framework.
+Impedance control, a powerful feedback algorithm, effectively applies Cartesian impedance to nonlinear manipulators' end-points \iflong \parencite{takegaki1981new, hogan1985impedance} \else \parencite{hogan1985impedance} \fi. The controller replaces the computationally intensive \textit{inverse kinematics} with the more straightforward \textit{forward kinematics}. Impedance control establishes a dynamic relationship between desired position, velocity, and force, offering a holistic control framework.
 Initially, impedance controllers employed constant stiffness, but researchers have explored various dynamic control parameter approaches to enhance adaptability in complex environments \parencite{vanderborght2013variable, abu2020variable}. However, introducing dynamic parameters into the control framework requires taking special care of the system's stability.
 Furthermore, admittance control is designed to adapt to external forces, while remaining stable contact \parencite{glosser1994implementation}. Admittance control can be interpreted as a special type of impedance control.
 
@@ -55,5 +55,4 @@ Integrating geometric fabric methods into classical mechanical systems has enabl
 % Dynamical system based avoidance + control
 Harmonic potential functions can ensure the absence of local minima in free space \parencite{connolly1997harmonic}. In previous work, we combined harmonic potential functions with the dynamical system framework to obtain reactive, local minima-free motion \parencite{huber2019avoidance, huber2023avoidance}. It allows for generating a desired velocity based on the robot's position in real-time.
 For implementation on a torque-controlled robot arm, we utilized a passive controller that closely adheres to the desired velocity \parencite{kronander2015passive}. However, one of the limitations of the passive controller is its inability to  account for the physical surroundings. This makes the robot susceptible to disturbances close to obstacles, potentially leading to collisions.
-
 Although DS passive-controlled robots work well in interactive scenarios, they cannot ensure they navigate through an obstacle environment collision-free. For example, they often give in when being pushed toward an obstacle. This work presents a method to address this problem by modifying the passive control law design, making the controller aware of its environment.

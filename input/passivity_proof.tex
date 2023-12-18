@@ -47,7 +47,7 @@ Hence, using Thale's theorem, this region can be interpreted as a circle in velo
 	\ifthesis
     \includegraphics[width=0.7\columnwidth]{figures/passivity_analysis}
 	\else
-    \includegraphics[width=1.0\columnwidth]{figures/passivity_analysis}
+    \includegraphics[width=.7\columnwidth]{figures/passivity_analysis}
 	\fi
 	\caption{Analyzing the system in velocity-space, yields that the system is passive if it has a velocity $\dot{\vecs \xi}$ larger than the desired velocity $\vect f(\vecs \xi)$, i.e., outside the dashed circle.
     However, the system can be non-passive for small velocities when  $\dotprod{\dot{\vecs \xi}}{\Delta \vect f} < 0$ (yellow circle).}
@@ -119,12 +119,12 @@ Hence, since the transformed system with velocity $\vect {\bar v}$ is BIBO stabl
 % The analysis described in Fig.~\ref{fig:passivity_analysis} can hence be applied in the transformed space, too. 
 
 For an orthogonal decomposition matrix $\matd{Q}(\boldsymbol{{\vecs \xi}})$, the region of non-passivity is an ellipse where the direction of the axes points along column vectors of $\matd{Q}({\vecs \xi})$, and the corresponding axes lengths are the diagonal elements of $\| \mathbf{f}({\vecs \xi})^T \sqrt{\matd{S}({\vecs \xi})}\| / 2 \sqrt{\matd{S}({\vecs \xi})}^{(-1)}$. 
-If the ratio of the first damping value to the other axis $i \geq 2$ is large, i.e., $s_1 / s_i \gg 1$, it can lead to non-passivity even though the velocity $\dot{\vecs \xi}$ is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still bounded.
+If the ratio of the first damping value to the other axis $i \geq 2$ is large, i.e., $s_1 / s_i \gg 1$, it can lead to non-passivity even though the velocity $\dot{\vecs \xi}$ is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still bounded \iflong (Fig.\ref{fig:passivity_analysis_skew}) \fi.
 This proof holds for any basis $\matd{Q}$ which is not singular. However, the controller must be carefully chosen to ensure that the speed up is limited when the basis is close to singular, for example, by limiting the relative difference of the stretching vectors. Furthermore, as stable behavior is ensured for a general shape of a damping matrix $\matd{D}(\vecs \xi)$, the global stability proof extends to any positive definite damping matrix matrices.
 
 Since the damping matrix $\matd D(\vecs \xi)$ changes dynamically, a change in the environment can move the system outside of the passive region. However, there exists always a finite maximum velocity, at which the system is ensured to be passive.
 
-
+\iflong
 \begin{figure}[htbp]
     \centering
     \begin{subfigure}{0.49\columnwidth}
@@ -144,7 +144,7 @@ Since the damping matrix $\matd D(\vecs \xi)$ changes dynamically, a change in t
 }
 	\label{fig:passivity_analysis_varied}
 \end{figure}
-
+\fi
 
 
 % Note, that in the case of $\langle e_2, e_n \rangle \neq 0$ the choice of $e_2$ does not matter as the corresponding  weight from \eqref{eq:eig2_weight} is $w_2 = 0$, hence it $\lambda_2 = \lambda$, as all eigenvalues.

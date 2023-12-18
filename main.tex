@@ -52,8 +52,9 @@
 \newif\ifthesis
 \thesisfalse
 \newif\iflong
-% \longfalse
-\longtrue
+
+\longfalse
+% \longtrue
 
 \title{
 Passive Obstacle Aware Control \\
@@ -97,7 +98,10 @@ Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot
 \input{input/related_work}  
 \input{input/contributions}
 \input{input/preliminaries}
+
+\iflong
 \input{input/problem_statement}
+\fi
 
 \input{input/obstacle_aware_passivity}
 \input{input/passivity_proof}
