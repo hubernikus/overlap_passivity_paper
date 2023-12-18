@@ -25,23 +25,23 @@ As proposed by \cite{huber2019avoidance, huber2022avoiding}, an obstacle avoidin
 where the tangent directions $\textbf{e}_{(\cdot)} \in \mathbb{R}^N$ are perpendicular to the surface normal $\vect n(\vecs \xi) \in \mathbb{R}^N$, see Fig.~\ref{fig:resultant_normal}. The reference vector $\textbf{r}(\vect{\xi}) =  \left( \vecs{\xi}-\vecs{\xi}^r \right) / \| \vecs \xi-\vecs \xi ^r \|$ is pointing towards the the reference point $\vecs \xi^r \in \mathbb{R}^N$. 
 This construction of the basis matrix is valid for starshaped obstacles, i.e., shapes for which a reference point exists, from which a line in any direction only crosses the surface once \cite{huber2023avoidance}.
 
-The  diagonal values $\lambda_{(\cdot)}$  in \eqref{eq:modulated_ds} are often referred to as eigenvalues since they modify the length of the input velocity in specific directions. 
-The eigenvalue in reference direction $\lambda^r(\vecs \xi) \leq 1$, is designed to reduce the velocity towards the obstacle, i.e., towards the reference point.  
-Conversely, the velocity increases along the tangent direction using $\lambda^e(\vecs \xi) \geq 1$. This eigenvalues in reference direction $\lambda^r$ and tangent direction $\lambda^e$ are defined as:
+The  diagonal values $\lambda_{(\cdot)}$ in \eqref{eq:modulated_ds} are often referred to as eigenvalues since they modify the length of the input velocity in specific directions. 
+The eigenvalue in reference direction $\lambda^r(\vecs \xi) \leq 1$, is designed to reduce the velocity towards the obstacle.  
+Conversely, the velocity increases along the tangent direction using $\lambda^e(\vecs \xi) \geq 1$. The eigenvalues in reference direction $\lambda^r$ and tangent direction $\lambda^e$ are defined as:
 \begin{equation}
 \begin{split}
     \lambda^r(\vecs \xi) = 1 - 1 /\Gamma(\vecs \xi) , \quad \lambda^e(\vecs \xi) = 1 + 1 / \Gamma(\vecs \xi)
     \label{eq:eigenvalues}
     \end{split}
 \end{equation}
-with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}_{\geq 0}$, which has a value of $\Gamma(\vecs \xi) = 1$ on the boundary of an obstacle, and monotonically increases along the normal to the surface of the obstacle (Fig.~\ref{fig:resultant_normal}). In this work, we use the following distance function
+with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}_{\geq 0}$, which has a value of $\Gamma(\vecs \xi) = 1$ on the boundary of an obstacle, and monotonically increases along the normal to the surface of the obstacle (Fig.~\ref{fig:resultant_normal}). In this work, we use:
 \begin{equation}
   \Gamma(\vecs \xi) = 1 + \| \vecs \xi - \vecs \xi^b \|  / R^0
   \quad \text{with} \quad
   \vecs \xi^b = b (\vecs \xi - \vecs \xi^r) + \vecs \xi^r
   \label{eq:distance_function}
 \end{equation}
-with $b \in \mathbb{R}_{>0}$, such that $\vect \xi^b \in \mathbb{R}^N$ lies on the surface of the obstacle, and $R^0 \in \mathbb{R})_{>0}$ is the distance scaling, with default value $R^0 = 1$.
+with $b \in \mathbb{R}_{>0}$, such that $\vect \xi^b \in \mathbb{R}^N$ lies on the surface of the obstacle, and $R^0 \in \mathbb{R})_{>0}$ is the distance scaling, we use $R^0 = 1$.
 
 \begin{figure}
 \centerline{\includegraphics[width=0.7\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
@@ -51,7 +51,9 @@ The velocity $\vect f(\vecs \xi)$ (gray) avoids collision with the obstacles and
 \label{fig:resultant_normal}
 \end{figure}
 
+\iflong
 Modifying the base velocity $\vect f^b(\vecs \xi)$ with these eigenvalues values and \eqref{eq:modulated_ds} leads to obstacle-avoiding dynamics $\vect f(\vecs \xi)$ which generate converging motion around starshaped obstacles.
+\fi
 
 \subsection{Force Control}
 

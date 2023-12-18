@@ -213,7 +213,7 @@ $s^{\mathrm{f}}=$~\qty{64}{s^{-1]}}, and
 $s^{\mathrm{c}}=$~\qty{16}{s^{-1}}.
 
 The robot start position is approximately at $\vecs \xi_0 = [0.3\mathrm{m}, 0.4\mathrm{m}, 0.3\mathrm{m},]^T$ and the attractor is at position $\vecs \xi^a = [0.26 \mathrm{m}, -0.53\mathrm{m}, 0.33\mathrm{m}]^T$. The controller operates at a frequency of \qty{500}{Hz}.
-The robot encounters a single squared box with axes length \qty{0.16}{m} and a margin of \qty{0.12}{m}, placed in front of the robot base (Fig.~\ref{fig:evaluation_on_robot_arm}). The precise location of the box is tracked in real-time using a marker-based vision system (Optitrack). As the robot passes by the box, it is disturbed by a strong push $\vecs t^e$ towards the box. The experiment is repeated ten times for both controllers, as well as for the undisturbed motion.
+The robot encounters a single squared box with axes length \qty{0.16}{m} and a margin of \qty{0.12}{m}, placed in front of the robot base (Fig.~\ref{fig:evaluation_on_robot_arm}). The precise location of the box is tracked in real-time using a marker-based vision system (Optitrack). When passsing the box, the robot is pushed with $\vecs t^e$ towards the box. The experiment is repeated ten times for both controllers, and compared to the undisturbed motion.
 
 \iflong
 The experimental results in \ifthesis Figure~\ref{fig:instances_evaluation_on_robot_arm} and \fi Figure~\ref{fig:evaluation_on_robot_arm} demonstrate that the obstacle-aware controller allows the robot to maintain an average distance of \qty{0.15}{m} away from the obstacle surface. In contrast, the velocity-preserving controller results in a mean distance below \qty{0.05}{m}, and numerous trajectories lead to collisions with the box. On average, the robot passes further away from the obstacle using the obstacle-aware controller and exhibits higher forces, Table~\ref{tab:evaluation_on_robot_arm}.
@@ -246,7 +246,7 @@ The stability proof enables the controller to be used with any bounded input vel
 Furthermore, the controller is shown to reject disturbances, and the parameter-tuning for the discrete-time system has been analyzed. 
 The controller was experimentally evaluated and compared to a baseline passive controller. 
 \iflong The proposed approach shows increased resistance to noise, both in position and velocity and improved tracking. \fi
-Applied to a real robot arm, the disturbance force could be successfully rejected to ensure collision avoidance while following a reference motion.
+Applied to a real robot arm, the disturbance force was successfully rejected ensuring collision avoidance while following a reference motion.
 
 \iflong
 \subsection{Discrete Control Convergence}

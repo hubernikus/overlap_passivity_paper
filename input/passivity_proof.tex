@@ -29,7 +29,7 @@ Let us investigate the region where the passivity holds. Since in the Lemma, we 
 \end{equation}
 where $\matd{I} \in \mathbb{R}^{N \times N}$ is the identity matrix.
 
-It follows that the system is passive with respect to the input, the external force $\tau^e$, and the output, the velocity $\dot {\vecs \xi}$, as long as:
+It follows that the system is passive with respect to the input, the external force $\tau^e$, and the output, the velocity $\dot {\vecs \xi}$, if: 
 \begin{equation}
 	\dot{\boldsymbol {\vecs \xi}}^T \matd{D}({\vecs \xi}) \left(\dot{\boldsymbol {\vecs \xi}} - \boldsymbol{f}(\boldsymbol {\vecs \xi}) \right) = 
     \dot{{\vecs \xi}} ^ T \Delta \vect{f}  \geq 0 
@@ -96,7 +96,6 @@ However, from \eqref{eq:damping_summation}, we know that a general damping matri
 	\bar{\Delta \vect f} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \Delta \vect{f}
 \end{equation}
 where the square root of the diagonal matrix $\matd{S}({\vecs \xi})$ is taken element-wise.
-
 The transfer is then used to rewrite \eqref{eq:passivity_condition} as:
 \begin{equation}
 \dot{\vecs \xi}^T \matd{D}({\vecs \xi}) \Delta \vect{f} = \vecs{\dot \xi}^T \matd{Q}({\vecs \xi}) \matd{S}({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1} \Delta \vect{f} = \vecs{\bar v}^T \bar{\Delta \vect f}
@@ -119,7 +118,7 @@ Hence, since the transformed system with velocity $\vect {\bar v}$ is BIBO stabl
 % The analysis described in Fig.~\ref{fig:passivity_analysis} can hence be applied in the transformed space, too. 
 
 For an orthogonal decomposition matrix $\matd{Q}(\boldsymbol{{\vecs \xi}})$, the region of non-passivity is an ellipse where the direction of the axes points along column vectors of $\matd{Q}({\vecs \xi})$, and the corresponding axes lengths are the diagonal elements of $\| \mathbf{f}({\vecs \xi})^T \sqrt{\matd{S}({\vecs \xi})}\| / 2 \sqrt{\matd{S}({\vecs \xi})}^{(-1)}$. 
-If the ratio of the first damping value to the other axis $i \geq 2$ is large, i.e., $s_1 / s_i \gg 1$, it can lead to non-passivity even though the velocity $\dot{\vecs \xi}$ is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still bounded \iflong (Fig.\ref{fig:passivity_analysis_skew}) \fi.
+If the ratio of the first damping value to the other axis $i \geq 2$ is large, i.e., $s_1 / s_i \gg 1$, it can lead to non-passivity even though the velocity $\dot{\vecs \xi}$ is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still \iflong bounded (Fig.\ref{fig:passivity_analysis_skew}). \else bounded. \fi
 This proof holds for any basis $\matd{Q}$ which is not singular. However, the controller must be carefully chosen to ensure that the speed up is limited when the basis is close to singular, for example, by limiting the relative difference of the stretching vectors. Furthermore, as stable behavior is ensured for a general shape of a damping matrix $\matd{D}(\vecs \xi)$, the global stability proof extends to any positive definite damping matrix matrices.
 
 Since the damping matrix $\matd D(\vecs \xi)$ changes dynamically, a change in the environment can move the system outside of the passive region. However, there exists always a finite maximum velocity, at which the system is ensured to be passive.

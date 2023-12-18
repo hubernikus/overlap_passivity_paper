@@ -6,7 +6,7 @@ Initially, impedance controllers employed constant stiffness, but researchers ha
 Furthermore, admittance control is designed to adapt to external forces, while remaining stable contact \parencite{glosser1994implementation}. Admittance control can be interpreted as a special type of impedance control.
 
 % Passivity with increased precision
-Passive velocity controllers use a state-dependent velocity, which is converted into a control force through a damping control law. Since the controllers have variable damping parameters, stability can be guaranteed using storage tanks inspired by a virtual flywheel \parencite{li1999passive}. 
+Passive velocity controllers use a state-dependent velocity, which is converted into a control force through a damping control law. Since the controllers have variable damping parameters, stability can be guaranteed using storage tanks \parencite{li1999passive}. 
 Furthermore, complex control parameters can be learned from human demonstrations. By continuously adapting the parameters, the controller can be observed to improve its tracking performance in direct human-robot collaboration tasks \parencite{gribovskaya2011motion}.
 However, high compliance often results in decreased motion following. Yet, carefully designing the damping matrix, which increases stiffness in the direction of motion, but remains compliant otherwise, results in improved convergence \parencite{kronander2015passive}. 
 Combining impedance controllers with admittance controllers can be used to increase accuracy in cooperative control
@@ -28,8 +28,8 @@ However, these models require human input for active collision avoidance.
 \fi
 
 % Energy tanks 
-Many impedance controllers with time-varying control rely on energy tanks to ensure stability. This is a virtual state of the system, which is filled or emptied depending on the controller command. Limiting the energy tank to a maximum value ensures the system's stability  \parencite{ferraguti2013tank}. However, when this limit is reached, the controller is constrained and interferes with the controller's optimal functioning. This can result in the controller not achieving a main functionality, such as collision avoidance.
-Alternatively, the impedance controller variables can be constrained by adapting the damping and stiffness, as well as their rate of change based on a Lyapunov function \cite{kronander2016stability}.
+Many impedance controllers with time-varying control rely on energy tanks to ensure stability. This is a virtual state, which is filled or emptied depending on the controller command. Limiting the energy tank to a maximum value ensures the system's stability  \parencite{ferraguti2013tank}. However, when this limit is reached, the controller is constrained and interferes with the controller's optimal functioning. This can result in the controller not achieving some functionalities, such as collision avoidance.
+Alternatively, the impedance controller can be constrained by adapting the damping and stiffness, as well as the rate of change based on a Lyapunov function \cite{kronander2016stability}.
 
 \subsubsection{Obstacle Avoidance}
 % AFP / Obstacle avoidance / Motion Control
@@ -42,7 +42,7 @@ Passive controllers can also be used to track the desired motion of the artifici
 Nonetheless, these methods lack the guarantee of disturbance repulsion around obstacles, which is addressed by the integration of circular fields, which rotates the robot's path around the obstacles \parencite{singh1996real}. 
 This allows force-controlled navigation in cluttered environments, yielding convergence for simple obstacles \parencite{haddadin2011dynamic}. 
 Conversely, repulsive fields can be combined with elastic, global planning \parencite{brock2002elastic} for improved convergence. This allowed adding a repulsive force from the obstacle, ensuring collision avoidance \parencite{tulbure2020closing}. 
-However, methods based on artificial potential fields are prone to local minima in space around cluttered environments.
+However, methods based on artificial potential fields are prone to local minima in cluttered environments.
 
 \iflong
 % Geometric Methods for Obstacle Avoidance / Force Control

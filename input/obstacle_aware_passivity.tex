@@ -149,8 +149,9 @@ Additionally using \eqref{eq:damping_summation} and \eqref{eq:velocity_damping} 
 
 Hence, there is high damping in all directions to reject disturbances towards potential obstacles and ensure a collision-free motion even in cluttered environments.
 
+\iflong
 \subsection{Damping Parameter Design}
-Higher values for the damping parameters $s^{(\cdot})$ generally result in improved velocity following and disturbance repulsion, whereas lower values allow more compliant behavior.
+Higher values for the damping parameters $s^{(\cdot)}$ generally result in improved velocity following and disturbance repulsion, whereas lower values allow more compliant behavior.
 The damping value in the direction of the obstacle is set high $s^{\mathrm{o}}$ to ensure obstacle avoidance even in the presence of high disturbances. 
 Conversely, the damping in the direction of the velocity $s^{f}$ is set medium to high, as the system should follow the desired velocity $\vect f(\vecs \xi)$. However, it should remain compliant if needed.
 Finally, a low damping value $s^{c}$ should be chosen for all other directions to facilitate interaction.
@@ -158,3 +159,4 @@ This can be summarized as:
 \begin{equation}
 s^{\mathrm{o}} \geq s^{f} \gg s^{c} > 0
 \end{equation}
+\fi
