@@ -25,7 +25,7 @@ As proposed by \cite{huber2019avoidance, huber2022avoiding}, an obstacle avoidin
 where the tangent directions $\textbf{e}_{(\cdot)} \in \mathbb{R}^N$ are perpendicular to the surface normal $\vect n(\vecs \xi) \in \mathbb{R}^N$, see Fig.~\ref{fig:resultant_normal}. The reference vector $\textbf{r}(\vect{\xi}) =  \left( \vecs{\xi}-\vecs{\xi}^r \right) / \| \vecs \xi-\vecs \xi ^r \|$ is pointing towards the the reference point $\vecs \xi^r \in \mathbb{R}^N$. 
 This construction of the basis matrix is valid for starshaped obstacles, i.e., shapes for which a reference point exists, from which a line in any direction only crosses the surface once \cite{huber2023avoidance}.
 
-The  diagonal values $\lambda_{(\cdot)}$ in \eqref{eq:modulated_ds} are often referred to as eigenvalues since they modify the length of the input velocity in specific directions. 
+The diagonal values $\lambda_{(\cdot)}$ in \eqref{eq:modulated_ds} are often referred to as eigenvalues since they modify the length of the input velocity in specific directions. 
 The eigenvalue in reference direction $\lambda^r(\vecs \xi) \leq 1$, is designed to reduce the velocity towards the obstacle.  
 Conversely, the velocity increases along the tangent direction using $\lambda^e(\vecs \xi) \geq 1$. The eigenvalues in reference direction $\lambda^r$ and tangent direction $\lambda^e$ are defined as:
 \begin{equation}
@@ -44,7 +44,7 @@ with the continuous distance function $\Gamma(\vecs \xi) \in \mathbb{R}_{\geq 0}
 with $b \in \mathbb{R}_{>0}$, such that $\vect \xi^b \in \mathbb{R}^N$ lies on the surface of the obstacle, and $R^0 \in \mathbb{R})_{>0}$ is the distance scaling, we use $R^0 = 1$.
 
 \begin{figure}
-\centerline{\includegraphics[width=0.7\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
+\centerline{\includegraphics[width=0.8\columnwidth]{figures/normal_and_gamma_field_visualization_annotated.pdf}}
 \caption{
 The $\Gamma$-field is defined individually for each of the obstacles. At each position $\vecs \xi$, we can evaluate the surface normal $\vect n(\vecs \xi)$. 
 The velocity $\vect f(\vecs \xi)$ (gray) avoids collision with the obstacles and converges towards the attractor (star).}
@@ -58,7 +58,7 @@ Modifying the base velocity $\vect f^b(\vecs \xi)$ with these eigenvalues values
 \subsection{Force Control}
 
 \subsubsection{Rigid Body Dynamics}
-A force-controlled system is subject to acceleration effects, inertia, and external disturbances. Its general rigid-body dynamics based on the state $\vecs \xi$ are given as
+A force-controlled system is subject to acceleration, inertia, and external disturbances. Its general rigid-body dynamics based on the state $\vecs \xi$ are given as
 \begin{equation}
 \matd{M}(\vecs\xi)\vecs{\ddot\xi} + \matd{C}(\vecs\xi, \vecs{\dot\xi})\vecs{\dot\xi} + \vect g(\vecs\xi) = \vecs{\tau_c} + \vecs{\tau_e}
  \label{eq:robot_dynamics}
@@ -86,7 +86,7 @@ where $\matd Q(\vecs \xi) = \left[ \vecs{q}_1 \, , \; \vecs q_2\ , \; ... \, , \
 
 The diagonal matrix $\matd{S}(\vecs\xi) \in \mathbb{R}^{N \times N}$ consists of damping factors $s_i \in \mathbb{R}_{>0}$ in the corresponding direction $i = 1 .. N$.
 This design allows the separate design of the damping in the direction of motion and perpendicular to the motion.
-Increased consistency with the desired velocity is achieved by setting the first damping factor to a relatively high value. Conversely, the damping in the remaining directions is set lower to allow compliance perpendicular to the motion, i.e., $s_i / s_1 \ll 1, \; i = 2 .. N$.
+Increased consistency with the desired velocity is achieved by using a high value for the first damping factor. Conversely, the damping in the remaining directions is set lower to allow compliance perpendicular to the motion, i.e., $s_i / s_1 \ll 1, \; i = 2 .. N$.
 
 \iflong
 \subsection{Stability Analysis} \label{sec:trad_passive}

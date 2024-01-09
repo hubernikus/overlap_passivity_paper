@@ -2,9 +2,9 @@
 
 % \subsection{Disturbance Repulsion}
 The principal goal of the controller introduced in the previous section is its ability to ensure collision avoidance in the presence of external disturbances.
-However, the control force $\vect \tau^c$ as proposed in \eqref{eq:control_command} does not explicitly consider external forces. Yet, it is designed to correct the agents velocity $\dot{\vecs \xi}$ if it deviates from the desired velocity $\ddot{\vecs \xi}$.\footnote{Note, that for a discrete time (digital) controller, this results in a delay.}
+However, the control force $\vect \tau^c$ proposed in \eqref{eq:control_command} does not explicitly consider external forces. Yet, it is designed to correct the agent's velocity $\dot{\vecs \xi}$ if it deviates from the desired velocity $\ddot{\vecs \xi}$.\footnote{Note that for a discrete-time (digital) controller, this results in a delay.}
 
-Since interaction with the environment result in a force on the system, often over a shor time period $\Delta t \ll 1$.  Hence, hence we can define the velocity after impact $\vect v^I$ as:
+Since interaction with the environment results in a force on the system, often over a short period $\Delta t \ll 1$.  Hence, we can define the velocity after impact $\vect v^I$ as:
 \begin{align}
 	 % \begin{split}
 	\vect v^I
@@ -37,7 +37,7 @@ using the controller from \eqref{eq:robot_dynamics}, and under absence of the co
 % \end{equation}
 % using $\{ {\vecs \xi} \}_0 = \vecs f(\vecs \xi) + \vecs v^I$ to find the integration constant $C_t$.
 
-Furthermore, let us consider a desired velocity $\vect f(\vecs \xi)$ which is a constant, collision free vector field which parallel to the surface to a flat obstacle surface (see Fig.~\ref{fig:disturbance_with_parallel_velocity}):
+Furthermore, let us consider a desired velocity $\vect f(\vecs \xi)$, which is a constant, collision-free vector field parallel to the surface of a flat obstacle surface (see Fig.~\ref{fig:disturbance_with_parallel_velocity}):
 \begin{equation}
 	\dotprod{\vect f(\vecs \xi)}{\vecs n(\vecs \xi)} = 0
 	 \qquad
@@ -46,11 +46,10 @@ Furthermore, let us consider a desired velocity $\vect f(\vecs \xi)$ which is a 
 \vect n(\vecs \xi) = \text{const.}
 \label{eq:parallel_velocity}
 \end{equation}
-where $\vecs n(\vecs \xi)$ is the normal vector of the surface. For disturbances in such environments we can show that:
+where $\vecs n(\vecs \xi)$ is the surface's normal vector, and the agent moves in a straight line, hence we can neglect the Coriolis effect. For disturbances in such environments, we show that our approach can ensure the impenetrability of the obstacle up to an upper bound on the magnitude of the disturbance:
 
 \begin{lemma} \label{lemma:damping_collision_avoidance}
-	Let us assume a point like agent that tries to follow the desired constant velocity, parallel to a flat obstacle as given in \eqref{eq:parallel_velocity}. The agent evlovls according the rigid body dynamics given in \eqref{eq:robot_dynamics} controlled by \eqref{eq:control_command}, with damping matrix $\matd{D}$ from \eqref{eq:damping_summation}, and a negligible Coriolis effect.
-	A motion starting in free space remains collision-free for all times, i.e., $\Gamma( \{\vecs \xi_t\}) \geq 1$ with $t \geq 0$ if the impact velocity $v^I$ as given in \eqref{eq:impact_velocity} at time $t=0$ is limited by $\| \vect v^I\| < s^{\mathrm{f}} \| \vecs \xi - \vecs \xi^b \| / m$, with respect to the closest surface point $\vecs \xi^b \in \mathbb{R}^N$ and mass $m \in \mathbb{R}_{>0}$.
+	Consider a point-mass agent with mass $m \in \mathbb{R}_{>0}$, whose motion evolves according to the rigid body dynamics given in \eqref{eq:robot_dynamics} controlled by \eqref{eq:control_command}, with constant damping matrix $\matd{D}$ from \eqref{eq:damping_summation}. The agent tracks a constant reference velocity ${\mathrm{f}}$, whose vector field moves parallel to a flat obstacle as given in \eqref{eq:parallel_velocity}. Any motion path initiated in free space will remain collision-free for all times, i.e., $\Gamma( \{\vecs \xi_t\}) \geq 1$ with $t \geq 0$ if the impact velocity $v^I$ as given in \eqref{eq:impact_velocity} at time $t=0$ is limited by $\| \vect v^I\| < s^{\mathrm{f}} \| \vecs \xi - \vecs \xi^b \| / m$, with respect to the closest surface point $\vecs \xi^b \in \mathbb{R}^N$.
 \end{lemma}
 
 % \begin{lemma}
@@ -61,15 +60,15 @@ where $\vecs n(\vecs \xi)$ is the normal vector of the surface. For disturbances
 % \end{lemma}
 
 \begin{proof}
-According to the Bony-Bezis theorem \parencite{bony1969principe}, the trajectories are collision free if there is zero velocity towards the obstacle on the surface, i.e.,
+According to the Bony-Bezis theorem \parencite{bony1969principe}, the trajectories are collision-free if there is zero velocity towards the obstacle on the surface, i.e.,
 \begin{equation}
 	\left| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} \right| = 0 
 	\quad \forall \, \Gamma(\vecs \xi) = 1
 	\label{eq:bezis_theorem}
 \end{equation}
 
-We want to find the time at which the agent stop moving towards the obstacle, which will then enableto evaluate the distance travelled as a function of the velocity after disturbance $\vect v^I$. 
-Let as assume without loss of generality that the disturbance occurs at time $t=0$. Hence, the velocity at time $T$ can be computed as:
+We want to find the time when the agent stops moving towards the obstacle, enabling us to evaluate the distance traveled as a function of the velocity after disturbance $\vect v^I$. 
+Let us assume without loss of generality that the disturbance occurs at time $t=0$. Hence, the velocity at time $T$ can be computed as:
 \begin{equation}
 \begin{split}
 	\{ \vecs{\dot \xi} \}_{T} 
@@ -79,10 +78,10 @@ Let as assume without loss of generality that the disturbance occurs at time $t=
 \label{eq:velocity_evolution}
 \end{equation}
 
-Furthermore, since the vectorfield $\vect f(\vecs \xi)$ is constant and the obstacle's surface does not have any curvate, it follows from \eqref{eq:damping_summation} that the damping matrices  $\matd{D}^o$ and $\matd{D}^f$ are constant.
+Furthermore, since the vector field, $\vect f(\vecs \xi)$ is constant and the obstacle's surface does not have any curvature, it follows from \eqref{eq:damping_summation} that the damping matrices  $\matd{D}^o$ and $\matd{D}^f$ are constant.
 Moreover, by design of the damping matrices, from \eqref{eq:first_obstacle_basis} it follow that $\matd{D}^o(\vecs \xi) \vect n(\vecs \xi) = s^o \vect n(\vecs \xi)$, and from  \eqref{eq:velocity_unit_vector} that $\matd{D}^f(\vecs \xi) \vect n(\vecs \xi) = s^f \vect n(\vecs \xi)$. 
 
-From \eqref{eq:bezis_theorem} follows that it is sufficient to observe the normal component of the vectors only. Thus, in the rest of this paragraph, the component along the normal are denoted by scalar values, e.g. $\dot \xi = \dotprod{\dot{\vecs \xi}}{\vecs n(\vecs \xi)} \vecs n(\vecs \xi)$.
+From \eqref{eq:bezis_theorem} follows that it is sufficient to observe the normal component of the vectors only. Thus, in the rest of this paragraph, the components along the normal are denoted by scalar values, e.g. $\dot \xi = \dotprod{\dot{\vecs \xi}}{\vecs n(\vecs \xi)} \vecs n(\vecs \xi)$.
 Hence, we get:
 \begin{align}
 	0 & = \left| \vect n(\vecs \xi)^T \, \{ \vecs{\dot \xi} \}_{t} \right| 
@@ -90,8 +89,7 @@ Hence, we get:
 	   & < \frac 1 m \int_0^T  s^{f}  \, {\dot \xi} \, dt 
 	   = \frac{s^f}{m} (\xi - \{ \xi \}_0 ) + v^I \, dt 
 \end{align}
-where $m = \max{\left(\text{eig}(\matd{M})\right)}$. 
-And the maximum displacement follows as:
+where $m = \max{\left(\text{eig}(\matd{M})\right)}$, with the maximum displacement as:
 \begin{equation}
 	\| \{\xi \}_0 - {\xi} \| \leq \| v^I \| {m} / {s^{\mathrm{f}}} 
 \end{equation}
@@ -103,7 +101,7 @@ And the maximum displacement follows as:
 %  \end{equation}
 \end{proof}
 
-Lemma~\ref{lemma:damping_collision_avoidance} assumes constant velocity field $\vect f(\vecs \xi)$ and flat obstacle surface. This is an appropriate assumption for large velocities after disturbances towards the obstacle, i.e., $\| \vect v^I \| \gg \| \vect f(\vecs \xi) \|$ and starting out close to the surface. Since the distance travelled has to be flat to avoid collsion, the vectorfield is likely to show small changes, and the surface has little deviation. 
+Lemma~\ref{lemma:damping_collision_avoidance} assumes constant velocity field $\vect f(\vecs \xi)$ and flat obstacle surface. This is an appropriate assumption for large velocities after disturbances towards the obstacle, i.e., $\| \vect v^I \| \gg \| \vect f(\vecs \xi) \|$ and starting close to the surface. Since the distance traveled has to be flat to avoid collision, the vectorfield is likely to show small changes, and the surface has little deviation. 
 
 \begin{figure}[htb]
 \centering
@@ -114,10 +112,10 @@ Lemma~\ref{lemma:damping_collision_avoidance} assumes constant velocity field $\
 % \end{subfigure}
 \end{figure}
     
-Nevertheless, there is no guarantee against drifting into obstacles in the presence of highly curved surfaces and velocity fields. \iflong This is further discussed during the experiments in Section~\ref{sec:position_noise}, where the increased damping towards the obstacle significantly reduces collision in such scenarios. \fi However, designing a repuslive field as has been proposed \parencite{huber2023avoidance} can ensure collision avoidance in such scenarios.
+Nevertheless, there is no guarantee against drifting into obstacles in the presence of highly curved surfaces and velocity fields. \iflong This is further discussed during the experiments in Section~\ref{sec:position_noise}, where the increased damping towards the obstacle significantly reduces collision in such scenarios. \fi However, designing a repulsive field as proposed in \parencite{huber2023avoidance} can ensure collision avoidance in such scenarios.
 
 \iflong
 % \subsection{Disturbance Repulsion with Force Limit}
-All robotic systems have a maximum force that they can exert on the environment based on the motors, geometry and state, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Such a limiting force decreases the impact velocity a controller can handle while ensuring collision avoidance, as can be observed in Fig.~\ref{fig:disturbance_with_parallel_velocity}. Nevertheless, a maximum control force can be interpreted as adapting damping, and hence, the passivity from Theorem~\ref{theorem:passivity} holds.
+All robotic systems have a maximum force that they can exert on the environment based on the motors, geometry, and state, $\tau_c^{\mathrm{max}} \in \mathbb{R}_{>0}$. Such a limiting force decreases the impact velocity a controller can handle while ensuring collision avoidance, as shown in Fig.~\ref{fig:disturbance_with_parallel_velocity}. Nevertheless, a maximum control force can be interpreted as adapting damping; hence, the passivity from Theorem~\ref{theorem:passivity} holds.
 \fi
 

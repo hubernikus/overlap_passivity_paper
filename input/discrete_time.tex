@@ -5,7 +5,7 @@
 \fi
 
 So far, we've considered that the system is continuous time. 
-This is a reasonable assumption, if we have a high sampling time $\Delta t$, compared to the dynamics, i.e., $\| \Delta t \, \dot{\vecs \xi} \| \ll 1$.
+This is a reasonable assumption if we have a high sampling time $\Delta t$, compared to the dynamics, i.e., $\| \Delta t \, \dot{\vecs \xi} \| \ll 1$.
 However, any digital controller sends a discrete control signal. To reject the disturbances in the presence of obstacles, a high control force is exerted (while remaining within the control robot's limits), hence $\| \Delta t \, \vecs \tau^c \| \gg 1$. 
 In this case, it is crucial to analyze the discrete-time system to guarantee stability, as high damping can lead to unstable behavior, see Figure~\ref{fig:discrete_controller_parameters_comparison}).
 
