@@ -1,13 +1,13 @@
 \section{Introduction}
 % WHERE: application in HRI
-Robots operating in unstructured, dynamic environments must balance between adapting the path to the surrounding and following a desired motion. In human-robot collaboration, they must efficiently comple their tasks while ensuring safe copmliance in the presence of potential collisions.
+Robots operating in unstructured, dynamic environments must balance adapting the path to the surroundings and following a desired motion. In human-robot collaboration, they must efficiently complete their tasks while ensuring safe compliance in the presence of potential collisions.
 
 % Fast control -> closed form DS
-In complex and dynamic environments, velocity adjustments based on real-time sensory information are essential. Achieving this necessitates algorithms that are easily configurable and capable of rapid evaluation. As such, closed-form control laws eliminate the need for frequent replanning. Dynamical Systems (DS) are a valuable framework for representing such desired motion \cite{huber2019avoidance}. Where the behavior of the desired first order DS is approximated through suitable controllers. 
+Velocity adjustments based on real-time sensory information are essential in complex and dynamic environments. Achieving this necessitates algorithms that are easily configurable and capable of rapid evaluation. As such, closed-form control laws eliminate the need for frequent replanning. Dynamical Systems (DS) is a valuable framework for representing such desired motion \cite{huber2019avoidance} where the behavior of the desired first-order DS is approximated through suitable controllers. 
 
 % Compliance [Stay Reactive]
-Most widely used robotic systems consist of rigid materials. Consequently, interaction of these robotic systems with the surrounding leads to abrupt energy transfers, posing the risk of damage to the robot and its environment. However, modern robotic platforms equipped with force and torque sensing capabilities which enable precise control over the forces exerted by the robot.
-However, integrating these sensors make the feedback-controller more complex. The robot must achieve its designated position, by follwoing a desired velocity profile while remaining compliant with interaction forces. The control problem of balancing position, velocity, and force constraints, is addressed by \textit{impedance controllers} \iflong
+Most widely used robotic systems consist of rigid materials. Consequently, the interaction of these robotic systems with the surroundings leads to abrupt energy transfers, posing the risk of damage to the robot and its environment. However, modern robotic platforms are equipped with force and torque sensing capabilities that enable precise control over the forces exerted by the robot.
+However, integrating these sensors makes the feedback controller more complex. The robot must achieve its designated position by following a desired velocity profile while remaining compliant with interaction forces. The control problem of balancing position, velocity, and force constraints is addressed by \textit{impedance controllers} \iflong
 \parencite{takegaki1981new, hogan1984impedance} \else \parencite{hogan1985impedance}\fi.
 
 % Ensure Obstacle Avoidance

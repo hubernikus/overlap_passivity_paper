@@ -27,7 +27,7 @@ w(\vecs\xi) =
 \end{split}
 \label{eq:weight_function}
 \end{equation}
-The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}_{>0}$ defines the distance where the system has starts to increase the damping towards the obstacle.
+The critical distance $\Gamma^{\mathrm{crit}} \in \mathbb{R}_{>0}$ defines the distance where the system increases the damping towards the obstacle.
 ${\matd D^f}(\vecs\xi)$ and $\matd {D^{\mathrm{obs}}}(\vecs\xi)$ follow design given in \eqref{eq:damping_matrix} and are positive definite matrices, thus $\matd {D}(\vecs\xi)$ is positive definite, too.
 
 \iflong
@@ -69,7 +69,7 @@ The decomposition matrix $\matd Q^{\mathrm{o}}(\vecs \xi)$ has its first vector 
 
 In the case that $\lVert\vecs n(\vecs\xi)\rVert = 0$, the danger weight $w(\vecs \xi)$ from \eqref{eq:weight_function} reaches 0. Hence, the obstacle-aware damping in \eqref{eq:damping_summation} has no effect and is not evaluated.
 
-The second vector is set to be aligned with the desired velocity as much as possible, allowing increased velocity following (\iflong Fig.~\ref{fig:damping_basis_construction} \else Fig.~\ref{fig:resultant_normal}). However, it has to remain orthonormal to $\vect q_1^{\mathrm{o}}$
+The second vector is aligned with the desired velocity as much as possible, allowing increased velocity following (\iflong Fig.~\ref{fig:damping_basis_construction} \else Fig.~\ref{fig:resultant_normal}). However, it has to remain orthonormal to $\vect q_1^{\mathrm{o}}$
 \begin{equation}
   \vecs q_2^{\mathrm{o}} = \frac{\hat{\vecs q}_2^{\mathrm{o}}}{\| \hat{\vecs q}_2^{\mathrm{o}} \|}
   \quad
@@ -109,13 +109,13 @@ In the presence of an obstacle, the disturbances should be damped strongly when 
   \label{eq:leaving_compliance}
 \end{equation}
 
-Due to the fact that $\vect q_1^o(\vecs \xi)$ given in \eqref{eq:first_obstacle_basis} is pointing along the obstacle normal $\vect n(\vecs \xi)$, the first obstacle damping value $\matd{S}_1^{\mathrm{o}} (\vecs \xi)$ does not have any effect on the control force $\vect \tau^c$ given in \eqref{eq:control_command} when $\left(\vect f(\vecs \xi) -  \vecs{\dot \xi} \right)^T \vecs n(\vect \xi) = 0$.
+Since $\vect q_1^o(\vecs \xi)$ given in \eqref{eq:first_obstacle_basis} is pointing along the obstacle normal $\vect n(\vecs \xi)$, the first obstacle damping value $\matd{S}_1^{\mathrm{o}} (\vecs \xi)$ does not have any effect on the control force $\vect \tau^c$ given in \eqref{eq:control_command} when $\left(\vect f(\vecs \xi) -  \vecs{\dot \xi} \right)^T \vecs n(\vect \xi) = 0$.
 Hence, the damping value can be discontinuous across time, but the resulting control force remains continuous.
 
 
 \subsection{Damping for Velocity Preservation}
-The decomposition matrix $\matd{Q}^{f}$ is an orthonormal basis with the first vector being parallel to the desired velocity $\vect f(\vecs\xi)$\iflong, as proposed in Section~\ref{sec:trad_passive}\fi. Hence, the values of the diagonal matrix $\matd S^{f}$ are high in the direction of the desired velocity (first component), but more compliant in the remaining directions. 
-Moreover, the damping is set to ensure that when passing a narrow passage between two obstacles, where the normal vector cancels $\vect n(\vecs \xi) \approx \vect 0$, with additionally a low distance value $\Gamma(\vecs \xi) \approx 1$, the damping perpendicular to the velocity direction is high. Hence, we set:
+The decomposition matrix $\matd{Q}^{f}$ is an orthonormal basis with the first vector being parallel to the desired velocity $\vect f(\vecs\xi)$\iflong, as proposed in Section~\ref{sec:trad_passive}\fi. Hence, the values of the diagonal matrix $\matd S^{f}$ are high in the direction of the desired velocity (first component) but more compliant in the remaining directions. 
+Moreover, the damping is set to ensure that when passing a narrow passage between two obstacles, where the normal vector cancels $\vect n(\vecs \xi) \approx \vect 0$, with additionally a low distance value $\Gamma(\vecs \xi) \approx 1$, the damping perpendicular to the velocity direction is high. We set:
 \begin{equation}
   \begin{split}
   & \matd{S}^{f}_{d} =
@@ -154,7 +154,7 @@ Hence, there is high damping in all directions to reject disturbances towards po
 Higher values for the damping parameters $s^{(\cdot)}$ generally result in improved velocity following and disturbance repulsion, whereas lower values allow more compliant behavior.
 The damping value in the direction of the obstacle is set high $s^{\mathrm{o}}$ to ensure obstacle avoidance even in the presence of high disturbances. 
 Conversely, the damping in the direction of the velocity $s^{f}$ is set medium to high, as the system should follow the desired velocity $\vect f(\vecs \xi)$. However, it should remain compliant if needed.
-Finally, a low damping value $s^{c}$ should be chosen for all other directions to facilitate interaction.
+Finally, to facilitate interaction, a low damping value $s^{c}$ should be chosen for all other directions.
 This can be summarized as:
 \begin{equation}
 s^{\mathrm{o}} \geq s^{f} \gg s^{c} > 0
