@@ -41,13 +41,14 @@ It follows that the system is passive with respect to the input, the external fo
 On the border of this region, the two vectors $\Delta \vect{f}$ and $\dot{{\vecs \xi}}$ are orthogonal.
 Hence, using Thale's theorem, this region can be interpreted as a circle in velocity-space with radius $\| \vect{f} ({\vecs \xi}) \| / 2$ and center $\vect{f}({\vecs \xi}) / 2$, see Figure~\ref{fig:passivity_analysis}.
 
-\begin{figure}[thb]
+\begin{figure}[bh]
 	\centering
 	% \includesvg[width=0.7\columnwidth]{figures/passivity_analysis.svg}
 	\ifthesis
     \includegraphics[width=0.7\columnwidth]{figures/passivity_analysis}
 	\else
-    \includegraphics[width=.8\columnwidth]{figures/passivity_analysis}
+    % \includegraphics[width=.8\columnwidth]{figures/passivity_analysis}
+    \includegraphics[width=.8\columnwidth]{figures/passivity_analysis.png}
 	\fi
 	\caption{Analyzing the system in velocity-space yields that the system is passive if it has a velocity $\dot{\vecs \xi}$ larger than the desired velocity $\vect f(\vecs \xi)$, i.e., outside the dashed circle.
     However, the system can be non-passive for small velocities when  $\dotprod{\dot{\vecs \xi}}{\Delta \vect f} < 0$ (yellow circle).}

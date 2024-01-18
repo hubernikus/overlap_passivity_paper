@@ -106,7 +106,11 @@ Lemma~\ref{lemma:damping_collision_avoidance} assumes constant velocity field $\
 \begin{figure}[htb]
 \centering
  % \begin{subfigure}{0.99\columnwidth}
-  \centerline{\includegraphics[width=0.99\columnwidth]{figures/parallel_avoidance_obstacle}}
+ \iflong
+  \centerline{\includegraphics[width=0.99\columnwidth]{figures/parallel_avoidance_obstacle.pdf}}
+  \else
+  \centerline{\includegraphics[width=0.99\columnwidth]{figures/parallel_avoidance_obstacle.png}}
+  \fi
   \caption{A disturbance occurs of a point-agent at position $\vect p^0$ with velocity after the impact of $\{ \dot{\vecs \xi} \}_0 = \vect v^0 + \vect v^I$. A high damping in the direction of the obstacle in the presence of a constant velocity field (gray) ensures collision avoidance. Whereas different damping values $s^{\mathrm{o}}$ and optionally a maximum repulsion force $\vecs \tau^{\mathrm{max}}$ lead to different trajectories.}
   \label{fig:disturbance_with_parallel_velocity}
 % \end{subfigure}
