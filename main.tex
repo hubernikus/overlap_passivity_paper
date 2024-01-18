@@ -1,5 +1,11 @@
-\documentclass[conference]{IEEEtran}
-%\IEEEoverridecommandlockouts
+\documentclass[letterpaper, times, mathptm, 10 pt, conference]{ieeeconf}
+% \documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      %
+
+%\IEEEoverridecommandlockoutsk
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 %% \usepackage{cite}
 \usepackage{hyperref}
@@ -57,12 +63,13 @@
 % \longtrue
 
 \title{
+\LARGE \bf
 Passive Obstacle Aware Control \\
 to Follow Desired Velocities
 }
 
 \author{
-  \IEEEauthorblockN{Lukas Huber$^{1}$, Trinca Thibaud$^{1}$, Jean-Jacques Slotine$^{2}$, Aude Billard$^{1}$}
+  \IEEEauthorblock{Lukas Huber$^{1}$, Trinca Thibaud$^{1}$, Jean-Jacques Slotine$^{2}$, Aude Billard$^{1}$}
 \thanks{This work was supported by EU ERC grant SAHR.} %Use only for final RAL version
 \thanks{$^{1}$LASA Laboratory, Swiss Federal School of Technology in Lausanne - EPFL, Switzerland. \tt $\{$lukas.huber;aude.billard$\}$@epfl.ch }
 \thanks{$^{2}$Nonlinear Systems Laboratory,  Massachusetts Institute of Technology, USA. \tt jjs@mit.edu}   %\tt \small
@@ -73,9 +80,8 @@ to Follow Desired Velocities
 
 
 \maketitle
-\thispagestyle{plain}
-\pagestyle{plain}
-    
+% \thispagestyle{plain}
+% \pagestyle{plain}
 \begin{abstract}
 Evaluating and updating the obstacle avoidance velocity for an autonomous robot in real-time ensures robustness against noise and disturbances. A passive damping controller can obtain the desired motion with a torque-controlled robot, which remains compliant and ensures a safe response to external perturbations.
 Here, we propose a novel approach for designing the passive control policy. 
@@ -85,9 +91,9 @@ Validation on a 7DoF robot arm demonstrates superior collision rejection capabil
 Our obstacle-aware damping controller represents a substantial advancement in secure robot control within complex and uncertain environments.
 \end{abstract}
 
-\begin{IEEEkeywords}
-Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot interaction
-\end{IEEEkeywords}
+% \begin{IEEEkeywords}
+% Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot interaction
+% \end{IEEEkeywords}
 
 % Test
 % \begin{equation}
