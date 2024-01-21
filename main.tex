@@ -82,6 +82,7 @@ to Follow Desired Velocities
 \maketitle
 % \thispagestyle{plain}
 % \pagestyle{plain}
+
 \begin{abstract}
 Evaluating and updating the obstacle avoidance velocity for an autonomous robot in real-time ensures robustness against noise and disturbances. A passive damping controller can obtain the desired motion with a torque-controlled robot, which remains compliant and ensures a safe response to external perturbations.
 Here, we propose a novel approach for designing the passive control policy. 
@@ -101,9 +102,9 @@ Our obstacle-aware damping controller represents a substantial advancement in se
 % \end{equation}
 
 \input{input/introduction}
-\input{input/related_work}  
-\input{input/contributions}
-\input{input/preliminaries}
+ \input{input/related_work}  
+ \input{input/contributions}
+ \input{input/preliminaries}
 
 \iflong
 \input{input/problem_statement}
@@ -113,13 +114,10 @@ Our obstacle-aware damping controller represents a substantial advancement in se
 \input{input/passivity_proof}
 \input{input/collision_avoidance}
 
-% \input{input/discrete_time}
-
 \input{input/results}
 
 \iflong
 \appendix
-%\input{input/discrete_time}
 \input{input/discrete_time}
 \fi
 
