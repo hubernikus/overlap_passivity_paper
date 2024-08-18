@@ -1,18 +1,16 @@
-\documentclass[letterpaper, times, mathptm, 10 pt, conference]{ieeeconf}
+\documentclass[letterpaper, times, mathptm, 10 pt, journal, twoside]{ieeeconf}
+% \documentclass[letterpaper, 10 pt, journal, twoside]{IEEEtran}
 % \documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts                              % This command is only needed if 
-                                                          % you want to use the \thanks command
-
 \overrideIEEEmargins                                      %
 
-%\IEEEoverridecommandlockoutsk
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it outfon.
 %% \usepackage{cite}
 \usepackage{hyperref}
 \usepackage{svg}
 
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{amsthm} % Allows usage of '\theoremstyle'
+% \usepackage{amsthm} % Allows usage of '\theoremstyle'
 
 \usepackage{algorithmic}
 \usepackage{graphicx}
@@ -22,9 +20,6 @@
 \usepackage[font=small,labelfont=bf]{caption} % small fontsize in caption
 
 \usepackage{siunitx}
-
-%% \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-%%     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 \usepackage[
     backend=biber,
@@ -42,46 +37,56 @@
 \newcommand{\vecs}[1]{\boldsymbol{#1}}
 \newcommand{\matr}[1]{\boldsymbol{#1}}
 \newcommand{\matd}[1]{\mathcal{#1}}
-% \newcommand{\matd}[1]{\boldsymbol{#1}^{d}}
 
 \newcommand{\dotprod}[2]{\left\langle {#1}, \, {#2} \right\rangle}
 \newcommand{\normdotprod}[2]{\frac{\left\langle #1, \, #2 \right\rangle}{\| #1 \| \, \| #2 \|}}
 
-\newcommand{\editcolor}[1]{\textcolor{blue}{#1}}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[section]
 \newtheorem{lemma}{Lemma}[section]
-% \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
 \newif\ifthesis
 \thesisfalse
-\newif\iflong
 
-\longfalse
+\newif\iflong
 % \longtrue
+\longfalse
+
+\iflong
+ \newcommand{\editcolor}[1]{\textcolor{black}{#1}}
+\else
+\newcommand{\editcolor}[1]{\textcolor{black}{#1}}
+\fi
+
+\iflong
+\else
+\setlength{\headheight}{1mm}
+\fi
 
 \title{
 \LARGE \bf
-Passive Obstacle Aware Control \\
+Passive Obstacle-Aware Control \\
 to Follow Desired Velocities
 }
 
-\author{
-  \IEEEauthorblock{Lukas Huber$^{1}$, Trinca Thibaud$^{1}$, Jean-Jacques Slotine$^{2}$, Aude Billard$^{1}$}
+\author{Lukas Huber$^{1}$, Thibaud Trinca$^{1}$, Jean-Jacques Slotine$^{2}$, Aude Billard$^{1}$
+\thanks{
+Manuscript received: January 21, 2024; 
+Revised May 15, 2024;
+Accepted June 27, 2024.
+}
+\thanks{This paper was recommended for publication by Editor Aniket Bera upon evaluation of the Associate Editor and Reviewers’ comments.}
 \thanks{This work was supported by EU ERC grant SAHR.} %Use only for final RAL version
 \thanks{$^{1}$LASA Laboratory, Swiss Federal School of Technology in Lausanne - EPFL, Switzerland. \tt $\{$lukas.huber;aude.billard$\}$@epfl.ch }
 \thanks{$^{2}$Nonlinear Systems Laboratory,  Massachusetts Institute of Technology, USA. \tt jjs@mit.edu}   %\tt \small
-% \thanks{Manuscript received: May 10, 2022; Revised November 7, 2022; December 14, 2022.}%Use only for final RAL version
-% \thanks{This paper was recommended for publication by Editor Aniket Bera.}
-% \thanks{Digital Object Identifier (DOI): see top of this page.}
+\thanks{Digital Object Identifier (DOI): see top of this page.}
 }
 
-
 \maketitle
-% \thispagestyle{plain}
-% \pagestyle{plain}
+% \IEEEpeerreviewmaketitle
+\markboth{IEEE Robotics and Automation Letters. Preprint Version. Accepted June, 2024}{Huber \MakeLowercase{\textit{et al.}}: Passive Obstacle-Aware Control to Follow Desired Velocities.} 
 
 \begin{abstract}
 Evaluating and updating the obstacle avoidance velocity for an autonomous robot in real-time ensures robustness against noise and disturbances. A passive damping controller can obtain the desired motion with a torque-controlled robot, which remains compliant and ensures a safe response to external perturbations.
@@ -89,22 +94,20 @@ Here, we propose a novel approach for designing the passive control policy.
 Our algorithm complies with obstacle-free zones while transitioning to increased damping near obstacles to ensure collision avoidance. 
 This approach ensures stability across diverse scenarios, effectively mitigating disturbances.
 Validation on a 7DoF robot arm demonstrates superior collision rejection capabilities compared to the baseline, underlining its practicality for real-world applications. 
-Our obstacle-aware damping controller represents a substantial advancement in secure robot control within complex and uncertain environments.
+Our obstacle-aware damping controller represents a substantial advancement in secure robot control within complex and uncertain environments. \iflong \else \\
+\editcolor{
+The extended article with detailed proofs is available online }\parencite{passive2024huber_extended}. 
+\fi
 \end{abstract}
+\begin{keywords}
+Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot interaction
+\end{keywords}
 
-% \begin{IEEEkeywords}
-% Obstacle avoidance, dynamical systems, passivity, compliant control, human-robot interaction
-% \end{IEEEkeywords}
-
-% Test
-% \begin{equation}
-% 	\mathcal{S}(\vecs \xi) = \text{diag} \left(s_1 , \; .., \; s_N \right) 
-% \end{equation}
 
 \input{input/introduction}
- \input{input/related_work}  
- \input{input/contributions}
- \input{input/preliminaries}
+\input{input/related_work}  
+\input{input/contributions}
+\input{input/preliminaries}
 
 \iflong
 \input{input/problem_statement}
@@ -112,6 +115,7 @@ Our obstacle-aware damping controller represents a substantial advancement in se
 
 \input{input/obstacle_aware_passivity}
 \input{input/passivity_proof}
+
 \input{input/collision_avoidance}
 
 \input{input/results}

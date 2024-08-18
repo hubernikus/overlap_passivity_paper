@@ -1,4 +1,4 @@
-\section{Obstacle Aware Passivity} \label{sec:obstacle_aware_passivity}
+\section{Obstacle-Aware Passivity} \label{sec:obstacle_aware_passivity}
 We propose a novel controller, which ensures passivity as defined in \eqref{eq:control_command} but adapts the damping matrix given in \eqref{eq:damping_matrix} based on the desired velocity $\dot{\vecs \xi}$ and obstacles in the surrounding. 
 Far away from obstacles, the system is designed to follow the initial velocity, but approaching the obstacle increases the damping, decreasing the chance of a collision.
 
@@ -14,16 +14,18 @@ The velocity $\vect f(\vecs \xi)$ (gray) avoids collision with the obstacles and
 
 
 Hence, the damping matrix $\matd D(\vecs\xi) \in \mathbb{R}^{N \times N}$ smoothly changes from being aligned with the direction of the velocity, as used in \parencite{kronander2015passive}, to be aligned with the averaged normal of the obstacles. The desired damping matrix transitions between velocity preserving and collision avoidance using a smoothly defined linear combination:
+\editcolor{
 \begin{equation}
-    \matd D(\vecs\xi) = \left(1 - w(\vecs\xi) \right) {\matd D^{f}}(\vecs\xi) + w(\vecs\xi)  {\matd D^{\mathrm{o}}}(\vecs\xi) \label{eq:damping_summation}
+	\matd D(\vecs\xi, \dot{\vecs \xi}) = \left(1 - w(\vecs\xi) \right) {\matd D^{f}}(\vecs\xi) + w(\vecs\xi)  {\matd D^{\mathrm{o}}}(\vecs\xi, \dot{\vecs \xi}) \label{eq:damping_summation}
 \end{equation}
+}
 The damping matrix is made up of two components: the velocity damping. $\matd D^f \in \mathbb{R}^{N \times N}$ which prioritizes following the desired velocity similar to \parencite{kronander2015passive}, and the obstacle damping $\matd D^{\mathrm{o}} \in \mathbb{R}^{N \times N}$ which is designed to reject disturbances towards obstacles. The two damping matrices are positive definite and are smoothly summed using the danger weight $w(\vecs\xi) \in [0, 1]$. Far away from obstacles the weight reaches $w(\vecs \xi) = 0$, whereas $w(\vecs \xi) = 1$ when approaching a boundary:
 \begin{equation}
   \begin{split}
 w(\vecs\xi) =
 \max \left(0,  \frac{\Gamma^{\mathrm{crit}} - \Gamma(\vecs\xi)}{\Gamma^{\mathrm{crit}} - 1} \right) \| \vecs n(\vecs \xi) \| \\
 \text{with} \quad
-\Gamma(\vecs\xi) = \min_{o = 1..N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
+\Gamma(\vecs\xi) = \min_{o = 1, ..., N^{\mathrm{obs}}} \Gamma_o(\vecs\xi)
 \end{split}
 \label{eq:weight_function}
 \end{equation}
@@ -77,7 +79,7 @@ The second vector is set to be aligned with the desired velocity as much as poss
   \hat{\vecs q}_2^{\mathrm{o}} = \vecs q_1^{f} - \vecs q_1^{\mathrm{o}} p \quad  \forall \, \vecs \xi : | p | < 1
 \end{equation}
 where velocity unit vector $\vecs q_1^{f}$ is defined in \eqref{eq:velocity_unit_vector}, and the object weight is evaluated as $p = \dotprod{\vecs q_1^{\mathrm{o}}}{\vecs q_1^{f}}$. 
-For the case that $| p | = 1$, the second basis $\vecs q_2^{\mathrm{o}}$ is set to be any orthonormal vector. The remaining vectors $\vecs q_d^{\mathrm{o}}, d = 3, .., N$ are constructed to form an orthonormal basis to the first two.
+For the case that $| p | = 1$, the second basis $\vecs q_2^{\mathrm{o}}$ is set to be any orthonormal vector. The remaining vectors $\vecs q_d^{\mathrm{o}}, d = 3, ..., N$ are constructed to form an orthonormal basis to the first two.
 
 \subsubsection{Damping Values}
 We define the values of the diagonal matrix $\matd{S}^{\mathrm{o}}(\vecs \xi)$ as\begin{equation}
@@ -85,30 +87,32 @@ We define the values of the diagonal matrix $\matd{S}^{\mathrm{o}}(\vecs \xi)$ a
   \begin{cases}
     s^{\mathrm{o}} & d = 1 \\
     | p | s^c + (1 - | p |) s^{f} & d = 2 \\
-    s^c & d = 3 .. N
+    s^c & d = 3, ..., N
   \end{cases}
   \label{eq:obstacle_damping_values}
 \end{equation}
 where the damping along the nominal direction $s^{f} \in \mathbb{R}_{>0}$, obstacle-damping $s^{\mathrm{o}} \in \mathbb{R}_{>0}$, and the compliant-damping $s^c \in \mathbb{R}_{>0}$ are user-defined parameters which determine the behavior of the passive-controller. The first entry of $\matr{S}^{\mathrm{o}}$ dictates the damping towards the obstacle, and the second entry the desired velocity following. Note how the second value approaches the compliant damping, as normal and velocity become parallel.
 
-To ensure continuity across time of the control force as defined in \eqref{eq:control_command}, the values of the diagonal damping matrix  $\matd{S}^{\mathrm{o}}(\vecs \xi)$ in the tangent directions are equal when the normal aligns with the velocity, i.e.:
+To ensure continuity across time of the control force as defined in \eqref{eq:control_command}, the values of the diagonal damping matrix  $\matd{S}^{\mathrm{o}}(\vecs \xi)$ in the tangent directions are equal when the normal aligns with the velocity:
 \begin{equation}
     \lim_{| p | \rightarrow 1} \matd{S}_d = \matd{S}_e, 
-    \quad d > 2 .. N, \, e > 2 .. N
+    \quad d > 2, ..., N, \, e > 2, ..., N
 \end{equation}
-Hence, the choice of orthonormal vectors $\vecs q_d^{\mathrm{o}}, d > 2 .. N$ does not influence the control force as long as the matrix $Q^{\mathrm{d}}$ has full rank.
+Hence, the choice of orthonormal vectors $\vecs q_d^{\mathrm{o}}, d > 2, ..., N$ does not influence the control force as long as the matrix $Q^{\mathrm{d}}$ has full rank.
 
 
 \subsubsection{Damping Only Towards Obstacle} \label{sec:damping_only_toward}
-In the presence of an obstacle, the disturbances should be damped strongly when the agent is pushed against the obstacle. Conversely, the system can remain compliant if the motion is away from the obstacle. This is achieved by setting updating the first damping value $\matd{S}^{\mathrm{o}}_1$ if the robot is moving away from the surface:
+In the presence of an obstacle, the disturbances should be damped strongly when the agent is pushed against the obstacle. Conversely, the system can remain compliant if the motion is away from the obstacle. This is achieved by setting updating the first damping value $\matd{S}^{\mathrm{o}}_1$ if the robot is moving away from the surface: 
+\editcolor{
 \begin{equation}
-  \matd{S}_1^{\mathrm{o}} (\vecs \xi) =
+	\matd{S}_1^{\mathrm{o}} (\vecs \xi, \dot{\vecs \xi}) =
   \begin{cases}
     s^{\mathrm{o}} & \text{if} \;\; \left(\vect f(\vecs \xi) - \vecs{\dot \xi} \right)^T \vecs n(\vect \xi) > 0 \\
     s^{\mathrm{c}} & \text{otherwise}
   \end{cases}
   \label{eq:leaving_compliance}
 \end{equation}
+}
 
 Since $\vect q_1^o(\vecs \xi)$ given in \eqref{eq:first_obstacle_basis} is pointing along the obstacle normal $\vect n(\vecs \xi)$, the first obstacle damping value $\matd{S}_1^{\mathrm{o}} (\vecs \xi)$ does not have any effect on the control force $\vect \tau^c$ given in \eqref{eq:control_command} when $\left(\vect f(\vecs \xi) -  \vecs{\dot \xi} \right)^T \vecs n(\vect \xi) = 0$.
 Hence, the damping value can be discontinuous across time, but the resulting control force remains continuous.
@@ -124,7 +128,7 @@ Moreover, the damping is set to ensure that when passing a narrow passage betwee
   \begin{cases}
    (1- w^p) s^f & d = 1 \\
     % w^p s^{\mathrm{o}} + (1- w^p) s^s & d = 2 .. N 
-   (1- w^p) s^s & d = 2 .. N 
+   (1- w^p) s^s & d = 2, ..., N 
   \end{cases} \\
   & \text{with} \quad
   %w^p = \min \left(1,  \| \vecs n(\vecs \xi) \|^2 + \left(\frac{\Gamma(\vecs \xi) -1}{\Gamma^{\mathrm{crit}} - 1}\right) ^2 \right)

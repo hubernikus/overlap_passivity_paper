@@ -41,7 +41,7 @@ For the discrete-time system, the position and velocity of the agent evolve as f
 
 \begin{lemma}
 	Let us consider a discrete-time system with the state as given in Eq.~\eqref{eq:discrete_time_dynamics}, and is governed by the controller from Eq.~\eqref{eq:control_command} and damping matrix $\matd{D}$ defined in Eq.~\eqref{eq:damping_summation}.
-	The system is BIBO (bounded-input, bounded-stable) with respect input the desired velocity $\vect f(\vecs \xi)$ the velocity, and as output the agent's velocity $\dot{\vecs \xi}$ such that $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, if all damping values are limited as $s_{d} \leq 2 \min \left( \text{eig}\left(\matd{M}\right)  \right) / \Delta t$ with $d=1.. N$.
+	The system is BIBO (bounded-input, bounded-stable) with respect input the desired velocity $\vect f(\vecs \xi)$ the velocity, and as output the agent's velocity $\dot{\vecs \xi}$ such that $\lim_{t \rightarrow \infty} \| \dot{\vect \xi} \| < \infty$, if all damping values are limited as $s_{d} \leq 2 \min \left( \text{eig}\left(\matd{M}\right)  \right) / \Delta t$ with $d=1, ..., N$.
 \end{lemma}
 
 \begin{proof}
@@ -89,13 +89,13 @@ The eigenvalues of the above feedback system are given as:
 	\vect \lambda_1 = \text{eig}(\matr{I}) \qquad \vect \lambda_2 = \text{eig} \left(\matr{I} - \Delta t \, \matd{M}^{-1} \matd{D} \right)
 \end{equation}
 where both $\vect \lambda_1 \in \mathbb{R}^N$ and $\vect \lambda_2 \in \mathbb{R}^N$ denote a vector containing $N$ eigenvalues.
-All eigenvalues of $\vect \lambda_{1, i} = 1, \; i = 1...N$, and enable a stable system. 
+All eigenvalues of $\vect \lambda_{1, i} = 1, \; i = 1, ..., N$, and enable a stable system. 
 The second set of eigenvalues $\vect \lambda_2$  depends on the passive control term. 
 However, since $\matd{M}$ and $\matd{D}$ are both positive definite, the eigenvalues are positive:
 \begin{equation}
 	\matd{M} > 0 \; , \;\; \matd{D} > 0 
 	\qquad \Rightarrow \qquad
-	\vect \lambda_{2, i} > 0 \quad i = 1...N
+	\vect \lambda_{2, i} > 0 \quad i = 1, ..., N
 \end{equation}
 
 Hence, we only have to consider the upper limit, and the system is stable if the maximum eigenvalue is limited to:
@@ -117,8 +117,6 @@ Yet, asymptotic stability is not guaranteed for general nonlinear input dynamics
 
 In practice, it is useful to use a large value for $s^{o}$ as it rejects disturbances towards the obstacles, and lower values for the dynamics following $s^{f}$ and damping in general direction $s^{c}$. Hence, we propose $s^{o} = 2.0 m / \Delta t$, $s^{f} = 1.0 / \Delta t$, and $s^c = 0.1 / \Delta t$.
 
-% ifthesis
-
 \begin{figure}[htbp]
 \centering
 \ifthesis
@@ -134,4 +132,3 @@ Interestingly, with damping of $2.1 m / \Delta t$ in combination with the nonlin
   \label{fig:discrete_controller_parameters_comparison_stable}
 \end{figure}
 
-% \fi

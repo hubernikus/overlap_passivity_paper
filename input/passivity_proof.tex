@@ -6,27 +6,34 @@ The stability analysis of the system gives information about the stability regio
 
 \begin{lemma} \label{lemma:passivity}
   % Let $\vect f(\vecs \xi)$ be the desired velocity with bounded magnitude, i.e., $\| \vect f(\xi) \| < \infty, \forall \xi \in \mathbb{R}^N$.
-   Let us assume a robotic system as described in \eqref{eq:robot_dynamics} is controlled using \eqref{eq:control_command} using the damping matrix $\matd D(\vecs \xi)$ given in \eqref{eq:damping_summation} with damping values $s_d = 1, d = 1 .. N$.
+	Let us assume a robotic system as described in \eqref{eq:robot_dynamics} is controlled using \eqref{eq:control_command} using the damping matrix \editcolor{$\matd D(\vecs \xi, \dot{\vecs \xi})$} given in \eqref{eq:damping_summation} with damping values $s_d = 1, d = 1, ..., N$.
    The system is passive with respect to the input-output pair $\vecs \xi_e$, $\vecs{\dot \xi}$ when exceeding the desired velocity $\vect f(\vecs \xi)$ , i.e., $\dot{W} \leq \vecs{\dot \xi}^T \vecs \tau^e, \; \forall \vecs \xi \in \mathbb{R}^N: \| \vecs{\dot \xi} \| \geq \| \vect f(\vecs \xi) \|$ and the storage function being the kinetic energy $W \in \mathbb{R}_{>0}$ given in \eqref{eq:energy_system}
 \end{lemma}
 
+\iflong
+
 \begin{proof}
 The time derivative of storage function $W$ can be evaluated as:
+\editcolor{
 \begin{align}
   % \begin{split}
 	& \dot W(\vecs \xi, \vecs{\dot \xi}) =
-    \vecs{\dot \xi}^T \matd M(\vecs \xi) \vecs{\ddot \xi}  + \frac{1}{2} \vecs{\dot \xi}^T \dot{\matd M}(\vecs \xi) \vecs{\dot \xi}  \nonumber \\
-  &= \frac{1}{2} \vecs{\dot \xi}^T \left( \dot{\matd M}(\vecs \xi) - 2 \matd C(\vecs \xi) \right) \dot{\vecs \xi} - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \left(\vecs{\dot \xi} - \vect f(\vecs \xi) \right) + \vecs{\dot \xi}^T \vecs \tau^e \nonumber \\
-  &= - \vecs{\dot \xi}^T \matd{D}(\vecs \xi) \left( \vecs{\dot\xi} - \mathbf{f}(\vecs \xi) \right) + \vecs{\dot\xi}^T \vecs{\tau}^e
+	\vecs{\dot \xi}^T \matd M(\cdot) \vecs{\ddot \xi}  + \frac{1}{2} \vecs{\dot \xi}^T \dot{\matd M}(\cdot) \vecs{\dot \xi}  \nonumber \\
+	&= \frac{1}{2} \vecs{\dot \xi}^T \left( \dot{\matd M}(\cdot) - 2 \matd C(\cdot) \right) \dot{\vecs \xi}  
+	 \quad - \vecs{\dot \xi}^T \matd{D}(\cdot) \left(\vecs{\dot \xi} - \vect f(\vecs \xi) \right) + \vecs{\dot \xi}^T \vecs \tau^e \nonumber \\
+  &= - \vecs{\dot \xi}^T \matd{D}(\cdot) \left( \vecs{\dot\xi} - \mathbf{f}(\vecs \xi) \right) + \vecs{\dot\xi}^T \vecs{\tau}^e
   % \end{split}
 \end{align}
-where the second order dynamics $\vecs{\ddot \xi}$ are evaluated according to the rigid body dynamics defined in \eqref{eq:robot_dynamics}. Furthermore, $\dot{\matd M} - 2 \matd C$ is skew-symmetric for any physical system; hence, the corresponding summand is zero.
+}
+where the second order dynamics $\vecs{\ddot \xi}$ are evaluated according to the rigid body dynamics defined in \eqref{eq:robot_dynamics}. Furthermore, $\dot{\matd M} - 2 \matd C$ is skew-symmetric for any physical system \parencite{slotine1987adaptive}; hence, the corresponding summand is zero.
 
 % \subsubsection{Stability with Uniform Damping}
 Let us investigate the region where the passivity holds. Since in the Lemma, we assumed all damping values to be equal to one, we have:
+\editcolor{
 \begin{equation}
-	\matd{D}({\vecs \xi}) = \matd{Q}({\vecs \xi}) \matd{S} ({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1}= \matd{Q}({\vecs \xi}) \matd{I} \matd{Q}({\vecs \xi})^{-1} = \matd{I}
+	\matd{D}({\vecs \xi}, \dot{\vecs \xi}) = \matd{Q}(\cdot) \matd{S} (\cdot) \matd{Q}(\cdot)^{-1}= \matd{Q}(\cdot) \matd{I} \matd{Q}(\cdot)^{-1} = \matd{I}
 \end{equation}
+}
 where $\matd{I} \in \mathbb{R}^{N \times N}$ is the identity matrix.
 
 It follows that the system is passive with respect to the input, the external force $\tau^e$, and the output, the velocity $\dot {\vecs \xi}$, if: 
@@ -48,7 +55,7 @@ Hence, using Thale's theorem, this region can be interpreted as a circle in velo
     \includegraphics[width=0.7\columnwidth]{figures/passivity_analysis}
 	\else
     % \includegraphics[width=.8\columnwidth]{figures/passivity_analysis}
-    \includegraphics[width=.8\columnwidth]{figures/passivity_analysis.pdf}
+    \includegraphics[width=.95\columnwidth]{figures/passivity_analysis.pdf}
 	\fi
 	\caption{Analyzing the system in velocity-space yields that the system is passive if it has a velocity $\dot{\vecs \xi}$ larger than the desired velocity $\vect f(\vecs \xi)$, i.e., outside the dashed circle.
     However, the system can be non-passive for small velocities when  $\dotprod{\dot{\vecs \xi}}{\Delta \vect f} < 0$ (yellow circle).}
@@ -65,16 +72,24 @@ Moreover, the system is passive as long as the observed velocity $\dot{{\vecs \x
 
 As in the orange region, the system is not passive; the storage function $W$ could increase, and hence, the velocity $\dot {\vecs \xi}$ increases non-passively. This behavior is not unexpected, as the controller is designed to approach the desired dynamics $\vect{f}({\vecs \xi})$. Hence, as long as the desired velocity is not reached, the kinetic energy increases even with no force input $\vecs \tau^e$. However, as soon as the system velocity $\dot{\vecs \xi}$ exceeds the desired velocity $\vect f(\vecs \xi)$, the system behaves passively. We can use this to ensure the stability of the system:
 
+\else
+\editcolor{
+\begin{proof}
+See extended artice \parencite{passive2024huber_extended}. \hfill 
+\end{proof}
+}
+\fi
+
 \begin{theorem}  \label{theorem:passivity}
   Let $\vect f(\vecs \xi)$ is the desired velocity with bounded magnitude, i.e., $\| \vect f(\vecs \xi) \| < v^{\mathrm{max}}, \forall \vecs \xi \in \mathbb{R}^N$.
-   The closed loop system \eqref{eq:robot_dynamics} using the controller from \eqref{eq:control_command} and the damping matrix $\matd D(\vecs \xi)$ given in \eqref{eq:damping_summation} is bounded-input, bounded-output (BIBO) stable with respect to the input disturbance force $\vect \tau^e$, and output the velocity $\dot{\vecs \xi}$ for all times $T = 0, \, .., \, \infty$.
+  The closed loop system \eqref{eq:robot_dynamics} using the controller from \eqref{eq:control_command} and the damping matrix $\matd D(\vecs \xi, \dot{\vecs \xi})$ given in \eqref{eq:damping_summation} is bounded-input, bounded-output (BIBO) stable with respect to the input disturbance force $\vect \tau^e$, and output the velocity $\dot{\vecs \xi}$ for all times $T = 0, ...,  \infty$.
 \end{theorem}
- 
+
+\iflong
 \begin{proof}
 % From Lemma~\ref{lemma:passivity}, the system is passive when the magnitude of the velocity is larger than the dynamics, i.e. $\| \dot{\vecs \xi} \| > \|\vect f(\vecs \xi) \|$, the orange circle in Figure~\ref{fig:passivity_analysis}.
 % The system is not passive inside this region, and the velocity $\dot {\vecs \xi}$ can increase. However, the velocity increase is limited to staying below $\| \vect f({\vecs \xi}) \|$ before the system enters the region where it is passive. Hence, the control cannot introduce unexpected energy.
 % It follows that the system has a bounded output as long as the desired velocity $\vecs{f}({\vecs \xi})$ is stable and the input $\int_{0}^T \dot{{\vecs \xi}}^T \vecs \tau^e dt$ is bounded. 
-
 To ensure BIBO stability, let us analyze the integral of the impulse of the response for the external force $\vecs \tau^e$: 
 \begin{equation}
 	\begin{split}
@@ -86,20 +101,20 @@ To ensure BIBO stability, let us analyze the integral of the impulse of the resp
 \end{split}
 \label{eq:bibo_velocity}
 \end{equation}
-where $\mathcal{T}_n$ denotes the set of time instances where the system is not shown to be passive (Fig.~\ref{fig:passivity_analysis}), specifically $\| \dot{\vecs \xi} \| \leq \| \vecs f (\vecs \xi) \|$, and $T_n \in \mathbb{R}_{\geq 0}$ is the total duration which the system spends in this region. Additionally, from passivity in the inner region, the system is bounded by a constant $K_p \in \mathbb{R}_{\geq 0}$.
+where $\mathcal{T}_n$ denotes the set of time instances where the system is not shown to be passive (Fig.~\ref{fig:passivity_analysis}), specifically $\| \dot{\vecs \xi} \| \leq \| \vecs f (\vecs \xi) \|$, and $T_n \in \mathbb{R}_{\geq 0}$ is the total duration which the system spends in this region. Additionally, as ar result from passivity in the inner region, there exists a finite valued constant $K_p \in \mathbb{R}_{\geq 0}$ which marks the upper bound of the system.
 Hence, the impulse response is bounded, and the system is BIBO stable.
 
 % \subsubsection{Stability with General Damping}
-However, from \eqref{eq:damping_summation}, we know that a general damping matrix $\matd{S}(\vecs \xi)$ can have non-uniform diagonal values. This is analyzed by introducing the coordinate transfers:
+However, from \eqref{eq:damping_summation}, we know that a general damping matrix $\matd{S}(\vecs \xi, \dot{\vecs \xi})$ can have non-uniform diagonal values. This is analyzed by introducing the coordinate transfers:
 \begin{equation}
-	\vecs{\bar{v}} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \dot{{\vecs \xi}}
+	\vecs{\bar{v}} = \sqrt{\matd{S}(\cdot)} \matd{Q}(\cdot)^{-1} \dot{{\vecs \xi}}
 	\;\; \text{and} \;\;
-	\bar{\Delta \vect f} = \sqrt{\matd{S}({\vecs \xi})} \matd{Q}({\vecs \xi})^{-1} \Delta \vect{f}
+	\bar{\Delta \vect f} = \sqrt{\matd{S}(\cdot)} \matd{Q}(\cdot)^{-1} \Delta \vect{f}
 \end{equation}
 where the square root of the diagonal matrix $\matd{S}({\vecs \xi})$ is taken element-wise.
 The transfer is then used to rewrite \eqref{eq:passivity_condition} as:
 \begin{equation}
-\dot{\vecs \xi}^T \matd{D}({\vecs \xi}) \Delta \vect{f} = \vecs{\dot \xi}^T \matd{Q}({\vecs \xi}) \matd{S}({\vecs \xi}) \matd{Q}({\vecs \xi})^{-1} \Delta \vect{f} = \vecs{\bar v}^T \bar{\Delta \vect f}
+	\dot{\vecs \xi}^T \matd{D}({\vecs \xi}, \dot{\vecs \xi}) \Delta \vect{f} = \vecs{\dot \xi}^T \matd{Q}(\cdot) \matd{S}(\cdot) \matd{Q}(\cdot)^{-1} \Delta \vect{f} = \vecs{\bar v}^T \bar{\Delta \vect f}
 \end{equation}
 
 Hence, the BIBO analysis of \eqref{eq:bibo_velocity} applied to the transformed system results as:
@@ -117,8 +132,12 @@ where $\bar{\mathcal{T}}_n$ denotes the region where the transformed system $\ve
 Hence, since the transformed system with velocity $\vect {\bar v}$ is BIBO stable, the original system with velocity $\dot{\vecs \xi}$ is BIBO stable, too, as long as it is a continuous, finite transform. 
 \end{proof}
 % The analysis described in Fig.~\ref{fig:passivity_analysis} can hence be applied in the transformed space, too. 
-
-For an orthogonal decomposition matrix $\matd{Q}(\boldsymbol{{\vecs \xi}})$, the region of non-passivity is an ellipse where the direction of the axes points along column vectors of $\matd{Q}({\vecs \xi})$, and the corresponding axes lengths are the diagonal elements of $\| \mathbf{f}({\vecs \xi})^T \sqrt{\matd{S}({\vecs \xi})}\| / 2 \sqrt{\matd{S}({\vecs \xi})}^{(-1)}$. 
+\else
+\editcolor{
+\begin{proof} See extended article \parencite{passive2024huber_extended}. \end{proof}
+}
+\fi
+For an orthogonal decomposition matrix $\matd{Q}(\boldsymbol{{\vecs \xi}}, \dot{\vecs \xi})$, the region of non-passivity is an ellipse where the direction of the axes points along column vectors of $\matd{Q}$, and the corresponding axes lengths are the diagonal elements of $\| \mathbf{f}({\vecs \xi})^T \sqrt{\matd{S}(\cdot)}\| / 2 \sqrt{\matd{S}(\cdot)}^{(-1)}$. 
 If the ratio of the first damping value to the other axis $i \geq 2$ is large, i.e., $s_1 / s_i \gg 1$, it can lead to non-passivity even though the velocity $\dot{\vecs \xi}$ is already larger (but not pointing in the correct direction) than the desired velocity. However, the non-passive region is still \iflong bounded (Fig.\ref{fig:passivity_analysis_skew}). \else bounded. \fi
 This proof holds for any basis $\matd{Q}$ which is not singular. However, the controller must be carefully chosen to ensure that the speed up is limited when the basis is close to singular, for example, by limiting the relative difference of the stretching vectors. Furthermore, as stable behavior is ensured for a general shape of a damping matrix $\matd{D}(\vecs \xi)$, the global stability proof extends to any positive definite damping matrix matrices.
 
